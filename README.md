@@ -1,46 +1,89 @@
-SKEL: Skeleton Project
-
-This project provides a starting point for development of projects during the
-course "Software Architecture". It is a simple web application offering nearly 
-no "real" functionality. Its main purpose is to help you getting started quickly 
-by providing a suitable starting point.
-
-It utilizes Spring Boot and is configured as a Maven web application project with:
- - all relevant Spring Framework features enabled
- - embedded Tomcat with support for JSF2
- - embedded H2 in-memory database (including H2 console)
- - support for PrimeFaces
- - basic functionality for user management and Spring web security
-
-Atop of the above functionality, this project was adapted to fit with the 
-assignment of the software architecture course in WS23. Hence, it shows how to: 
-- make basic rest calls
-- parameterize rest calls
-- (de)-serialize answer objects into POJOs to be used later
-
-In order to be able to make API calls ensure to provide a valid API-KEY
-for https://api.openweathermap.org in your enviroment. 
-Software architecture students will
-receive their API key from their respective instructors. 
-```bash
-export SWA_API_KEY=<api-key>
-```
-Alternatively you can use `.env`-files. In all cases, ensure that your 
-confidential API key never leaves your device unencrypted.
-
-This project works with Java 17.
-Execute  "mvn spring-boot:run" to start the skeleton project and connect to
-http://localhost:8080/ to access the skeleton web application. You may login
-with "admin" and "passwd".
-
-Feel free to use this skeleton project as you see fit - but keep in mind that
-this project is primarily provided to be used for educational purposes. Don't
-use it for production.
+# G1T1
 
 
-Contributors:
-Christian Sillaber
-Michael Brunner
-Clemens Sauerwein
-Andrea Mussmann
-Alexander Blaas
+
+# **Über das Projekt**
+
+## Überblick
+
+Die Weather Web Application ist eine umfassende Plattform für Wetterinformationen, die entwickelt wurde, um den 
+vielfältigen Anforderungen von Benutzern gerecht zu werden, die genaue und detaillierte Wettervorhersagen suchen.
+
+## Hauptfunktionen
+
+### - Benutzerrollen und -verwaltung
+
+#### Benutzerrolle
+Grundlegende Benutzer können nach Orten suchen, aktuelle Wetterinformationen anzeigen und Lieblingsorte verwalten.
+
+#### Premium-Benutzerrolle
+Premium-Benutzer haben Zugang zu erweiterten und detaillierteren Wetterdaten.
+
+#### Manager-Rolle
+Manager kümmern sich um die Abrechnung und überwachen Premium-Abonnements.
+
+#### Admin-Rolle
+Administratoren verwalten Benutzerkonten, weisen Rollen zu und überwachen den Premium-Status.
+
+### - Abonnementmodell
+- Benutzer können sich für ein Premium-Abonnement entscheiden, um exklusive Funktionen freizuschalten.
+- Der Premium-Status wird bequem monatlich abgerechnet
+
+### - Wetterdaten
+- Nutzt die OpenWeatherMap API für präzise und aktuelle Wetterinformationen.
+- Bietet Einblicke in das aktuelle Wetter, stündliche Vorhersagen und detaillierte Prognosen für die kommenden Tage.
+
+### - Anpassung und Personalisierung
+- Benutzer können Lieblingsorte speichern und die Darstellung der Wetterinformationen nach ihren Präferenzen anpassen.
+- Individualisierbare Anzeigeoptionen bieten ein maßgeschneidertes Wettererlebnis
+
+## Projektziele
+- Bereitstellung einer benutzerfreundlichen Oberfläche für zuverlässige Wetterinformationen.
+- Implementierung eines flexiblen Abonnementmodells für erweiterte Funktionen.
+- Sicherstellung genauer und umfassender Wetterdaten durch die Integration von OpenWeatherMap.
+- Schaffung eines individualisierbaren Wettererlebnisses für jeden Benutzer.
+
+
+## Roadmap
+- [ ] Meilenstein 1,  Datum:08.01.2024
+    ### Backend-Fertigstellung:
+    #### Zielsetzung;
+  - Bis zum 8. Januar 2024 soll das Backend der Weather Web Application vollständig entwickelt und funktionsfähig sein. Dies umfasst die Implementierung aller erforderlichen Server-Logik, Datenpersistenz und API-Integrationen gemäß den definierten Anforderungen. Das Backend soll in der Lage sein, sämtliche Nutzerfunktionen, Rollenverwaltung, Abonnementabrechnung und Wetterdatenabrufe erfolgreich zu unterstützen.
+    #### Aufgaben; 
+    - [ ] Alle Backend-Funktionen wurden gemäß den Anforderungen implementiert und getestet
+    - [ ]  Die Datenpersistenz ist stabil, und die Geschäftslogik funktioniert reibungslos. 
+    - [ ]  Die OpenWeatherMap-API-Integration liefert genaue und aktuelle Wetterdaten.
+    - [ ]  Abonnementabrechnung und Premium-Statusverwaltung sind einsatzbereit und getestet
+    - [ ]  Alle Nutzerrollen können ihre jeweiligen Funktionen erfolgreich ausführen.
+
+
+
+
+- [ ] Meilenstein 2, Datum 15.01.2024
+  ### Frontend-Fertigstellung:
+  #### Zielsetzung;
+  - Bis zum 15. Januar 2024 soll die Integration des Frontends in die Weather Web Application abgeschlossen sein. Dies umfasst die Implementierung einer benutzerfreundlichen Benutzeroberfläche, die die Anforderungen an Usability und Interaktivität erfüllt. Das Frontend soll nahtlos mit dem Backend interagieren und alle Funktionalitäten gemäß den Spezifikationen unterstützen.
+  #### Aufgaben;
+    - [ ] Entwurf und Implementierung der Benutzeroberfläche für alle definierten Nutzerrollen (USER, PREMIUM, MANAGER, ADMIN).
+    - [ ] Integration der Backend-Funktionalitäten in das Frontend für eine konsistente Benutzererfahrung.
+    - [ ] Sicherstellung der Browserkompatibilität für die gängigsten Browser.
+    - [ ] Testen der Frontend-Integration und Behebung von auftretenden Problemen
+
+
+- [ ] Meilenstein 3, Datum 22.01.2024
+  ### Präsentationsvorbereitung:
+  #### Zielsetzung;
+    - Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der g1t1 Weather Web Application abgeschlossen sein. Dies umfasst die Erstellung einer aussagekräftigen und gut strukturierten Präsentation, die die wichtigsten Aspekte des Projekts hervorhebt
+  #### Aufgaben;
+    - [ ] Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der Weather Web Application abgeschlossen sein. Dies umfasst die Erstellung einer aussagekräftigen und gut strukturierten Präsentation, die die wichtigsten Aspekte des Projekts hervorhebt
+    - [ ] Vorbereitung von Demo-Szenarien, um live Funktionalitäten der Anwendung zu präsentieren.
+    - [ ] Klärung von potenziellen Fragen, die während der Präsentation gestellt werden könnten.
+
+
+## Authors and acknowledgment
+- Amelie Ernst
+- Alex Hemmen
+- Hasan Yücedag
+- Malte Braig
+- Jakob Osl
+
