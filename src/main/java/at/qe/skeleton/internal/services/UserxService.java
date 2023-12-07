@@ -74,15 +74,26 @@ public class UserxService {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
-        // :TODO: write some audit log stating who and when this user was permanently deleted.
     }
+    //:TODO Admin und User kann Premium status hinzufügen, Admin kann ihn auch entziehen
 
+
+    /**
+     * remove Role from User
+     * @param role the role that gets removed
+     */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void removeRole(Userx user, UserxRole role){
         Set<UserxRole> roles = user.getRoles();
         roles.remove(role);
         user.setRoles(roles);
     }
+
+    /**
+     * add Role to User
+     * @param user user who gets the role
+     * @param role role that is added to the user
+     */
     @PreAuthorize("hasAuthority('ADMIN')")
     public void addRole(Userx user, UserxRole role){
         Set<UserxRole> roles = user.getRoles();
@@ -90,7 +101,50 @@ public class UserxService {
         user.setRoles(roles);
     }
 
+    /**
+     * User can change its own name
+     * @param user the user whos name gets changed
+     *
+     * @param newName the new first Name assigned to the User
+     */
+    @PreAuthorize("hasAuthority('USER')")
+    public void changeFirstName(Userx user, String newName){
+        user.setFirstName(newName);
+    }
 
+    /**
+     * User can change its own name
+     * @param user the user whos name gets changed
+     *
+     * @param newName the new last Name assigned to the User
+     */
+    @PreAuthorize("hasAuthority('USER')")
+    public void changeLastName(Userx user, String newName){
+        user.setLastName(newName);
+    }
+
+    /**
+     * User can change its own email
+     * @param user the user whos email gets changed
+     *
+     * @param newEmail the new Email assigned to the User
+     */
+    @PreAuthorize("hasAuthority('USER')")
+    public void changeEmail(Userx user, String newEmail){
+        user.setEmail(newEmail);
+    }
+
+    /**
+     * User can change its own password
+     * @param user the user whos name gets changed
+     *
+     * @param newPassword the newName assigned to the User
+     */
+    @PreAuthorize("hasAuthority('USER')")
+    public void changePassword(Userx user, String newPassword){
+        user.setPassword(newPassword);
+    }
+    //:TODO: User kann seine Zahlungsinformationen bearbeiten
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());

@@ -10,7 +10,6 @@ public enum UserxRole {
 
     ADMIN,
     MANAGER,
-    USER,
-    PREMIUM
+    USER
 
 }
