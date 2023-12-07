@@ -87,6 +87,10 @@ public class WebSecurityConfig {
                 .authoritiesByUsernameQuery("select userx_username, roles from userx_userx_role where userx_username=?");
     }
 
+    /**
+     * Retuns the PasswordEncoder which used to encode the password form the database for the login
+     * @return BCryptPasswortEncoder
+     */
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return (PasswordEncoder) new BCryptPasswordEncoder();
