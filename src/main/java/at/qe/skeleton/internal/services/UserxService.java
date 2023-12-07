@@ -2,6 +2,9 @@ package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
 import java.util.Collection;
+import java.util.Set;
+
+import at.qe.skeleton.internal.model.UserxRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -73,6 +76,20 @@ public class UserxService {
         userRepository.delete(user);
         // :TODO: write some audit log stating who and when this user was permanently deleted.
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void removeRole(Userx user, UserxRole role){
+        Set<UserxRole> roles = user.getRoles();
+        roles.remove(role);
+        user.setRoles(roles);
+    }
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void addRole(Userx user, UserxRole role){
+        Set<UserxRole> roles = user.getRoles();
+        roles.add(role);
+        user.setRoles(roles);
+    }
+
 
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
