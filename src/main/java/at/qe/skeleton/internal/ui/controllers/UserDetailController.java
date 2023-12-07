@@ -61,6 +61,10 @@ public class UserDetailController implements Serializable {
         user = this.userService.saveUser(user);
     }
 
+   /* public void doNewUser() {
+        user = this.userService.saveUser(user==Null);
+    }*/
+
     /**
      * Action to delete the currently displayed user.
      */

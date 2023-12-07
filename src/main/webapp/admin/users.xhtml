@@ -39,9 +39,9 @@
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="2">
                         <p:outputLabel for="username" value="Username: " />
-                        <p:inputText id="username" value="#{userDetailController.user.username}" disabled="true"/>
+                        <p:inputText id="username" value="#{userDetailController.user.username}"/>
                         <p:outputLabel for="password" value="Password: " />
-                        <p:password id="password" value="#{userDetailController.user.password}" disabled="true"/>
+                        <p:password id="password" value="#{userDetailController.user.password}"/>
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="2">
