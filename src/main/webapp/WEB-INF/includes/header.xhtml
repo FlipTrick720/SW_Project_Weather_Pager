@@ -28,7 +28,9 @@
                         <p:menuitem value="Security Test" url="/secured/test.xhtml"/>
                         <p:menuitem value="Weather API Demo" url="/secured/weather_api_demo.xhtml"/>
                     </p:submenu>
-                    
+
+                    <p:menuitem value="Search" url="/secured/search.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
+
                     <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Logout" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>                    
                     
