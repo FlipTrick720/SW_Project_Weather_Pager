@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                 .defaultSuccessUrl("/secured/welcome.xhtml")
                 .loginProcessingUrl("/login")
                 .successForwardUrl("/secured/welcome.xhtml")
+                .failureForwardUrl(ACCESSDENIED)
             )
             .logout(logout -> logout
                 .logoutSuccessUrl(LOGIN)
