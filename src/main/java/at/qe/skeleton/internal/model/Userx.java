@@ -4,6 +4,8 @@ import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+
+import at.qe.skeleton.configs.WebSecurityConfig;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -70,7 +72,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = WebSecurityConfig.passwordEncoder().encode(password);
     }
 
     public String getFirstName() {
