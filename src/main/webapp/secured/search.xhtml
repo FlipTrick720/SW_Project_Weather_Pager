@@ -8,12 +8,10 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-
-
-
-		<p:autoComplete value="#{searchBean.text}" completeMethod="#{searchBean.complete}" />
-
-
-
-    </ui:define>
+		<h:form>
+			<p:autoComplete value="#{autocompleteBean.text}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+			<p:commandButton value="Submit"  update="output" />
+		</h:form>
+		<h:outputText id="output" value="#{autocompleteBean.text}" rendered="#{not empty autocompleteBean.text}" />
+	</ui:define>
 </ui:composition>

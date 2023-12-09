@@ -1,17 +1,15 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import at.qe.skeleton.internal.model.PredictionDTO;
-import at.qe.skeleton.internal.services.GooglePlacesService;
+import at.qe.skeleton.external.services.GooglePlacesAutocompleteApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Scope("session")
-public class SearchBean {
+public class AutocompleteBean {
     private String text;
 
     public String getText() {
@@ -23,10 +21,9 @@ public class SearchBean {
     }
 
     @Autowired
-    GooglePlacesService googlePlacesService;
+    GooglePlacesAutocompleteApiService googlePlacesService;
 
-    public List<String> complete(String query) {
-        // Call a method to fetch suggestions from the Google Places API
-        return googlePlacesService.getPredictions(query);
+    public List<String> getAutocompletion(String input) {
+        return googlePlacesService.getPredictions(input);
     }
 }
