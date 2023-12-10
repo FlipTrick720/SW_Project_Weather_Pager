@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                 .defaultSuccessUrl("/secured/welcome.xhtml")
                 .loginProcessingUrl("/login")
                 .successForwardUrl("/secured/welcome.xhtml")
+                .failureForwardUrl(ACCESSDENIED)
             )
             .logout(logout -> logout
                 .logoutSuccessUrl(LOGIN)
@@ -95,6 +96,6 @@ public class WebSecurityConfig {
      */
     @Bean
     public static PasswordEncoder passwordEncoder() {
-        return (PasswordEncoder) new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 }

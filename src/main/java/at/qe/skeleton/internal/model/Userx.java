@@ -4,6 +4,8 @@ import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+
+import at.qe.skeleton.configs.WebSecurityConfig;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -50,6 +52,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String email;
     private String phone;
 
+    private String bankAccountNumber;
+    boolean premium;
+
     boolean enabled;
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
@@ -70,7 +75,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = WebSecurityConfig.passwordEncoder().encode(password);
     }
 
     public String getFirstName() {
@@ -158,6 +163,22 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.username);
         return hash;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 
     @Override
