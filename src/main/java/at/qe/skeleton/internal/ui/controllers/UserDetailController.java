@@ -36,12 +36,10 @@ public class UserDetailController implements Serializable {
      * Returns the newUser which is created from the user class
      * @return
      */
-    //giving every new user the default role of admin so we can access a ongoin page
-    //with the new user
     public Userx getNewUser() {
         if (newUser == null){
             newUser = new Userx();
-            newUser.setRoles(Collections.singleton(UserxRole.ADMIN));
+            newUser.setRoles(Collections.singleton(UserxRole.USER));
         }
         return newUser;
     }
@@ -139,7 +137,6 @@ public class UserDetailController implements Serializable {
         newUser.setCreateUser(newUser);
         newUser.setEnabled(true);
         user = this.userService.saveUser(newUser);
-
 
     }
 

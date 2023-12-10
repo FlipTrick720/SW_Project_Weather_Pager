@@ -52,6 +52,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String email;
     private String phone;
 
+    private String bankAccountNumber;
+    boolean premium;
+
     boolean enabled;
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
@@ -160,6 +163,22 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.username);
         return hash;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 
     @Override
