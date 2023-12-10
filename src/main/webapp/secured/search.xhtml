@@ -8,13 +8,22 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-		<h:form>
-			<p:autoComplete value="#{autocompleteBean.text}" completeMethod="#{autocompleteBean.getAutocompletion}" />
-			<p:commandButton value="Submit" action="#{geocodingApiDemoBean.init}" update="data"/>
-		</h:form>
-		<p:panel header="Latitude and Longitude which is needed for calling the weather api">
+		<p:panel header="Google Places Autocomplete API Call ">
+			<h:form>
+				<p:autoComplete value="#{autocompleteBean.text}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+				<p:commandButton value="Submit" action="#{geocodingApiDemoBean.init}" update="data"/>
+			</h:form>
+		</p:panel>
+		<p:panel header="Geocoding API Call">
 			<div>
 				<h:outputText id="data" escape="false" value="#{geocodingApiDemoBean.geocodingData}"/>
+				<br></br>
+				<p:commandButton value="Show weather" action="#{weatherApiBean.init}" update="weather"/>
+			</div>
+		</p:panel>
+		<p:panel header="Weather API Call">
+			<div>
+				<h:outputText id="weather" escape="false" value="#{weatherApiBean.currentWeather}"/>
 			</div>
 		</p:panel>
 	</ui:define>

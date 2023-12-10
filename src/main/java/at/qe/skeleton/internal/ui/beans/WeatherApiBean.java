@@ -20,32 +20,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("view")
-public class WeatherApiDemoBean {
+public class WeatherApiBean {
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
-
+    @Autowired
+    private GeocodingApiDemoBean geocodingApiDemoBean;
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
-
     private String currentWeather;
+    private double latitude;
+    private double longitude;
 
-    //hard coded coordinates of innsbruck
-    private double latitude = 47.2692;
-
-    private double longitude = 11.4041;
-
-    @PostConstruct
     public void init() {
+        latitude = geocodingApiDemoBean.getLatitude();
+        longitude = geocodingApiDemoBean.getLongitude();
         try {
             CurrentAndForecastAnswerDTO answer = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
-            ObjectMapper mapper = new ObjectMapper()
-                    .findAndRegisterModules()
-                    .enable(SerializationFeature.INDENT_OUTPUT);
-            String plainTextAnswer = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(answer);
-            String escapedHtmlAnswer = StringEscapeUtils.escapeHtml4(plainTextAnswer);
-            String escapedHtmlAnswerWithLineBreaks = escapedHtmlAnswer.replace("\n", "<br>")
-                    .replace(" ", "&nbsp;");
-            this.setCurrentWeather(escapedHtmlAnswerWithLineBreaks);
+            double temp = answer.currentWeather().temperature();
+            double feelsLike = answer.currentWeather().feelsLikeTemperature();
+            setCurrentWeather("Temperature: " + temp + ". Feels like: " + feelsLike);
         } catch (final Exception e) {
             LOGGER.error("error in request", e);
         }
