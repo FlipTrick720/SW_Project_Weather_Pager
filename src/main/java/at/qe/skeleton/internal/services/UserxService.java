@@ -151,4 +151,9 @@ public class UserxService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
+
+    @PreAuthorize("hasAuthority('MANAGER')" )
+    public Collection<Userx> getPremiumUsers() {
+        return userRepository.findByPremiumTrue();
+    }
 }

@@ -45,9 +45,20 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String phone;
 
     private String bankAccountNumber;
+
+    private Integer BALANCE;
+
     boolean premium;
 
     boolean enabled;
+
+    public Integer getBALANCE() {
+        return BALANCE;
+    }
+
+    public void setBALANCE(Integer BALANCE) {
+        this.BALANCE = BALANCE;
+    }
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "Userx_UserxRole")

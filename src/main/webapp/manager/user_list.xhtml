@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="userListForm">
-            <p:dataTable id="usersTable" var="user" value="#{userListController.users}">
+            <p:dataTable id="usersTable" var="user" value="#{userListController.premiumUsers}">
                 <p:column headerText="Username">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
@@ -22,20 +22,17 @@
                     <h:selectBooleanCheckbox value="#{user.premium}" disabled="true"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <h:panelGrid columns="2">
-                        <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
-                    </h:panelGrid>
-                    <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" update=":userListForm:usersTable"/>
+                    <!--<p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
+                    <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" update=":userListForm:usersTable"/>-->
 
-
-                    <!-- <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-user-edit" title="Edit">
+                    <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-user-edit" title="Edit">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                    </p:commandButton>-->
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
 
 
-            <!-- <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="2">
                         <p:outputLabel for="enabled" value="Premium: " />
@@ -48,7 +45,7 @@
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
-            </p:dialog>-->
+            </p:dialog>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />

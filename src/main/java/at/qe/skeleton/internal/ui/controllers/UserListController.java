@@ -30,4 +30,11 @@ public class UserListController implements Serializable {
         return userService.getAllUsers();
     }
 
+    /**
+     * Returns a list of premium users.
+     *
+     * @return
+     */
+    public Collection<Userx> getPremiumUsers() { return userService.getPremiumUsers();}
+
 }
