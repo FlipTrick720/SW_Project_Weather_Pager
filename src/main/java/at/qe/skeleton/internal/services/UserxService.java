@@ -151,7 +151,10 @@ public class UserxService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-
+    /**
+     * returns a Collection of all premium Users.
+     * @return
+     */
     @PreAuthorize("hasAuthority('MANAGER')" )
     public Collection<Userx> getPremiumUsers() {
         return userRepository.findByPremiumTrue();
