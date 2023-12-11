@@ -18,44 +18,28 @@
                 <p:column headerText="Last Name">
                     <h:outputText value="#{user.lastName}"/>
                 </p:column>
-                <p:column headerText="Enabled">
-                    <h:selectBooleanCheckbox value="#{user.enabled}" disabled="true"/>
+                <p:column headerText="Has Premium">
+                    <h:selectBooleanCheckbox value="#{user.premium}" disabled="true"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-user-edit" title="Edit">
+                    <h:panelGrid columns="2">
+                        <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" update=":userListForm:usersTable"/>
+
+
+                    <!-- <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-user-edit" title="Edit">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                    </p:commandButton>
-                    <p:commandButton action="#{userDetailController.doDeleteUser}" icon="pi pi-trash" title="Delete" update=":userListForm:usersTable">
-                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
-                        <p:confirm header="Confirmation" message="Are you sure that you want to delete this user? You cannot undo this operation." icon="ui-icon-alert" />
-                    </p:commandButton>
+                    </p:commandButton>-->
                 </p:column>
             </p:dataTable>
 
 
-            <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <!-- <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="2">
-                        <p:outputLabel for="username" value="Username: " />
-                        <p:inputText id="username" value="#{userDetailController.user.username}"/>
-                        <p:outputLabel for="password" value="Password: " />
-                        <p:password id="password" value="#{userDetailController.user.password}"/>
-                    </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="firstName" value="First Name: " />
-                        <p:inputText id="firstName" value="#{userDetailController.user.firstName}"/>
-                        <p:outputLabel for="firstName" value="Last Name: " />
-                        <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
-                        <p:outputLabel for="email" value="E-Mail: " />
-                        <p:inputText id="email" value="#{userDetailController.user.email}"/>
-                        <p:outputLabel for="phone" value="Phone: " />
-                        <p:inputMask id="phone" value="#{userDetailController.user.phone}" mask="+99? 999 9999999"/>
-                    </h:panelGrid>
-                    <p:separator />
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="enabled" value="Enabled: " />
-                        <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.enabled}"/>
+                        <p:outputLabel for="enabled" value="Premium: " />
+                        <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
@@ -64,8 +48,7 @@
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
-            </p:dialog>
-
+            </p:dialog>-->
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
