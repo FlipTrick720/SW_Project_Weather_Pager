@@ -6,15 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import at.qe.skeleton.configs.WebSecurityConfig;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.domain.Persistable;
@@ -61,6 +53,10 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @CollectionTable(name = "Userx_UserxRole")
     @Enumerated(EnumType.STRING)
     private Set<UserxRole> roles;
+
+    @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
+    @JoinColumn(name = "credit_card_id")
+    private CreditCard creditCard;
 
     public String getUsername() {
         return username;
@@ -156,6 +152,14 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 
     @Override
