@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/main.xhtml">
+    <ui:define name ="content">
+        <h:form id="oneUserForm">
+            <p:dataTable id="userInformation" var="user" value="#{sessionInfoBean.currentUser}">
+                <p:column headerText="Username">
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
+                <p:column headerText="First Name">
+                    <h:outputText value="#{user.firstName}"/>
+                </p:column>
+                <p:column headerText="Last Name">
+                    <h:outputText value="#{user.lastName}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{user.email}"/>
+                </p:column>
+                <p:column headerText="Bank Information">
+                    <h:outputText value="#{user.bankAccountNumber}"/>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-star" title="Go Premium">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="username1" value="Username: " />
+                        <p:inputText id="username1" value="#{userDetailController.user.username}" required="true"/>
+                        <p:outputLabel for="password1" value="Password: " />
+                        <p:password id="password1" value="#{userDetailController.user.password}" required="true"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="firstName" value="First Name: " />
+                        <p:inputText id="firstName" value="#{userDetailController.user.firstName}" required="true"/>
+                        <p:outputLabel for="lastName" value="Last Name: " />
+                        <p:inputText id="lastName" value="#{userDetailController.user.lastName}" required="true"/>
+                        <p:outputLabel for="email" value="E-Mail: " />
+                        <p:inputText id="email" value="#{userDetailController.user.email}" required="true"/>
+                        <p:outputLabel for="bankaccountnumber" value="Bank Account Number: " />
+                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.bankAccountNumber}" required="false"/>
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save and Logout" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide(); window.location ='/logout';"  update="oneUserForm:userInformation"/>
+                        <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

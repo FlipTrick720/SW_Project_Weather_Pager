@@ -57,8 +57,7 @@ public class UserDetailController implements Serializable {
     /**
      * Sets the currently displayed user and reloads it form db. This user is
      * targeted by any further calls of
-     * {@link #doReloadUser()}, {@link #doSaveUser()}, {@link #doDeleteUser()},
-     * {@link #doEditFirstName(String)}, {@link #doEditLastName(String)}, {@link #doEditEmail(String)}, {@link #doEditPassword(String)}.
+     * {@link #doReloadUser()}, {@link #doSaveUser()}, {@link #doDeleteUser()}.
      *
      * @param user
      */
@@ -90,7 +89,9 @@ public class UserDetailController implements Serializable {
      */
     public void doSaveUser() {
         user = this.userService.saveUser(user);
+
     }
+
 
 
     /**
@@ -100,35 +101,6 @@ public class UserDetailController implements Serializable {
         this.userService.deleteUser(user);
         user = null;
     }
-
-    /**
-     * Action to edit First Name of the displayed user.
-     */
-    public void doEditFirstName(String newName) {
-        this.userService.changeFirstName(user, newName);
-    }
-
-    /**
-     * Action to edit Last Name of the displayed user.
-     */
-    public void doEditLastName(String newName) {
-        this.userService.changeEmail(user, newName);
-    }
-
-    /**
-     * Action to edit email of the displayed user.
-     */
-    public void doEditEmail(String email) {
-        this.userService.changeEmail(user, email);
-    }
-
-    /**
-     * Action to edit Password of the displayed user.
-     */
-    public void doEditPassword(String newPassword) {
-        this.userService.changePassword(user, newPassword);
-    }
-
     /**
      * Action to register the user by the inout data of the Html file.
      */
