@@ -47,13 +47,14 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)) // needed for H2 console
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(new AntPathRequestMatcher(REGISTER)).permitAll()
+                .requestMatchers(new AntPathRequestMatcher(REGISTER)).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/**.jsf")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/jakarta.faces.resource/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/error/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyAuthority("ADMIN")
+                .requestMatchers(new AntPathRequestMatcher("/manager/**")).hasAnyAuthority("MANAGER")
                 .requestMatchers(new AntPathRequestMatcher("/secured/**")).hasAnyAuthority(ADMIN, MANAGER, USER)
                 .anyRequest().authenticated()
             )

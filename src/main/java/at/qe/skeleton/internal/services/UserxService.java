@@ -31,7 +31,7 @@ public class UserxService {
      *
      * @return
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')" )
     public Collection<Userx> getAllUsers() {
         return userRepository.findAll();
     }
@@ -42,7 +42,7 @@ public class UserxService {
      * @param username the username to search for
      * @return the user with the given username
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #username")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username eq #username")
     public Userx loadUser(String username) {
         return userRepository.findFirstByUsername(username);
     }
@@ -72,7 +72,7 @@ public class UserxService {
      *
      * @param user the user to delete
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
     }
@@ -83,7 +83,7 @@ public class UserxService {
      * remove Role from User
      * @param role the role that gets removed
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public void removeRole(Userx user, UserxRole role){
         Set<UserxRole> roles = user.getRoles();
         roles.remove(role);
@@ -95,7 +95,7 @@ public class UserxService {
      * @param user user who gets the role
      * @param role role that is added to the user
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     public void addRole(Userx user, UserxRole role){
         Set<UserxRole> roles = user.getRoles();
         roles.add(role);
