@@ -1,0 +1,82 @@
+package at.qe.skeleton.internal.model;
+
+
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+@Entity
+public class PremiumHistory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "username", nullable = false)
+    private Userx user;
+
+    @Column(nullable = false)
+    private LocalDateTime changeDate;
+
+    @Column(nullable = false)
+    private boolean newPremiumStatus;
+
+    public PremiumHistory(Userx user, boolean newPremiumStatus) {
+        this.user = user;
+        this.changeDate = LocalDateTime.now();
+        this.newPremiumStatus = newPremiumStatus;
+    }
+
+    public PremiumHistory() {
+
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Userx getUser() {
+        return user;
+    }
+
+    public void setUser(Userx user) {
+        this.user = user;
+    }
+
+    public LocalDateTime getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(LocalDateTime changeDate) {
+        this.changeDate = changeDate;
+    }
+
+    public boolean isNewPremiumStatus() {
+        return newPremiumStatus;
+    }
+
+    public void setNewPremiumStatus(boolean newPremiumStatus) {
+        this.newPremiumStatus = newPremiumStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PremiumHistory that = (PremiumHistory) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+
+
