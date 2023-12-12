@@ -13,7 +13,7 @@ public class PremiumHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "username", nullable = false)
+    @JoinColumn(name = "user_id")
     private Userx user;
 
     @Column(nullable = false)
@@ -21,17 +21,6 @@ public class PremiumHistory {
 
     @Column(nullable = false)
     private boolean newPremiumStatus;
-
-    public PremiumHistory(Userx user, boolean newPremiumStatus) {
-        this.user = user;
-        this.changeDate = LocalDateTime.now();
-        this.newPremiumStatus = newPremiumStatus;
-    }
-
-    public PremiumHistory() {
-
-    }
-
 
     public Long getId() {
         return id;

@@ -1,10 +1,15 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Set;
 
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +30,12 @@ public class UserxService {
 
     @Autowired
     private UserxRepository userRepository;
+    @Autowired
+    private PremiumHistoryService premiumHistoryService;
+
+    @Autowired
+    private PremiumStatusListener premiumStatusListener;
+
 
     /**
      * Returns a collection of all users.
@@ -52,21 +63,33 @@ public class UserxService {
      * entities or {@link Userx#updateDate} for updated entities. The user
      * requesting this operation will also be stored as {@link Userx#createDate}
      * or {@link Userx#updateUser} respectively.
+     * Observer on the saveUser Methode. If the Premium Status is changed an PropertyChangeEvent is
+     * triggered.
      *
      * @param user the user to save
      * @return the updated user
      */
-    //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
-   // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
+        Userx oldUser = getAuthenticatedUser();
         if (user.isNew()) {
             user.setCreateUser(getAuthenticatedUser());
         } else {
             user.setUpdateUser(getAuthenticatedUser());
         }
-        return userRepository.save(user);
-    }
 
+        boolean oldPremiumStatus = userRepository.findById(user.getUsername())
+                .map(Userx::isPremium)
+                .orElse(false);
+
+        user = userRepository.save(user);
+
+        boolean newPremiumStatus = user.isPremium();
+
+        if (oldPremiumStatus != newPremiumStatus) {
+            premiumStatusListener.propertyChange(new PropertyChangeEvent(user, "premium", oldPremiumStatus, newPremiumStatus));
+        }
+        return user;
+    }
     /**
      * Deletes the user.
      *
@@ -159,4 +182,7 @@ public class UserxService {
     public Collection<Userx> getPremiumUsers() {
         return userRepository.findByPremiumTrue();
     }
+
+
+
 }

@@ -4,10 +4,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import  java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import at.qe.skeleton.configs.WebSecurityConfig;
+import at.qe.skeleton.internal.services.PremiumHistoryService;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
@@ -26,6 +29,7 @@ import org.springframework.data.domain.Persistable;
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
+    //the following 3 classes are for the  observations of premium
 
     @Id
     @Column(length = 100)
@@ -57,27 +61,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     boolean enabled;
 
-    //the following 3 classes are for the  observations of premium
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-
-        pcs.addPropertyChangeListener(listener);
-    }
-
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        pcs.removePropertyChangeListener(listener);
-    }
-
-    @Transient
-    private PremiumStatusListener premiumStatusListener;
-
-    @PostConstruct
-    private void init() {
-        premiumStatusListener = new PremiumStatusListener(this);
-    }
-
     public Integer getBALANCE() {
         return BALANCE;
     }
@@ -94,6 +77,19 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
+
+    @OneToMany(mappedBy = "user") // Die mappedBy-Annotation bezieht sich auf das Attribut "user" in der PremiumHistory-Klasse
+    private List<PremiumHistory> premiumHistoryList = new ArrayList<>();
+
+
+    public List<PremiumHistory> getPremiumHistoryList() {
+        return premiumHistoryList;
+    }
+
+    public void setPremiumHistoryList(List<PremiumHistory> premiumHistoryList) {
+        this.premiumHistoryList = premiumHistoryList;
+    }
+
 
     public String getUsername() {
         return username;
@@ -218,12 +214,10 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return premium;
     }
 
-    //updated the set Premium to trigger a Change each time when premium is called
 
     public void setPremium(boolean premium) {
-        boolean oldValue = this.premium;
+        boolean oldValue = premium;
         this.premium = premium;
-        pcs.firePropertyChange("premium", oldValue, premium);
     }
 
     @Override
