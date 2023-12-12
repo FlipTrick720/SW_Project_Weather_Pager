@@ -37,4 +37,9 @@ public class PremiumHistoryService {
     public List<PremiumHistory> getPremiumChanged() {
         return premiumHistoryRepository.findAll();
     }
+
+    @PreAuthorize("hasAuthority('MANAGER')" )
+    public List<PremiumHistory> getPremiumIntervall(String user) {
+        return premiumHistoryRepository.findAllByUserId(user);
+    }
 }

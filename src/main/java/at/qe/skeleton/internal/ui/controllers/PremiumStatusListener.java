@@ -35,3 +35,4 @@ public class PremiumStatusListener implements PropertyChangeListener{
         return premiumHistoryService.getPremiumChanged();
     }
 }
+
