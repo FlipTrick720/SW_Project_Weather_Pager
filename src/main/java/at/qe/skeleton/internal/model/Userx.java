@@ -1,11 +1,15 @@
 package at.qe.skeleton.internal.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 import at.qe.skeleton.configs.WebSecurityConfig;
+import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.Persistable;
  * course "Software Architecture" offered by Innsbruck University.
 */
 @Entity
+//@EntityListeners(PremiumStatusListener.class)
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +56,27 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     boolean premium;
 
     boolean enabled;
+
+    //the following 3 classes are for the  observations of premium
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+
+        pcs.addPropertyChangeListener(listener);
+    }
+
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
+
+    @Transient
+    private PremiumStatusListener premiumStatusListener;
+
+    @PostConstruct
+    private void init() {
+        premiumStatusListener = new PremiumStatusListener(this);
+    }
 
     public Integer getBALANCE() {
         return BALANCE;
@@ -192,8 +218,12 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return premium;
     }
 
+    //updated the set Premium to trigger a Change each time when premium is called
+
     public void setPremium(boolean premium) {
+        boolean oldValue = this.premium;
         this.premium = premium;
+        pcs.firePropertyChange("premium", oldValue, premium);
     }
 
     @Override
