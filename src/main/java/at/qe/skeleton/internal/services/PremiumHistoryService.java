@@ -29,7 +29,12 @@ public class PremiumHistoryService {
         premiumHistoryRepository.save(premiumHistory);
     }
     @PreAuthorize("hasAuthority('MANAGER')" )
-    public List<PremiumHistory> getPremiumChanged(String user) {
+    public List<PremiumHistory> getPremiumChangedByName(String user) {
         return premiumHistoryRepository.findAllByUserId(user);
+    }
+
+    @PreAuthorize("hasAuthority('MANAGER')" )
+    public List<PremiumHistory> getPremiumChanged() {
+        return premiumHistoryRepository.findAll();
     }
 }

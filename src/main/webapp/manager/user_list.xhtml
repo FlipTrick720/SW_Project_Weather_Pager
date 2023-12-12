@@ -34,11 +34,20 @@
 
             <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
-                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.premiumInterval}">
-                        <p:column headerText="Premium Changed">
-                            <h:outputText value="#{premiumHistory.changeDate}"/>
+                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}">
+                        <p:column headerText="Change Date">
+                            <h:outputText value="#{premiumHistory.changeDate}">
+                                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Username">
+                            <h:outputText value="#{premiumHistory.user.username}" />
+                        </p:column>
+                        <p:column headerText="New Premium Status">
+                            <h:outputText value="#{premiumHistory.newPremiumStatus ? 'Premium' : 'Not Premium'}" />
                         </p:column>
                     </p:dataTable>
+
 
                     <h:panelGrid columns="2">
                         <p:outputLabel for="enabled" value="Premium: " />

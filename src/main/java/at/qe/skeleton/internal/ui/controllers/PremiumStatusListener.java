@@ -27,10 +27,11 @@ public class PremiumStatusListener implements PropertyChangeListener{
         }
     }
 
-    public List<PremiumHistory> getPremiumInterval() {//Userx user
-        return premiumHistoryService.getPremiumChanged("admin");//user.getUsername())
+    public List<PremiumHistory> getPremiumIntervalByName(Userx user) {
+        return premiumHistoryService.getPremiumChangedByName(user.getUsername());
     }
 
-
-
+    public List<PremiumHistory> getPremiumInterval() {
+        return premiumHistoryService.getPremiumChanged();
+    }
 }
