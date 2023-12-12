@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="userListForm">
-            <p:dataTable id="usersTable" var="user" value="#{userListController.premiumUsers}">
+            <p:dataTable id="usersTable" var="user" value="#{userListController.users}">
                 <p:column headerText="Username">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
@@ -34,6 +34,12 @@
 
             <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
+                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.premiumInterval}">
+                        <p:column headerText="Premium Changed">
+                            <h:outputText value="#{premiumHistory.changeDate}"/>
+                        </p:column>
+                    </p:dataTable>
+
                     <h:panelGrid columns="2">
                         <p:outputLabel for="enabled" value="Premium: " />
                         <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
@@ -46,6 +52,7 @@
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
+
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />

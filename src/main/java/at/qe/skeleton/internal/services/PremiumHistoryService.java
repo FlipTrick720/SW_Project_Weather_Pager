@@ -32,6 +32,4 @@ public class PremiumHistoryService {
     public List<PremiumHistory> getPremiumChanged(String user) {
         return premiumHistoryRepository.findAllByUserId(user);
     }
-
-
 }

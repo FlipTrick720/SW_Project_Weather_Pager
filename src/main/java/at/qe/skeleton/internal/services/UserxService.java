@@ -77,12 +77,8 @@ public class UserxService {
             user.setUpdateUser(getAuthenticatedUser());
         }
 
-        boolean oldPremiumStatus = userRepository.findById(user.getUsername())
-                .map(Userx::isPremium)
-                .orElse(false);
-
+        boolean oldPremiumStatus = userRepository.findById(user.getUsername()).map(Userx::isPremium).orElse(false);
         user = userRepository.save(user);
-
         boolean newPremiumStatus = user.isPremium();
 
         if (oldPremiumStatus != newPremiumStatus) {

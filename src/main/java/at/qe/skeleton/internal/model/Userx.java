@@ -34,7 +34,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Id
     @Column(length = 100)
     private String username;
-        //changed optional to true because of the missing logged in user in the moment of
+    //changed optional to true because of the missing logged in user in the moment of
     //the registration, need to think of the importance of this column in our application
     @ManyToOne(optional = true)
     private Userx createUser;
