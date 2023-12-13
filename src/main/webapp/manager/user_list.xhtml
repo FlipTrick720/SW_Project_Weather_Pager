@@ -35,9 +35,14 @@
             <p:dialog header="User Details" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
 
+                    <h:outputText value="Registered Date: " />
+                    <h:outputText value="#{userDetailController.user.createDate}">
+                        <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+                    </h:outputText>
+                    <p:separator />
                     <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user)}" />
 
-                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}">
+                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}" rowIndexVar="rowIndex">
                         <p:column headerText="Change Date">
                             <h:outputText value="#{premiumHistory.changeDate}">
                                 <f:convertDateTime type="localDate" pattern="yyyy-MM-dd HH:mm:ss" />
@@ -46,12 +51,13 @@
                         <p:column headerText="New Premium Status">
                             <h:outputText value="#{premiumHistory.newPremiumStatus ? 'Premium' : 'Not Premium'}" />
                         </p:column>
-                        <p:column headerText="Registered since:">
-                            <h:outputText value="#{userDetailController.user.createDate}">
-                                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd HH:mm:ss" />
-                            </h:outputText>
+                        <p:column headerText="Was Premium for (in seconds)">
+                            <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>
+
+
+
 
 
                     <h:panelGrid columns="2">

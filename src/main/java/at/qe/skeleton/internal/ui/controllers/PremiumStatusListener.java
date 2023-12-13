@@ -62,6 +62,19 @@ public class PremiumStatusListener implements PropertyChangeListener{
         }
         return intervallsInInt;
     }
+
+    public Integer getPremiumTupel(Userx user, int rowIndex) {
+        List<Integer> premiumTupelList = getPremiumTupel(user);
+
+        if (premiumTupelList == null) {
+            return null;
+        } else if (rowIndex >= 0 && rowIndex < premiumTupelList.size()) {
+            return premiumTupelList.get(rowIndex);
+        } else {
+            return null;
+        }
+    }
+
 }
 
 /*
