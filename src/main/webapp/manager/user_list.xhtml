@@ -34,8 +34,10 @@
 
             <p:dialog header="User Details" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
-                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}">
 
+                    <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user)}" />
+
+                    <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}">
                         <p:column headerText="Change Date">
                             <h:outputText value="#{premiumHistory.changeDate}">
                                 <f:convertDateTime type="localDate" pattern="yyyy-MM-dd HH:mm:ss" />
