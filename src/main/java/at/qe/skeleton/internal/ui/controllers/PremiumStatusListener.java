@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -29,10 +31,27 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     public List<PremiumHistory> getPremiumIntervalByName(Userx user) {
         return premiumHistoryService.getPremiumChangedByName(user.getUsername());
+        //tupel von aktiven premium phasen
     }
 
     public List<PremiumHistory> getPremiumInterval() {
         return premiumHistoryService.getPremiumChanged();
     }
+
+    /*
+    //work in progress
+    public List<PremiumHistory> getPremiumTupel(Userx user) {
+        List<PremiumHistory> allDates = getPremiumIntervalByName(user);
+        Map<Userx, List<PremiumHistory>> DatesByUser = allDates.stream().collect(Collectors.groupingBy(PremiumHistory::getUser));
+
+
+
+
+        for (int i = 0; i < allDates.toArray().length-1; i++) {
+            if (allDates.get(i).getUser().equals(allDates.get(i+1).getUser())) {
+                allDates.get(i)
+            }
+        }
+    }*/
 }
 

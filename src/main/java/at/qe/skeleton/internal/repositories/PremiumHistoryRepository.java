@@ -12,6 +12,7 @@ public interface PremiumHistoryRepository extends AbstractRepository <PremiumHis
 
     List<PremiumHistory> findAllByUserId(String userId);
 
+    //humbuck, bitte ignorieren
     //@Query("SELECT ph FROM PremiumHistory ph WHERE ph.user.username = :username")
     //List<PremiumHistory> findAllByUserId(@Param("username") String username);
 
