@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="oneUserForm">
-            <p:dataTable id="userInformation" var="user" value="#{sessionInfoBean.currentUser}">
+            <p:dataTable id="userInformation" var="user" value="#{userDetailController.doLoadUser(sessionInfoBean.currentUser.username)}">
                 <p:column headerText="Username">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
@@ -25,7 +25,12 @@
                     <h:outputText value="#{user.bankAccountNumber}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit">
+                    <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit My information">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":oneUserForm:passwordEditDialog" oncomplete="PF('passwordEditDialog').show()" icon="pi pi-key" title="Edit Password">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column>
@@ -36,29 +41,35 @@
                 </p:column>
             </p:dataTable>
 
-            <p:dialog header="Edit User" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="username1" value="Username: " />
-                        <p:inputText id="username1" value="#{userDetailController.user.username}" required="true"/>
-                        <p:outputLabel for="password1" value="Password: " />
-                        <p:password id="password1" value="#{userDetailController.user.password}" required="true"/>
-                    </h:panelGrid>
-                    <p:separator />
+            <p:dialog header="#{sessionInfoBean.currentUser.username}" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}" >
                     <h:panelGrid columns="2">
                         <p:outputLabel for="firstName" value="First Name: " />
-                        <p:inputText id="firstName" value="#{userDetailController.user.firstName}" required="true"/>
+                        <p:inputText id="firstName" value="#{userDetailController.user.firstName}"/>
                         <p:outputLabel for="lastName" value="Last Name: " />
-                        <p:inputText id="lastName" value="#{userDetailController.user.lastName}" required="true"/>
+                        <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
                         <p:outputLabel for="email" value="E-Mail: " />
-                        <p:inputText id="email" value="#{userDetailController.user.email}" required="true"/>
+                        <p:inputText id="email" value="#{userDetailController.user.email}"/>
                         <p:outputLabel for="bankaccountnumber" value="Bank Account Number: " />
-                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.bankAccountNumber}" required="false"/>
+                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.bankAccountNumber}"/>
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
-                        <p:commandButton value="Save and Logout" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide(); window.location ='/logout';"  update="oneUserForm:userInformation"/>
+                        <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" oncomplete="PF('userEditDialog').hide();"  update=":oneUserForm:userInformation"/>
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:dialog header="Edit Password" id="passwordEditDialog" widgetVar="passwordEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="passwordData" rendered="#{not empty userDetailController.user}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="password" value="New Password: " />
+                        <p:password id="password" value="#{userDetailController.user.password}" required="true"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" oncomplete="PF('passwordEditDialog').hide();"  update=":oneUserForm:userInformation"/>
+                        <p:commandButton value="Abort" onclick="PF('passwordEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>

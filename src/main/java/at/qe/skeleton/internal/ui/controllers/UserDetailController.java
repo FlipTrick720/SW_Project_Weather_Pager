@@ -92,6 +92,10 @@ public class UserDetailController implements Serializable {
 
     }
 
+    public Userx doLoadUser(String username){
+        return userService.loadUser(username);
+    }
+
 
 
     /**
