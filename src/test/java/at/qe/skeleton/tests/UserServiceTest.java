@@ -1,5 +1,6 @@
 package at.qe.skeleton.tests;
 
+import at.qe.skeleton.configs.WebSecurityConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -106,6 +107,27 @@ public class UserServiceTest {
         Assertions.assertNotNull(freshlyLoadedUser.getUpdateDate(), "User \"" + username + "\" does not have a updateDate defined after being saved");
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
     }
+    @DirtiesContext
+    @Test
+    @WithMockUser(username = "admin", authorities = {"USER"})
+    public void testEditUser() {
+
+        Userx toBeChangedUser = userService.loadUser("admin");
+        String toBeChangedUserName = "admin";
+
+        toBeChangedUser.setEmail("changed-email@whatever.wherever");
+        toBeChangedUser.setLastName("NewLastname");
+        userService.saveUser(toBeChangedUser);
+
+
+        Userx freshlyLoadedUser = userService.loadUser("admin");
+        Assertions.assertNotNull(freshlyLoadedUser, "User \"" + toBeChangedUserName + "\" could not be loaded from test data source after being saved");
+        Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" does not have a updateUser defined after being saved");
+        Assertions.assertEquals(toBeChangedUser, freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" has wrong updateUser set");
+        Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + toBeChangedUserName + "\" does not have a the correct email attribute stored being saved");
+        Assertions.assertEquals("NewLastname", freshlyLoadedUser.getLastName(), "User \"" + toBeChangedUserName + "\" does not have a the correct lastname attribute stored being saved");
+    }
+
 
     /*@DirtiesContext
     @Test
