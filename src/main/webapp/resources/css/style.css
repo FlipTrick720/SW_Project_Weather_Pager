@@ -9,9 +9,10 @@
 body{
     display: flex;
     margin-left: 0%;
-    background: url("background.jpg");
+    background: url("img/background.jpg");
     background-size: cover;
     background-position: center;
+    color: white;
 }
 
 #header {
@@ -19,7 +20,7 @@ body{
   }
   
   #footer {
-    color: black;
+    color: white;
     margin-left: 0;
     width: auto;
     padding: 10px;

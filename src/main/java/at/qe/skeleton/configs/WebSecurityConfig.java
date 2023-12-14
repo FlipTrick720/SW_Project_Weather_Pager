@@ -46,6 +46,8 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)) // needed for H2 console
             .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(new AntPathRequestMatcher("/welcome.xhtml")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/**.jsf")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
@@ -64,7 +66,7 @@ public class WebSecurityConfig {
                 .successForwardUrl("/secured/welcome.xhtml")
             )
             .logout(logout -> logout
-                .logoutSuccessUrl(LOGIN)
+                .logoutSuccessUrl("/welcome.xhtml")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
