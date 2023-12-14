@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Repository for managing {@link PremiumHistory} entities.
+ *
+ */
 public interface PremiumHistoryRepository extends AbstractRepository <PremiumHistory, Long> {
 
     public PremiumHistory findByUser (Userx user);
 
     List<PremiumHistory> findAllByUserId(String userId);
-
-    //humbuck, bitte ignorieren
-    //@Query("SELECT ph FROM PremiumHistory ph WHERE ph.user.username = :username")
-    //List<PremiumHistory> findAllByUserId(@Param("username") String username);
 
 }

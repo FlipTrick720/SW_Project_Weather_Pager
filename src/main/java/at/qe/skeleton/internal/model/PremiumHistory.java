@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * Entity Representing the Premium History. The Premium History saves every change in the Premium Status
+ * of a User.
+ */
 @Entity
 public class PremiumHistory {
     @Id

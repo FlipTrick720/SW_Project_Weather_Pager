@@ -24,6 +24,11 @@ public class PremiumStatusListener implements PropertyChangeListener{
     @Autowired
     private PremiumHistoryService premiumHistoryService;
 
+    /**
+     * Creates a new PremiumHistory entry when an event from the Observer is triggered.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("premium".equals(evt.getPropertyName())) {
