@@ -47,10 +47,10 @@ public class PaymentHistoryService {
      * finds and returns a List of all the Payment-History Entries for a certain year and month.
      *
      * @param year
-     * @param month
+     * @param monat
      * @return
      */
-    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Month month){
-        return paymentHistoryRepository.findByYearAndMonth(year, month);
+    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Month monat){
+        return paymentHistoryRepository.findByPaymentYearAndPaymentMonth(year, monat);
     }
 }

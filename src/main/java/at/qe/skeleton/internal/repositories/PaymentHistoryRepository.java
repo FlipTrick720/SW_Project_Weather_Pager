@@ -14,5 +14,5 @@ public interface PaymentHistoryRepository extends AbstractRepository <PaymentHis
 
     public PaymentHistory findByUser (Userx user);
 
-    List<PaymentHistory> findByYearAndMonth(Integer year, Month month);
+    List<PaymentHistory> findByPaymentYearAndPaymentMonth(Integer jahr, Month monat);
 }

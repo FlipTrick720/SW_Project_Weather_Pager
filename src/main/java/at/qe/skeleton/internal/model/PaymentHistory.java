@@ -28,10 +28,10 @@ public class PaymentHistory {
     private int chargedDays;
 
     @Column(nullable = false)
-    private int year;
+    private int paymentYear;
 
     @Column(nullable = false)
-    private Month month;
+    private Month paymentMonth;
 
 
 
@@ -68,19 +68,19 @@ public class PaymentHistory {
     }
 
     public int getYear() {
-        return year;
+        return paymentYear;
     }
 
     public void setYear(int year) {
-        this.year = year;
+        this.paymentYear = year;
     }
 
     public Month getMonth() {
-        return month;
+        return paymentMonth;
     }
 
     public void setMonth(Month month) {
-        this.month = month;
+        this.paymentMonth = month;
     }
 
     @Override
