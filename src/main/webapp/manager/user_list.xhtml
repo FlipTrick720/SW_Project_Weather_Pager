@@ -9,13 +9,13 @@
     <ui:define name ="content">
         <h:form id="select_form">
             <h:panelGrid columns="2">
-                <h:outputLabel value="Choose a Year:"/>
+                <h:outputText value="Choose a Year:"/>
                 <h:selectOneMenu value="#{dateSelectionBean.selectedYear}">
                     <f:selectItems value="#{dateSelectionBean.years}" var="year"
                                    itemLabel="#{year}" itemValue="#{year}"/>
                 </h:selectOneMenu>
 
-                <h:outputLabel value="Choose a Month:"/>
+                <h:outputText value="Choose a Month:"/>
                 <h:selectOneMenu value="#{dateSelectionBean.selectedMonth}">
                     <f:selectItems value="#{dateSelectionBean.months}" var="month"
                                    itemLabel="#{month}" itemValue="#{month}"/>
@@ -77,10 +77,6 @@
                             <h:outputText value=" seconds" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>
-
-
-
-
 
                     <h:panelGrid columns="2">
                         <p:outputLabel for="enabled" value="Premium: " />

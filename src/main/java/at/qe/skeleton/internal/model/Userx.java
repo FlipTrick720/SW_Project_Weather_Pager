@@ -82,6 +82,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private List<PremiumHistory> premiumHistoryList = new ArrayList<>();
 
 
+    @OneToMany(mappedBy ="user")
+    private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
+
     public List<PremiumHistory> getPremiumHistoryList() {
         return premiumHistoryList;
     }
@@ -90,6 +93,14 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         this.premiumHistoryList = premiumHistoryList;
     }
 
+
+    public List<PaymentHistory> getPaymentHistoryList() {
+        return paymentHistoryList;
+    }
+
+    public void setPaymentHistoryList(List<PaymentHistory> paymentHistoryList) {
+        this.paymentHistoryList = paymentHistoryList;
+    }
 
     public String getUsername() {
         return username;

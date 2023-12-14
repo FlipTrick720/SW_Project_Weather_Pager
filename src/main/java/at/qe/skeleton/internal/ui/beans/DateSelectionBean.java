@@ -1,6 +1,10 @@
 package at.qe.skeleton.internal.ui.beans;
 
 
+import at.qe.skeleton.internal.model.PaymentHistory;
+import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
+import at.qe.skeleton.internal.services.PaymentHistoryService;
+import at.qe.skeleton.internal.ui.controllers.PaymentHistoryController;
 import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.annotation.ManagedProperty;
