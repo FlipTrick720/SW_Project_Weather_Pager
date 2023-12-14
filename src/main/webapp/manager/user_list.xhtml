@@ -7,6 +7,23 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <h:form id="select_form">
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Choose a Year:"/>
+                <h:selectOneMenu value="#{dateSelectionBean.selectedYear}">
+                    <f:selectItems value="#{dateSelectionBean.years}" var="year"
+                                   itemLabel="#{year}" itemValue="#{year}"/>
+                </h:selectOneMenu>
+
+                <h:outputLabel value="Choose a Month:"/>
+                <h:selectOneMenu value="#{dateSelectionBean.selectedMonth}">
+                    <f:selectItems value="#{dateSelectionBean.months}" var="month"
+                                   itemLabel="#{month}" itemValue="#{month}"/>
+                </h:selectOneMenu>
+
+                <h:commandButton value="Submit" action="#{dateSelectionBean.yourMethod}"/>
+            </h:panelGrid>
+        </h:form>
         <h:form id="userListForm">
             <p:dataTable id="usersTable" var="user" value="#{userListController.users}"><!--in the end is .premiumUsers-->
                 <p:column headerText="Username">
