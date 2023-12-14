@@ -7,47 +7,28 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
-        <h:form id="select_form">
-            <h:panelGrid columns="2">
-                <h:outputText value="Choose a Year:"/>
-                <h:selectOneMenu value="#{dateSelectionBean.selectedYear}">
-                    <f:selectItems value="#{dateSelectionBean.years}" var="year"
-                                   itemLabel="#{year}" itemValue="#{year}"/>
-                </h:selectOneMenu>
-
-                <h:outputText value="Choose a Month:"/>
-                <h:selectOneMenu value="#{dateSelectionBean.selectedMonth}">
-                    <f:selectItems value="#{dateSelectionBean.months}" var="month"
-                                   itemLabel="#{month}" itemValue="#{month}"/>
-                </h:selectOneMenu>
-
-                <h:commandButton value="Submit" action="#{dateSelectionBean.yourMethod}"/>
-            </h:panelGrid>
-        </h:form>
         <h:form id="userListForm">
-            <p:dataTable id="usersTable" var="user" value="#{userListController.users}"><!--in the end is .premiumUsers-->
+            <h:outputText value="Selected Year: #{dateSelectionBean.selectedYear}" />
+            <br/>
+            <h:outputText value="Selected Month: #{dateSelectionBean.selectedMonth}" />
+            <p:separator />
+
+            <p:dataTable id="usersTable" var="paymentHistory" value="#{paymentHistoryController.getPaymentHistoryYearMonth(dateSelectionBean.selectedYear, dateSelectionBean.selectedMonth)}">
                 <p:column headerText="Username">
-                    <h:outputText value="#{user.username}"/>
+                    <h:outputText value="#{paymentHistory.user.username}"/>
                 </p:column>
-                <p:column headerText="First Name">
-                    <h:outputText value="#{user.firstName}"/>
+                <p:column headerText="Payment Status">
+                    <h:outputText value="#{paymentHistory.paymentStatus}"/>
                 </p:column>
-                <p:column headerText="Last Name">
-                    <h:outputText value="#{user.lastName}"/>
-                </p:column>
-                <p:column headerText="Has Premium">
-                    <h:selectBooleanCheckbox value="#{user.premium}" disabled="true"/>
+                <p:column headerText="Charged Days">
+                    <h:outputText value="#{paymentHistory.chargedDays}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <!--<p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
-                    <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" update=":userListForm:usersTable"/>-->
-
                     <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-info-circle" title="Details">
-                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}" />
+                        <f:setPropertyActionListener value="#{paymentHistory.user}" target="#{userDetailController.user}" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
-
 
             <p:dialog header="User Details" id="userEditDialog" widgetVar="userEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
@@ -77,7 +58,6 @@
                             <h:outputText value=" seconds" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>
-
                     <h:panelGrid columns="2">
                         <p:outputLabel for="enabled" value="Premium: " />
                         <p:selectBooleanCheckbox id="enabled" value="#{userDetailController.user.premium}"/>
@@ -90,13 +70,10 @@
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-
-
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
             </p:confirmDialog>
-
         </h:form>
     </ui:define>
 </ui:composition>

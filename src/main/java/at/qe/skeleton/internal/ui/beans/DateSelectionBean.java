@@ -17,15 +17,20 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-@ManagedBean
-@ViewScoped
+/**
+ * Bean to give a dropdown menu of Years and Months and save the input until next input.
+ *
+ */
 
+
+@ManagedBean
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;
     private List<Month> months;
     private Integer selectedYear;
     private Month selectedMonth;
+
 
     public DateSelectionBean() {
         years = new ArrayList<>();
@@ -63,9 +68,9 @@ public class DateSelectionBean implements Serializable {
         this.selectedMonth = selectedMonth;
     }
 
-    public String yourMethod() {
-        System.out.println("Selected Year: " + selectedYear);
-        System.out.println("Selected Month: " + selectedMonth);
+    public String printDates() {
+         // System.out.println("Selected Year: " + selectedYear);
+        //System.out.println("Selected Month: " + selectedMonth);
 
         return "/manager/user_list.xhtml";
     }
