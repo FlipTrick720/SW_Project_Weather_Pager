@@ -33,15 +33,28 @@ public class PremiumStatusListener implements PropertyChangeListener{
         }
     }
 
+    /**
+     * gets a list of all the dates where a change of the premium status occurred to the user
+     * @param user
+     * @return
+     */
     public List<PremiumHistory> getPremiumIntervalByName(Userx user) {
         return premiumHistoryService.getPremiumChangedByName(user.getUsername());
     }
 
+    /**
+     * gets a list of all the dates where a change of the premium status occurred for all users
+     * @return
+     */
     public List<PremiumHistory> getPremiumInterval() {
         return premiumHistoryService.getPremiumChanged();
     }
 
-    //work in progress
+    /**
+     * gets a list of time spans, of the user, where he/she was a premium user
+     * @param user
+     * @return
+     */
     public List<Integer> getPremiumTupel(Userx user) {
         List<PremiumHistory> allDates = getPremiumIntervalByName(user);
         List<Duration> intervalls = new ArrayList<>();
@@ -63,6 +76,13 @@ public class PremiumStatusListener implements PropertyChangeListener{
         return intervallsInInt;
     }
 
+    /**
+     * gets the time span, of the user, where he/she was a premium user for a certain row count.
+     * this is purely a method for display purposes
+     * @param user
+     * @param rowIndex
+     * @return
+     */
     public Integer getPremiumTupel(Userx user, int rowIndex) {
         List<Integer> premiumTupelList = getPremiumTupel(user);
 
@@ -77,10 +97,4 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
 }
 
-/*
-        List<PremiumHistory> allDates = getPremiumIntervalByName(user);
-        Map<Userx, List<PremiumHistory>> DatesByUser = allDates.stream().collect(Collectors.groupingBy(PremiumHistory::getUser));
-        System.out.println(DatesByUser);
-        return DatesByUser.get(allDates.get(1).getUser());
-        * */
 
