@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
         }
         List<Integer> intervallsInInt = new ArrayList<>();
         for (Duration duration : intervalls) {
-            intervallsInInt.add((int) duration.toSeconds());
+            intervallsInInt.add((int) duration.toSeconds()); //change to .toDays() //.toSeconds ony for testing purposes
         }
         return intervallsInInt;
     }
@@ -100,7 +101,38 @@ public class PremiumStatusListener implements PropertyChangeListener{
         }
     }
 
+    /**
+     * gets the total time somebody was premium user by user
+     * this is purely a method for display purposes
+     * @param user
+     * @return
+     */
+    public Integer getPremiumIntervalByNameTotal(Userx user) {
+        List<Integer> premiumTupelList = getPremiumTupel(user);
+        if (premiumTupelList == null) {
+            return 0;
+        }
+        return premiumTupelList.stream().mapToInt(Integer::intValue).sum();
+    }
+
+    /**
+     * gets all ChangeDates by user, month and year
+     * @param user
+     * @param year
+     * @param month
+     * @return
+     */
+    public List<PremiumHistory> filterDatesByMonthAndYear(Userx user, int year, Month month) {
+        List<PremiumHistory> allDates = getPremiumIntervalByName(user);
+        List<PremiumHistory> filteredDates = new ArrayList<>();
+
+        for (PremiumHistory history : allDates) {
+            if (history.getChangeDate().getYear() == year && history.getChangeDate().getMonth() == month) {
+                filteredDates.add(history);
+            }
+        }
+        return filteredDates;
+    }
+
 }
-
-
 
