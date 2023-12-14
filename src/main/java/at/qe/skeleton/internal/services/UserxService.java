@@ -56,7 +56,8 @@ public class UserxService {
      * @param user the user to save
      * @return the updated user
      */
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
         if (user.isNew()) {
             user.setCreateUser(getAuthenticatedUser());

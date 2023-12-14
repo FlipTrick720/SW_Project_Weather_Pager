@@ -1,18 +1,12 @@
 package at.qe.skeleton.internal.model;
 
-import java.io.Serializable;
+import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+
+import at.qe.skeleton.configs.WebSecurityConfig;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.domain.Persistable;
@@ -31,8 +25,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Id
     @Column(length = 100)
     private String username;
-
-    @ManyToOne(optional = false)
+        //changed optional to true because of the missing logged in user in the moment of
+    //the registration, need to think of the importance of this column in our application
+    @ManyToOne(optional = true)
     private Userx createUser;
     @Column(nullable = false)
     @CreationTimestamp
@@ -49,12 +44,19 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String email;
     private String phone;
 
+    private String bankAccountNumber;
+    boolean premium;
+
     boolean enabled;
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "Userx_UserxRole")
     @Enumerated(EnumType.STRING)
     private Set<UserxRole> roles;
+
+    @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
+    @JoinColumn(name = "credit_card_id")
+    private CreditCard creditCard;
 
     public String getUsername() {
         return username;
@@ -69,7 +71,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = WebSecurityConfig.passwordEncoder().encode(password);
     }
 
     public String getFirstName() {
@@ -152,11 +154,35 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         this.updateDate = updateDate;
     }
 
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.username);
         return hash;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 
     @Override

@@ -6,31 +6,29 @@
 
 ## Überblick
 
-Die Weather Web Application ist eine umfassende Plattform für Wetterinformationen, die entwickelt wurde, um den 
-vielfältigen Anforderungen von Benutzern gerecht zu werden, die genaue und detaillierte Wettervorhersagen suchen.
-
+Die Weather Web Application ist eine Plattform zur bereitstellung von Wetterinformationen an bestimmten Orten.
 ## Hauptfunktionen
 
 ### - Benutzerrollen und -verwaltung
 
 #### Benutzerrolle
-Grundlegende Benutzer können nach Orten suchen, aktuelle Wetterinformationen anzeigen und Lieblingsorte verwalten.
+Benutzer können nach Orten suchen, aktuelle Wetterinformationen anzeigen und Lieblingsorte verwalten.
 
 #### Premium-Benutzerrolle
 Premium-Benutzer haben Zugang zu erweiterten und detaillierteren Wetterdaten.
 
 #### Manager-Rolle
-Manager kümmern sich um die Abrechnung und überwachen Premium-Abonnements.
+Manager kümmern sich um die Abrechnung von Premium-Abonnements.
 
 #### Admin-Rolle
-Administratoren verwalten Benutzerkonten, weisen Rollen zu und überwachen den Premium-Status.
+Administratoren verwalten Benutzerkonten, weisen Rollen zu bzw entziehen den Premium-Status.
 
 ### - Abonnementmodell
 - Benutzer können sich für ein Premium-Abonnement entscheiden, um exklusive Funktionen freizuschalten.
-- Der Premium-Status wird bequem monatlich abgerechnet
+- Der Premium-Status wird monatlich abgerechnet
 
 ### - Wetterdaten
-- Nutzt die OpenWeatherMap API für präzise und aktuelle Wetterinformationen.
+- Nutzt die OpenWeatherMap API für die Erzeugung und Bereitstellung der Wetterdaten.
 - Bietet Einblicke in das aktuelle Wetter, stündliche Vorhersagen und detaillierte Prognosen für die kommenden Tage.
 
 ### - Anpassung und Personalisierung
@@ -39,9 +37,8 @@ Administratoren verwalten Benutzerkonten, weisen Rollen zu und überwachen den P
 
 ## Projektziele
 - Bereitstellung einer benutzerfreundlichen Oberfläche für zuverlässige Wetterinformationen.
-- Implementierung eines flexiblen Abonnementmodells für erweiterte Funktionen.
-- Sicherstellung genauer und umfassender Wetterdaten durch die Integration von OpenWeatherMap.
-- Schaffung eines individualisierbaren Wettererlebnisses für jeden Benutzer.
+- Implementierung eines Abonnementmodells für weitere Details.
+- Sicherstellung Wetterdaten durch die Integration von OpenWeatherMap.
 
 
 ## Roadmap
@@ -50,10 +47,8 @@ Administratoren verwalten Benutzerkonten, weisen Rollen zu und überwachen den P
     #### Zielsetzung;
   - Bis zum 8. Januar 2024 soll das Backend der Weather Web Application vollständig entwickelt und funktionsfähig sein. Dies umfasst die Implementierung aller erforderlichen Server-Logik, Datenpersistenz und API-Integrationen gemäß den definierten Anforderungen. Das Backend soll in der Lage sein, sämtliche Nutzerfunktionen, Rollenverwaltung, Abonnementabrechnung und Wetterdatenabrufe erfolgreich zu unterstützen.
     #### Aufgaben; 
-    - [ ] Alle Backend-Funktionen wurden gemäß den Anforderungen implementiert und getestet
-    - [ ]  Die Datenpersistenz ist stabil, und die Geschäftslogik funktioniert reibungslos. 
-    - [ ]  Die OpenWeatherMap-API-Integration liefert genaue und aktuelle Wetterdaten.
-    - [ ]  Abonnementabrechnung und Premium-Statusverwaltung sind einsatzbereit und getestet
+    - [ ] Alle Backend-Funktionen wurden gemäß den Anforderungen implementiert und getestet 
+    - [ ]  Abonnementabrechnung und Premium-Statusverwaltung funktionieren reibungslos.
     - [ ]  Alle Nutzerrollen können ihre jeweiligen Funktionen erfolgreich ausführen.
 
 
@@ -62,20 +57,21 @@ Administratoren verwalten Benutzerkonten, weisen Rollen zu und überwachen den P
 - [ ] Meilenstein 2, Datum 15.01.2024
   ### Frontend-Fertigstellung:
   #### Zielsetzung;
-  - Bis zum 15. Januar 2024 soll die Integration des Frontends in die Weather Web Application abgeschlossen sein. Dies umfasst die Implementierung einer benutzerfreundlichen Benutzeroberfläche, die die Anforderungen an Usability und Interaktivität erfüllt. Das Frontend soll nahtlos mit dem Backend interagieren und alle Funktionalitäten gemäß den Spezifikationen unterstützen.
+  - Bis zum 15. Januar 2024 soll die Integration des Frontends in die Weather Web Application abgeschlossen sein. Dies umfasst die Implementierung einer benutzerfreundlichen Benutzeroberfläche, die die oben genannten Ziele erfüllt.
   #### Aufgaben;
     - [ ] Entwurf und Implementierung der Benutzeroberfläche für alle definierten Nutzerrollen (USER, PREMIUM, MANAGER, ADMIN).
-    - [ ] Integration der Backend-Funktionalitäten in das Frontend für eine konsistente Benutzererfahrung.
+    - [ ] Integration der Backend-Funktionalitäten in das Frontend.
     - [ ] Sicherstellung der Browserkompatibilität für die gängigsten Browser.
-    - [ ] Testen der Frontend-Integration und Behebung von auftretenden Problemen
+    - [ ] Testen der Frontend-Integration und Behebung von auftretenden Problemen.
+    - [ ] Testen des Backends.
 
 
 - [ ] Meilenstein 3, Datum 22.01.2024
   ### Präsentationsvorbereitung:
   #### Zielsetzung;
-    - Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der g1t1 Weather Web Application abgeschlossen sein. Dies umfasst die Erstellung einer aussagekräftigen und gut strukturierten Präsentation, die die wichtigsten Aspekte des Projekts hervorhebt
+    - Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der g1t1 Weather Web Application abgeschlossen sein.
   #### Aufgaben;
-    - [ ] Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der Weather Web Application abgeschlossen sein. Dies umfasst die Erstellung einer aussagekräftigen und gut strukturierten Präsentation, die die wichtigsten Aspekte des Projekts hervorhebt
+    - [ ] Bis zum 22. Januar 2024 sollen alle Vorbereitungen für die Präsentation der Weather Web Application abgeschlossen sein.
     - [ ] Vorbereitung von Demo-Szenarien, um live Funktionalitäten der Anwendung zu präsentieren.
     - [ ] Klärung von potenziellen Fragen, die während der Präsentation gestellt werden könnten.
 
