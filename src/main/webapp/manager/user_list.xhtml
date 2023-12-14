@@ -73,7 +73,7 @@
                             <h:outputText value="#{premiumHistory.newPremiumStatus ? 'Premium' : 'Not Premium'}" />
                         </p:column>
                         <p:column headerText="Was Premium for">
-                            <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
+                            <h:outputText value="#{premiumStatusListener.getPremiumTupel(premiumStatusListener.getPremiumIntervalByName(userDetailController.user)).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
                             <h:outputText value=" seconds" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>

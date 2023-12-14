@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param user
      * @return
      */
-    public List<PremiumHistory> getPremiumIntervalByName(Userx user) {
+    public List<PremiumHistory> getPremiumIntervalByName(Userx user) {//----
         return premiumHistoryService.getPremiumChangedByName(user.getUsername());
     }
 
@@ -52,17 +53,16 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * gets a list of all the dates where a change of the premium status occurred for all users
      * @return
      */
-    public List<PremiumHistory> getPremiumInterval() {
+    public List<PremiumHistory> getPremiumIntervals() {
         return premiumHistoryService.getPremiumChanged();
     }
 
     /**
-     * gets a list of time spans, of the user, where he/she was a premium user
-     * @param user
+     * gives a list of time spans, where the user of allDates was Premium
+     * @param allDates
      * @return
      */
-    public List<Integer> getPremiumTupel(Userx user) {
-        List<PremiumHistory> allDates = getPremiumIntervalByName(user);
+    public List<Integer> getPremiumTupel(List<PremiumHistory> allDates) {
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
             return null;
@@ -90,7 +90,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @return
      */
     public Integer getPremiumTupel(Userx user, int rowIndex) {
-        List<Integer> premiumTupelList = getPremiumTupel(user);
+        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
 
         if (premiumTupelList == null) {
             return null;
@@ -108,7 +108,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @return
      */
     public Integer getPremiumIntervalByNameTotal(Userx user) {
-        List<Integer> premiumTupelList = getPremiumTupel(user);
+        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
         if (premiumTupelList == null) {
             return 0;
         }
@@ -134,5 +134,23 @@ public class PremiumStatusListener implements PropertyChangeListener{
         return filteredDates;
     }
 
-}
+    /**
+     * gives the prize for the time span given in the invoiceList until end of current month
+     * @param invoiceList
+     * @return
+     */
+    public double priceTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
+        if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users add temporary end point to calculate
+            PremiumHistory dummyEndPoint = new PremiumHistory();
+            dummyEndPoint.setNewPremiumStatus(false);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            LocalDateTime lastDayOfMonth = currentDateTime.withDayOfMonth(currentDateTime.getMonth().length(YearMonth.from(currentDateTime).isLeapYear()));
+            dummyEndPoint.setChangeDate(lastDayOfMonth);
+            invoiceList.add(dummyEndPoint);
+        }
+        List<Integer> totalTimeTillNow = getPremiumTupel(invoiceList);
+        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
+        return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum() * pricePerTimeUnit;
+    }
 
+}
