@@ -39,8 +39,12 @@
                     <h:outputText value="#{userDetailController.user.createDate}">
                         <f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
                     </h:outputText>
+                    <br />
+                    <h:outputText value="Total Time as Premium User: " />
+                    <h:outputText value="#{premiumStatusListener.getPremiumIntervalByNameTotal(userDetailController.user)}" />
+                    <h:outputText value=" seconds" />
+
                     <p:separator />
-                    <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user)}" />
 
                     <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}" rowIndexVar="rowIndex">
                         <p:column headerText="Change Date">
@@ -51,8 +55,9 @@
                         <p:column headerText="New Premium Status">
                             <h:outputText value="#{premiumHistory.newPremiumStatus ? 'Premium' : 'Not Premium'}" />
                         </p:column>
-                        <p:column headerText="Was Premium for (in seconds)">
+                        <p:column headerText="Was Premium for">
                             <h:outputText value="#{premiumStatusListener.getPremiumTupel(userDetailController.user).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
+                            <h:outputText value=" seconds" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>
 
