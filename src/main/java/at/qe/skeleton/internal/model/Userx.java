@@ -227,7 +227,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
 
     public void setPremium(boolean premium) {
-        boolean oldValue = premium;
         this.premium = premium;
     }
 

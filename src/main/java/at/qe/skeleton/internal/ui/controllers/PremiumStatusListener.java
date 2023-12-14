@@ -3,20 +3,20 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
+import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
+import at.qe.skeleton.internal.services.UserxService;
 import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.YearMonth;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -25,6 +25,9 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     @Autowired
     private PremiumHistoryService premiumHistoryService;
+
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
 
     /**
      * Creates a new PremiumHistory entry when an event from the Observer is triggered.
@@ -153,4 +156,26 @@ public class PremiumStatusListener implements PropertyChangeListener{
         return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum() * pricePerTimeUnit;
     }
 
+    /**
+     * does the payment until the end of the current month. of account is to empty it sets premium to false and sends a cancellation e-mail.
+     * It also updates the PaymentHistory Data Base
+     * @param user
+     */
+    //Not finished waiting for account and e-mail messaging service
+    public void cashUpTillEndCurrentMonth (Userx user) {
+        double payment = priceTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
+
+        //Test purposes:
+        Random random = new Random();
+
+        //check balance if there is balance >= payment
+        if (random.nextInt(3) == 1) {
+            //balance = balance - payment;
+            paymentHistoryService.savePaymentHistory(user, true);
+        } else {
+            paymentHistoryService.savePaymentHistory(user, false);
+            user.setPremium(false);
+            //send email
+        }
+    }
 }
