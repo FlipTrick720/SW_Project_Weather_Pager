@@ -50,7 +50,7 @@ public class PremiumHistory {
         this.changeDate = changeDate;
     }
 
-    public boolean isNewPremiumStatus() {
+    public boolean getNewPremiumStatus() {
         return newPremiumStatus;
     }
 
