@@ -12,7 +12,7 @@
 		<div class="container">
 			<div class="search-box">
 				<h:graphicImage value="resources/img/location.png" />
-				<p:autoComplete value="#{autocompleteBean.text}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+				<p:autoComplete value="#{testWeatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" />
 				<p:commandButton value="GO" styleClass="bx bx-search-alt" action="#{testWeatherBean.searchWeather}" />
 			</div>
 			<div class="weather-box">
@@ -56,3 +56,4 @@
 	</ui:define>
 
 </ui:composition>
+
