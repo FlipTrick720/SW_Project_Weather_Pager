@@ -1,25 +1,27 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3c.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:ng="http://xmlns.jcp.org/jsf/passthrough" xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
-	template="/WEB-INF/templates/main.xhtml">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui"
+				template="/WEB-INF/templates/main.xhtml">
+
 	<link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+
 	<ui:define name="content">
 		<div class="container">
 			<div class="search-box">
-				&nbsp;<img src="resources/img/location.png"></img>
-				<input type="text" placeholder="enter a location"></input>
-				<button style="margin-right: 10px;" class='bx bx-search-alt'><img src="resources/img/search.png"></img></button>
+				<h:graphicImage value="resources/img/location.png" />
+				<p:autoComplete value="#{autocompleteBean.text}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+				<p:commandButton value="GO" styleClass="bx bx-search-alt" action="#{testWeatherBean.searchWeather}" />
 			</div>
 			<div class="weather-box">
 				<div class="box">
 					<div class="info-weather">
 						<div class="weather">
-							<img src="resources/img/clear.png"></img>
-							<p class="temparature">0<span>°C</span></p>
-							<p class="descpription">Cloudy</p>
+							<h:graphicImage value="resources/img/clear.png" />
+							<p class="temparature">#{testWeatherBean.temperature}<span>°C</span></p>
+							<p class="descpription">#{testWeatherBean.weatherDescription}</p>
 						</div>
 					</div>
 				</div>
@@ -29,7 +31,7 @@
 					<i class='bx bx-water'></i>
 					<div class="text">
 						<div class="info-humidity">
-							<span>0%</span>
+							<span>#{testWeatherBean.humidity}%</span>
 						</div>
 						<p>Humidity</p>
 					</div>
@@ -38,7 +40,7 @@
 					<i class='bx bx-wind'></i>
 					<div class="text">
 						<div class="info-wind">
-							<span>0Km/h</span>
+							<span>#{testWeatherBean.windSpeed}Km/h</span>
 						</div>
 						<p>Wind Speed</p>
 					</div>
@@ -46,10 +48,11 @@
 			</div>
 			<div class="not-found">
 				<div class="box">
-					<img src="resources/img/error.png"></img>
+					<h:graphicImage value ="resources/img/error.png" />
 					<p>MISTAKE, LOCATION DOES NOT EXIST!!</p>
 				</div>
 			</div>
 		</div>
 	</ui:define>
+
 </ui:composition>

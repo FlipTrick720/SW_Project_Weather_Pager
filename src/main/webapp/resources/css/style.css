@@ -1,3 +1,17 @@
+/* Beispiel-Styling für p:autoComplete */
+.ui-autocomplete-input {
+    width: 200px; /* Passen Sie die Breite nach Bedarf an */
+    padding: 8px; /* Fügen Sie etwas Padding hinzu, um die Klickfläche zu vergrößern */
+    font-size: 14px; /* Passen Sie die Schriftgröße nach Bedarf an */
+}
+
+body .ui-inputfield,
+body .ui-autocomplete-input {
+    width: 200px; /* Passen Sie die Breite nach Bedarf an */
+    padding: 8px; /* Fügen Sie etwas Padding hinzu, um die Klickfläche zu vergrößern */
+    font-size: 14px; /* Passen Sie die Schriftgröße nach Bedarf an */
+}
+
 
 *{
     margin: 0;
@@ -33,4 +47,9 @@ body{
     width: auto; /* Setzt die Breite auf 80% der Gesamtbreite */
     padding: 10px; /* Fügt etwas Innenabstand hinzu */
  }
+
+
+
+
+
 
