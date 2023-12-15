@@ -39,7 +39,7 @@ public class testWeatherBean {
 
         try {
             CurrentAndForecastAnswerDTO answer = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
-            temperature = answer.currentWeather().temperature();
+            temperature = Math.round(answer.currentWeather().temperature());
             weatherDescription = answer.currentWeather().weather().description();
             humidity = answer.currentWeather().humidity();
             windSpeed = answer.currentWeather().windSpeed();
