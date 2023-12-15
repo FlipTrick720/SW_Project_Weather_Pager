@@ -32,6 +32,7 @@ public class WebSecurityConfig {
     private static final String USER = UserxRole.USER.name();
     private static final String LOGIN = "/login.xhtml";
     private static final String REGISTER = "/register_page.xhtml";
+    private static final String VERIFY = "/verify";
     private static final String ACCESSDENIED = "/error/access_denied.xhtml";
     
     @Autowired
@@ -47,12 +48,14 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)) // needed for H2 console
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(new AntPathRequestMatcher(REGISTER)).permitAll()
+                .requestMatchers(new AntPathRequestMatcher(REGISTER)).permitAll()
+                .requestMatchers(new AntPathRequestMatcher(VERIFY)).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/**.jsf")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/jakarta.faces.resource/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/error/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/verification/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyAuthority("ADMIN")
                 .requestMatchers(new AntPathRequestMatcher("/secured/**")).hasAnyAuthority(ADMIN, MANAGER, USER)
                 .anyRequest().authenticated()
