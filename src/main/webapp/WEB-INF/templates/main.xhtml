@@ -43,6 +43,7 @@
             width: 100%;
             height: 100px;
             background-color: transparent;
+            color: white;
         }
 
         #content {
@@ -121,9 +122,11 @@
             outline: none;
             font-size: 28px;
             color: #fff;
-            padding: 0 20px; /* Passen Sie das Padding nach Bedarf an */
+            padding: 5px; /* Passen Sie das Padding nach Bedarf an */
             cursor: pointer;
             box-sizing: content-box; /* Hinzufügen Sie dies, um sicherzustellen, dass Padding nicht zur Breite beiträgt */
+            margin-right: 40px;
+            margin-top: 20px;/* Adjust this value to move the button to the left */
         }
         .weather-box {
             text-align: center;
@@ -308,7 +311,7 @@
                         break;
                 }
 
-                temperature.innerHTML = json.main.temp + '<span>°C</span>';
+                temperature.innerHTML = Math.round(json.main.temp) + '<span>°C</span>';
                 description.innerHTML = json.weather[0].description;
                 humidity.innerHTML = json.main.humidity + '%';
                 wind.innerHTML = json.wind.speed + 'Km/h';
