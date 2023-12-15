@@ -1,15 +1,6 @@
 package at.qe.skeleton.internal.ui.beans;
 
-
-import at.qe.skeleton.internal.model.PaymentHistory;
-import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
-import at.qe.skeleton.internal.services.PaymentHistoryService;
-import at.qe.skeleton.internal.ui.controllers.PaymentHistoryController;
 import jakarta.annotation.ManagedBean;
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.annotation.ManagedProperty;
-import jakarta.faces.view.ViewScoped;
-
 import java.io.Serializable;
 import java.time.Month;
 import java.util.ArrayList;
@@ -39,9 +30,12 @@ public class DateSelectionBean implements Serializable {
             years.add(i);
         }
 
-
         months = Arrays.asList(Month.JANUARY, Month.FEBRUARY, Month.MARCH, Month.APRIL, Month.MAY,
                 Month.JUNE, Month.JULY, Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER);
+
+        //default starting  values, the current year and month
+        selectedYear = currentYear;
+        selectedMonth = Month.values()[Calendar.getInstance().get(Calendar.MONTH)];
     }
 
     public List<Integer> getYears() {
@@ -69,7 +63,7 @@ public class DateSelectionBean implements Serializable {
     }
 
     public String printDates() {
-         // System.out.println("Selected Year: " + selectedYear);
+        // System.out.println("Selected Year: " + selectedYear);
         //System.out.println("Selected Month: " + selectedMonth);
 
         return "/manager/user_list.xhtml";

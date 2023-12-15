@@ -15,7 +15,6 @@ public class PaymentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Userx user;
@@ -83,16 +82,17 @@ public class PaymentHistory {
         this.paymentMonth = month;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentHistory that = (PaymentHistory) o;
-        return Objects.equals(id, that.id);
+        return paymentYear == that.paymentYear && Objects.equals(user, that.user) && paymentMonth == that.paymentMonth;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(user, paymentYear, paymentMonth);
     }
 }

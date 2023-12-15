@@ -10,9 +10,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import at.qe.skeleton.configs.WebSecurityConfig;
-import at.qe.skeleton.internal.services.PremiumHistoryService;
-import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,7 +22,6 @@ import org.springframework.data.domain.Persistable;
  * course "Software Architecture" offered by Innsbruck University.
 */
 @Entity
-//@EntityListeners(PremiumStatusListener.class)
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
@@ -78,11 +74,11 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
 
-    @OneToMany(mappedBy = "user") // Die mappedBy-Annotation bezieht sich auf das Attribut "user" in der PremiumHistory-Klasse
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.REMOVE) // Die mappedBy-Annotation bezieht sich auf das Attribut "user" in der PremiumHistory-Klasse
     private List<PremiumHistory> premiumHistoryList = new ArrayList<>();
 
 
-    @OneToMany(mappedBy ="user")
+    @OneToMany(mappedBy ="user" , cascade = CascadeType.REMOVE)
     private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
 
     public List<PremiumHistory> getPremiumHistoryList() {
