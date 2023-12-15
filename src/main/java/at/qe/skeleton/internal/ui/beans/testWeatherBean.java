@@ -70,6 +70,7 @@ public class testWeatherBean {
 
     public void setLocation(String location) {
         this.location = location;
+        System.out.println("location set");
     }
 
     public double getTemperature() {
