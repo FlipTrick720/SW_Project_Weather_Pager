@@ -31,7 +31,7 @@ public class PaymentHistoryService {
 
 
     // Save -> übergeben userx -> status offen, rechnen mit localdate tage bis ende monat
-    public void createPaymentHistory(Userx user){
+    /*public void createPaymentHistory(Userx user){
         LocalDateTime now = LocalDateTime.now();
         Integer currentYear = now.getYear();
         Month currentMonth = now.getMonth();
@@ -49,7 +49,7 @@ public class PaymentHistoryService {
             paymentHistory.setDaysTillEndMonth(daysInCurrentMonth-now.getDayOfMonth());
         }
 
-    }
+    }*/
 
     // Save -> übergeben userx, status, verrechneten Tage
     public void savePaymentHistory(Userx user, Boolean paymentStatus){

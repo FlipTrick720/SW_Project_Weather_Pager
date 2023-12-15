@@ -31,6 +31,8 @@ public class PaymentHistory {
     @Column(nullable = false)
     private Month paymentMonth;
 
+
+    @Column(nullable =true)
     private int daysTillEndMonth;
 
     public int getDaysTillEndMonth() {

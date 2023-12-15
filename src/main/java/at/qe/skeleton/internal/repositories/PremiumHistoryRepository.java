@@ -16,4 +16,5 @@ public interface PremiumHistoryRepository extends AbstractRepository <PremiumHis
 
     List<PremiumHistory> findAllByUserId(String userId);
 
+
 }
