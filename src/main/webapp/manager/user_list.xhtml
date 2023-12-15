@@ -45,6 +45,8 @@
                     <p:separator />
 
                     <p:dataTable id="PremiumChanged" var="premiumHistory" value="#{premiumStatusListener.getPremiumIntervalByName(userDetailController.user)}" rowIndexVar="rowIndex">
+                            <!--filterDatesByMonthAndYear(userDetailController.user,dateSelectionBean.selectedYear, dateSelectionBean.selectedMonth)}"
+                            changed the value to this so only the changes in the certain month and year is displayed. -->
                         <p:column headerText="Change Date">
                             <h:outputText value="#{premiumHistory.changeDate}">
                                 <f:convertDateTime type="localDate" pattern="yyyy-MM-dd HH:mm:ss" />
