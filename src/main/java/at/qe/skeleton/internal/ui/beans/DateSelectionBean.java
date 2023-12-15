@@ -1,6 +1,8 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import jakarta.annotation.ManagedBean;
+import jakarta.enterprise.context.RequestScoped;
+
 import java.io.Serializable;
 import java.time.Month;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 
 
 @ManagedBean
+@RequestScoped
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;

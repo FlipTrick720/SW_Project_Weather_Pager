@@ -5,8 +5,6 @@ import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
-import at.qe.skeleton.internal.services.UserxService;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +13,8 @@ import java.beans.PropertyChangeListener;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
+
 
 
 @Component

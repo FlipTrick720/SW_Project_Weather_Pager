@@ -4,6 +4,7 @@ package at.qe.skeleton.internal.services;
 import at.qe.skeleton.internal.model.PaymentHistory;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.hibernate.boot.jaxb.internal.stax.JpaOrmXmlEventReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -28,11 +30,28 @@ public class PaymentHistoryService {
     private PaymentHistoryRepository paymentHistoryRepository;
 
 
-    /**
-     * Builds and saves a new Payment-History with the given Parameters.
-     * @param user
-     * @param paymentStatus
-     */
+    // Save -> übergeben userx -> status offen, rechnen mit localdate tage bis ende monat
+    public void createPaymentHistory(Userx user){
+        LocalDateTime now = LocalDateTime.now();
+        Integer currentYear = now.getYear();
+        Month currentMonth = now.getMonth();
+        YearMonth yearMonth = YearMonth.of(currentYear, currentMonth);
+        Integer daysInCurrentMonth = yearMonth.lengthOfMonth();
+
+        if(paymentHistoryRepository.existsByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth)){
+            return;
+        } else {
+            PaymentHistory paymentHistory  = new PaymentHistory();
+            paymentHistory.setUser(user);
+            paymentHistory.setYear(currentYear);
+            paymentHistory.setMonth(currentMonth);
+            paymentHistory.setPaymentStatus(false);
+            paymentHistory.setDaysTillEndMonth(daysInCurrentMonth-now.getDayOfMonth());
+        }
+
+    }
+
+    // Save -> übergeben userx, status, verrechneten Tage
     public void savePaymentHistory(Userx user, Boolean paymentStatus){
         LocalDateTime now = LocalDateTime.now();
         PaymentHistory paymentHistory = new PaymentHistory();

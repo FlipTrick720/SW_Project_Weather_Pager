@@ -23,7 +23,6 @@ public class PaymentHistory {
     @Column(nullable = false)
     private  boolean paymentStatus;
 
-    @Column(nullable = false)
     private int chargedDays;
 
     @Column(nullable = false)
@@ -32,7 +31,15 @@ public class PaymentHistory {
     @Column(nullable = false)
     private Month paymentMonth;
 
+    private int daysTillEndMonth;
 
+    public int getDaysTillEndMonth() {
+        return daysTillEndMonth;
+    }
+
+    public void setDaysTillEndMonth(int daysTillEndMonth) {
+        this.daysTillEndMonth = daysTillEndMonth;
+    }
 
     public Long getId() {
         return id;
