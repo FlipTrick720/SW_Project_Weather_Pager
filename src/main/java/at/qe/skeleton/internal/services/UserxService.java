@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import at.qe.skeleton.internal.repositories.UserxRepository;
@@ -42,7 +43,7 @@ public class UserxService {
      * @param username the username to search for
      * @return the user with the given username
      */
-    @PreAuthorize("hasAuthority('ADMIN') or principal.username eq #username")
+    //@PreAuthorize("hasAuthority('ADMIN') or principal.username eq #username")
     public Userx loadUser(String username) {
         return userRepository.findFirstByUsername(username);
     }
@@ -57,12 +58,13 @@ public class UserxService {
      * @return the updated user
      */
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
-   // @PreAuthorize("hasAuthority('ADMIN')")
+    // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
         if (user.isNew()) {
-            user.setCreateUser(getAuthenticatedUser());
+            user.setCreateUser(user);
         } else {
-            user.setUpdateUser(getAuthenticatedUser());
+            user.setUpdateUser(user);
+            setAuthenticatedUser();
         }
         return userRepository.save(user);
     }
@@ -102,53 +104,15 @@ public class UserxService {
         user.setRoles(roles);
     }
 
-    /**
-     * User can change its own name
-     * @param user the user whos name gets changed
-     *
-     * @param newName the new first Name assigned to the User
-     */
-    @PreAuthorize("hasAuthority('USER')")
-    public void changeFirstName(Userx user, String newName){
-        user.setFirstName(newName);
-    }
 
-    /**
-     * User can change its own name
-     * @param user the user whos name gets changed
-     *
-     * @param newName the new last Name assigned to the User
-     */
-    @PreAuthorize("hasAuthority('USER')")
-    public void changeLastName(Userx user, String newName){
-        user.setLastName(newName);
-    }
-
-    /**
-     * User can change its own email
-     * @param user the user whos email gets changed
-     *
-     * @param newEmail the new Email assigned to the User
-     */
-    @PreAuthorize("hasAuthority('USER')")
-    public void changeEmail(Userx user, String newEmail){
-        user.setEmail(newEmail);
-    }
-
-    /**
-     * User can change its own password
-     * @param user the user whos name gets changed
-     *
-     * @param newPassword the newName assigned to the User
-     */
-    @PreAuthorize("hasAuthority('USER')")
-    public void changePassword(Userx user, String newPassword){
-        user.setPassword(newPassword);
-    }
     //:TODO: User kann seine Zahlungsinformationen bearbeiten
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
     }
+    private void setAuthenticatedUser() {
+        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+    }
 
 }
+
