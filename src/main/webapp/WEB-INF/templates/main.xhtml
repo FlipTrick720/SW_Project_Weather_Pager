@@ -42,6 +42,7 @@
         #footer {
             width: 100%;
             height: 100px;
+            color: white;
 
         }
 
@@ -62,7 +63,7 @@
 
         .container {
             position: relative;
-            width: 400px;
+            width: 380px;
             height: 110px;
             background: rgba(255, 255, 255, .1);
             backdrop-filter: blur(40px);
@@ -79,7 +80,9 @@
             display: flex;
             align-items: center;
         }
-
+        .search-box h{
+            order: -1;
+        }
         .search-box i {
             position: absolute;
             left: 10px;
@@ -87,20 +90,25 @@
             color: white;
 
         }
+        search-box .bx-search-alt {
+
+        }
 
         .search-box input {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 200px; /* Geändert zu einem festen Wert für eine konsistente Größe */
+            height: 30px; /* Angepasste Höhe für bessere Lesbarkeit */
             background: transparent;
+            top: 50%; /* Positioniert das Element vertikal in der Mitte */
+            left: 50%; /* Positioniert das Element horizontal in der Mitte */
+            transform: translate(0%, -50%);
             border: 2px solid rgba(255, 255, 255, .2);
             outline: none;
             border-radius: 10px;
             font-size: 22px;
             color: #fff;
             font-weight: 500;
-            text-transform: uppercase;
-            padding: 0 48px 0 42px;
+            padding: 10px 48px 10px 42px; /* Angepasst für vertikale Zentrierung des Textes */
         }
 
         .search-box input::placeholder {
@@ -121,21 +129,33 @@
             padding: 0 10px; /* Passen Sie das Padding nach Bedarf an */
             cursor: pointer;
             box-sizing: content-box; /* Hinzufügen Sie dies, um sicherzustellen, dass Padding nicht zur Breite beiträgt */
+            top: 60%;
+            transform: translateY(-50%);
+            right: 25px;
+        }
+        .image-container {
+            text-align: center; /* Zentriert den Inhalt horizontal */
         }
 
+        .image-container img {
+            display: block; /* Stellt sicher, dass das Bild als Block-Element gerendert wird */
+            margin: 0 auto; /* Zentriert das Bild horizontal */
+        }
 
+        .image-container .temperature {
+            display: block; /* Stellt sicher, dass der Text als Block-Element gerendert wird */
+            margin-top: 30px; /* Fügt einen Abstand zwischen Bild und Text hinzu */
+        }
         .weather-box {
             text-align: center;
             color: white;
             margin: 40px 0;
         }
-
         .weather-box,
         .weather-details,
         .not-found {
             visibility: hidden;
         }
-
         .weather-box.active,
         .weather-details.active,
         .not-found.active {
@@ -144,27 +164,27 @@
 
         .weather-box img {
             width: 50%;
+            align-items: center;
+        }
+        .weather-box .description {
+            font-size: 35px;
+            font-weight: 480;
+            text-transform: capitalize;
+            align-content: center;
         }
 
         .weather-box .temparature {
-            position: relative;
-            font-size: 60px;
-            line-height: 1;
-            font-weight: 650;
-            margin: 20px 0 6px -30px;
-        }
-
-        weather-box .temparature span {
-            position: absolute;
-            font-size: 22px;
-            margin-left: 4px;
-
-        }
-
-        .weather-box .description {
-            font-size: 22px;
+            font-size: 40px;
             font-weight: 480;
             text-transform: capitalize;
+            margin-top: 5px; /* Optionaler Abstand nach dem Bild */
+            display: inline; /* Ändert die Anzeige zu inline, damit Temperatur und Span nebeneinander stehen */
+        }
+
+        .weather-box .temparature span {
+            display: inline; /* Ermöglicht das Anzeigen des Span-Elements in derselben Zeile */
+            font-size: 40px; /* Stellt sicher, dass die Schriftgröße des Span-Elements mit der Temperatur übereinstimmt */
+            margin-left: 5px; /* Fügt einen kleinen Abstand zwischen Temperatur und °C hinzu */
         }
 
         .weather-details {

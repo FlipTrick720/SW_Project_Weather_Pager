@@ -21,13 +21,17 @@
 				<div class="box">
 					<div class="info-weather">
 						<div class="weather">
-							<h:graphicImage value="resources/img/clear.png" />
-							<span><h:outputText styleClass="temparature" id="temperature" value="#{testWeatherBean.temperature}"/>°C</span>
+							<h:graphicImage value="resources/img/clear.png" styleClass="weather-image" />
+							<div class="temperature-container">
+								<h:outputText styleClass="temparature" id="temperature" value="#{testWeatherBean.temperature}"/>
+								<span>°C</span>
+							</div>
 							<h:outputText styleClass="description" id="description" value="#{testWeatherBean.weatherDescription}"/>
 						</div>
 					</div>
 				</div>
 			</div>
+
 			<div class="weather-details">
 				<div class="humidity">
 					<i class='bx bx-water'></i>
