@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -185,5 +186,15 @@ public class PremiumStatusListener implements PropertyChangeListener{
             user.setPremium(false);
             //send email
         }
+    }
+
+    /**
+     * returns the number of days that are left in the current month
+     * @return
+     */
+    public int daysTillEndCurrentMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate endOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+        return currentDate.until(endOfMonth).getDays();
     }
 }
