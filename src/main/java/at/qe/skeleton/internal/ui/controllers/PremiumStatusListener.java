@@ -139,7 +139,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param invoiceList
      * @return
      */
-    public double priceTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
+    public int charedDaysTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
         if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users add temporary end point to calculate
             PremiumHistory dummyEndPoint = new PremiumHistory();
             dummyEndPoint.setNewPremiumStatus(false);
@@ -149,8 +149,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
             invoiceList.add(dummyEndPoint);
         }
         List<Integer> totalTimeTillNow = getPremiumTupel(invoiceList);
-        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
-        return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum() * pricePerTimeUnit;
+        return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum();
     }
 
     /**
@@ -174,5 +173,20 @@ public class PremiumStatusListener implements PropertyChangeListener{
             user.setPremium(false);
             //send email
         }
+    }
+
+
+    public double priceTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
+        if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users add temporary end point to calculate
+            PremiumHistory dummyEndPoint = new PremiumHistory();
+            dummyEndPoint.setNewPremiumStatus(false);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            LocalDateTime lastDayOfMonth = currentDateTime.withDayOfMonth(currentDateTime.getMonth().length(YearMonth.from(currentDateTime).isLeapYear()));
+            dummyEndPoint.setChangeDate(lastDayOfMonth);
+            invoiceList.add(dummyEndPoint);
+        }
+        List<Integer> totalTimeTillNow = getPremiumTupel(invoiceList);
+        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
+        return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum() * pricePerTimeUnit;
     }
 }
