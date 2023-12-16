@@ -7,7 +7,7 @@
 <h:head>
     <title>Weather Application</title>
     <h:outputStylesheet library="css" name="style.css" />
-
+    <h:outputScript library="js" name="main.js" />
 
     <style>
 
@@ -42,8 +42,7 @@
         #footer {
             width: 100%;
             height: 100px;
-            background-color: transparent;
-            color: white;
+
         }
 
         #content {
@@ -88,10 +87,7 @@
             color: white;
 
         }
-        .search-box img {
-            margin-top: 20px;
-            left: 2px;
-        }
+
         .search-box input {
             position: absolute;
             width: 100%;
@@ -115,19 +111,19 @@
         .search-box button {
             position: absolute;
             right: 0;
-            width: 50px; /* Passen Sie die Breite nach Bedarf an */
+            width: 60px; /* Passen Sie die Breite nach Bedarf an */
             height: 100%;
             background: transparent;
             border: none;
             outline: none;
             font-size: 28px;
             color: #fff;
-            padding: 5px; /* Passen Sie das Padding nach Bedarf an */
+            padding: 0 10px; /* Passen Sie das Padding nach Bedarf an */
             cursor: pointer;
             box-sizing: content-box; /* Hinzufügen Sie dies, um sicherzustellen, dass Padding nicht zur Breite beiträgt */
-            margin-right: 40px;
-            margin-top: 20px;/* Adjust this value to move the button to the left */
         }
+
+
         .weather-box {
             text-align: center;
             color: white;
@@ -165,7 +161,7 @@
 
         }
 
-        .weather-box .descpription {
+        .weather-box .description {
             font-size: 22px;
             font-weight: 480;
             text-transform: capitalize;
@@ -256,68 +252,5 @@
     </div>
 
 </h:body>
-<script>
-
-    const container = document.querySelector('.container');
-    const search = document.querySelector('.search-box button');
-    const weatherBox = document.querySelector('.weather-box');
-    const weatherDetails = document.querySelector('.weather-details');
-    const error = document.querySelector('.not-found');
-
-    search.addEventListener('click', () => {
-        const APIKey = '0f8a2c84a2e5cc4ce0cf246ecafba424';
-        const city = document.querySelector('.search-box input').value;
-        if (city === '') return;
-
-        fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&amp;units=metric&amp;appid=' + APIKey)
-            .then(response => response.json())
-            .then(json => {
-                if (json.cod == '404') {
-                    container.style.height = '400px';
-                    weatherBox.classList.remove('active');
-                    weatherDetails.classList.remove('active');
-                    error.classList.add('active');
-                    return;
-                }
-                container.style.height = '550px';
-                weatherBox.classList.add('active');
-                weatherDetails.classList.add('active');
-                error.classList.remove('active');
-
-                const image = document.querySelector('.weather-box img');
-                const temperature = document.querySelector('.weather-box .temparature');
-                const description = document.querySelector('.weather-box .descpription');
-                const humidity = document.querySelector('.weather-details .humidity span');
-                const wind = document.querySelector('.weather-details .wind span');
-
-                switch (json.weather[0].main) {
-                    case 'Clear':
-                        image.src = 'resources/img/clear.png';
-                        break;
-                    case 'Rain':
-                        image.src = 'resources/img/rain.png';
-                        break;
-                    case 'Snow':
-                        image.src = 'resources/img/snow.png';
-                        break;
-                    case 'Mist':
-                        image.src = 'resources/img/mist.png';
-                        break;
-                    case 'Clouds':
-                        image.src = 'resources/img/cloudy.png';
-                        break;
-                    default:
-                        image.src = 'resources/img/clear.png';
-                        break;
-                }
-
-                temperature.innerHTML = Math.round(json.main.temp) + '<span>°C</span>';
-                description.innerHTML = json.weather[0].description;
-                humidity.innerHTML = json.main.humidity + '%';
-                wind.innerHTML = json.wind.speed + 'Km/h';
-            });
-    });
-
-</script>
 
 </html>

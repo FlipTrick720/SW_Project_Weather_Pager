@@ -12,16 +12,18 @@
 		<div class="container">
 			<div class="search-box">
 				<h:graphicImage value="resources/img/location.png" />
-				<p:autoComplete value="#{testWeatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" />
-				<p:commandButton value="GO" styleClass="bx bx-search-alt" action="#{testWeatherBean.searchWeather}" />
+				<h:form>
+					<p:autoComplete value="#{testWeatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+					<p:commandButton value="GO" styleClass="bx bx-search-alt" update="temperature description humidity wind" action="#{testWeatherBean.searchWeather}" oncomplete="showWeather()" />
+				</h:form>
 			</div>
 			<div class="weather-box">
 				<div class="box">
 					<div class="info-weather">
 						<div class="weather">
 							<h:graphicImage value="resources/img/clear.png" />
-							<p class="temparature">#{testWeatherBean.temperature}<span>°C</span></p>
-							<p class="descpription">#{testWeatherBean.weatherDescription}</p>
+							<span><h:outputText styleClass="temparature" id="temperature" value="#{testWeatherBean.temperature}"/>°C</span>
+							<h:outputText styleClass="description" id="description" value="#{testWeatherBean.weatherDescription}"/>
 						</div>
 					</div>
 				</div>
@@ -31,7 +33,7 @@
 					<i class='bx bx-water'></i>
 					<div class="text">
 						<div class="info-humidity">
-							<span>#{testWeatherBean.humidity}%</span>
+							<span><h:outputText id="humidity" value="#{testWeatherBean.humidity}"/>%</span>
 						</div>
 						<p>Humidity</p>
 					</div>
@@ -40,7 +42,7 @@
 					<i class='bx bx-wind'></i>
 					<div class="text">
 						<div class="info-wind">
-							<span>#{testWeatherBean.windSpeed}Km/h</span>
+							<span><h:outputText id="wind" value="#{testWeatherBean.windSpeed}"/>Km/h</span>
 						</div>
 						<p>Wind Speed</p>
 					</div>
@@ -56,4 +58,3 @@
 	</ui:define>
 
 </ui:composition>
-
