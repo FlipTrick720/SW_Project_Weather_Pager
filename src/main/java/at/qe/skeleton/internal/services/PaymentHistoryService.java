@@ -31,6 +31,7 @@ public class PaymentHistoryService {
 
 
     // Save -> übergeben userx -> status offen, rechnen mit localdate tage bis ende monat
+    // oder Charded day einschreiben???
     /*public void createPaymentHistory(Userx user){
         LocalDateTime now = LocalDateTime.now();
         Integer currentYear = now.getYear();
@@ -41,7 +42,7 @@ public class PaymentHistoryService {
         if(paymentHistoryRepository.existsByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth)){
             return;
         } else {
-            PaymentHistory paymentHistory  = new PaymentHistory();
+            PaymentHistory paymentHistory = new PaymentHistory();
             paymentHistory.setUser(user);
             paymentHistory.setYear(currentYear);
             paymentHistory.setMonth(currentMonth);
@@ -72,4 +73,5 @@ public class PaymentHistoryService {
     public List<PaymentHistory> getAllByYearAndMonth(Integer year, Month monat){
         return paymentHistoryRepository.findByPaymentYearAndPaymentMonth(year, monat);
     }
+
 }

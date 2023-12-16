@@ -153,15 +153,27 @@ public class PremiumStatusListener implements PropertyChangeListener{
     }
 
     /**
+     * calculated the price for charedDays and updated the DB PaymentHistory
+     * @param charedDays
+     * @param user
+     * @return
+     */
+    public double priceForCharedDays(int charedDays, Userx user) {
+        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
+        //paymentHistoryService.createPaymentHistory(user);
+        return  charedDays * pricePerTimeUnit;
+    }
+
+    /**
      * does the payment until the end of the current month. of account is to empty it sets premium to false and sends a cancellation e-mail.
      * It also updates the PaymentHistory Data Base
      * @param user
      */
     //Not finished waiting for account and e-mail messaging service
     public void cashUpTillEndCurrentMonth (Userx user) {
-        double payment = priceTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
+        double payment = priceForCharedDays(charedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth())),user);
 
-        //Test purposes:
+        //For test purposes:
         Random random = new Random();
 
         //check balance if there is balance >= payment
@@ -173,20 +185,5 @@ public class PremiumStatusListener implements PropertyChangeListener{
             user.setPremium(false);
             //send email
         }
-    }
-
-
-    public double priceTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
-        if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users add temporary end point to calculate
-            PremiumHistory dummyEndPoint = new PremiumHistory();
-            dummyEndPoint.setNewPremiumStatus(false);
-            LocalDateTime currentDateTime = LocalDateTime.now();
-            LocalDateTime lastDayOfMonth = currentDateTime.withDayOfMonth(currentDateTime.getMonth().length(YearMonth.from(currentDateTime).isLeapYear()));
-            dummyEndPoint.setChangeDate(lastDayOfMonth);
-            invoiceList.add(dummyEndPoint);
-        }
-        List<Integer> totalTimeTillNow = getPremiumTupel(invoiceList);
-        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
-        return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum() * pricePerTimeUnit;
     }
 }

@@ -19,7 +19,6 @@ public class PaymentHistory {
     @JoinColumn(name = "user_id")
     private Userx user;
 
-
     @Column(nullable = false)
     private  boolean paymentStatus;
 
@@ -31,8 +30,7 @@ public class PaymentHistory {
     @Column(nullable = false)
     private Month paymentMonth;
 
-
-    @Column(nullable =true)
+    @Column(nullable = true)
     private int daysTillEndMonth;
 
     public int getDaysTillEndMonth() {
