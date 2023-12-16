@@ -54,6 +54,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Enumerated(EnumType.STRING)
     private Set<UserxRole> roles;
 
+    @ManyToMany(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
+    @CollectionTable(name = "Userx_UserxFavLocation")
+    private Set<Location> locations;
     @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
