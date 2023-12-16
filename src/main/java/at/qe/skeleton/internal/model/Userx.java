@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.model;
 
 import  java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -56,7 +57,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     @ManyToMany(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @CollectionTable(name = "Userx_UserxFavLocation")
-    private Set<Location> locations;
+    private List<Location> locations;
     @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
@@ -163,6 +164,14 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
     @Override

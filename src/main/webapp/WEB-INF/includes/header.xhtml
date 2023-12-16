@@ -19,6 +19,9 @@
                     <p:submenu label="User Submenu" rendered="#{sessionInfoBean.hasRole('USER')}">
                         <p:menuitem value="My Profil" url="/user/user.xhtml"/>
                     </p:submenu>
+                    <p:submenu label="Premium Submenu" rendered="#{sessionInfoBean.hasRole('USER')}">
+                        <p:menuitem value="My Profil" url="/user/user.xhtml"/>
+                    </p:submenu>
                     <p:submenu label="Test Submenu" rendered="#{sessionInfoBean.loggedIn}">
                         <p:menuitem value="Security Test" url="/secured/test.xhtml"/>
                         <p:menuitem value="Weather API Demo" url="/secured/weather_api_demo.xhtml"/>
