@@ -1,12 +1,9 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import at.qe.skeleton.internal.model.Location;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -119,11 +116,6 @@ public class SessionInfoBean implements Serializable {
         return false;
     }
 
-    public List<Location> getCurrentFavLocation(){
-        if (!isLoggedIn()) {
-            return null;
-        }
-        return currentUser.getLocations();
-    }
+
 
 }

@@ -1,15 +1,24 @@
 package at.qe.skeleton.internal.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 @Entity
-public class Location {
+public class FavLocation {
     @Id
     @Column(length = 100)
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Userx user;
+
+    public Userx getUser() {
+        return user;
+    }
+
+    public void setUser(Userx user) {
+        this.user = user;
+    }
 
     private double longitude;
     private double latitude;
@@ -40,7 +49,7 @@ public class Location {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
+        FavLocation location = (FavLocation) o;
         return Double.compare(location.longitude, longitude) == 0 && Double.compare(location.latitude, latitude) == 0 && name.equals(location.name);
     }
 

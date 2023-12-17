@@ -1,15 +1,17 @@
 package at.qe.skeleton.internal.services;
 
+import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.repositories.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import at.qe.skeleton.internal.repositories.UserxRepository;
@@ -26,6 +28,8 @@ public class UserxService {
 
     @Autowired
     private UserxRepository userRepository;
+    @Autowired
+    private LocationRepository locationRepository;
 
     /**
      * Returns a collection of all users.
@@ -113,5 +117,4 @@ public class UserxService {
     private void setAuthenticatedUser() {
         SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
     }
-
 }

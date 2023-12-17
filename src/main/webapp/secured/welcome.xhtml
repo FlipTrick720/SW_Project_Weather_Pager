@@ -9,13 +9,12 @@
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <h:form>
-            <p:panel header="What do you see here?">
-                    <div style="height: 50px">This is a simple PrimeFaces 13
-                            project running on Spring Boot 3.1.5</div>
-            </p:panel>
-            <p:panel header="JSF 2.2 Bean Access">
-                #{helloWorldBean.hello}
-            </p:panel>
+            <p:dataList value="#{userDetailController.getLocations(sessionInfoBean.currentUser)}" var="location">
+                <f:facet name="header">
+                    My Favorites
+                </f:facet>
+                <h:outputText value="#{location.name}" />
+            </p:dataList>
         </h:form>
     </ui:define>
 </ui:composition>
