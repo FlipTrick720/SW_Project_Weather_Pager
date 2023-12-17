@@ -173,7 +173,8 @@ public class PremiumStatusListener implements PropertyChangeListener{
      */
     //Not finished waiting for account and e-mail messaging service
     public void cashUpTillEndCurrentMonth (Userx user) {
-        double payment = priceForCharedDays(charedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth())),user);
+        int charedDays = charedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
+        double payment = priceForCharedDays(charedDays ,user);
 
         //For test purposes:
         Random random = new Random();
@@ -181,9 +182,9 @@ public class PremiumStatusListener implements PropertyChangeListener{
         //check balance if there is balance >= payment
         if (random.nextInt(3) == 1) {
             //balance = balance - payment;
-            paymentHistoryService.updatePaymentStatus(user, true );
+            paymentHistoryService.updatePaymentStatus(user, true, charedDays);
         } else {
-            paymentHistoryService.updatePaymentStatus(user, false);
+            paymentHistoryService.updatePaymentStatus(user, false, charedDays);
             user.setPremium(false);
             //send email
         }

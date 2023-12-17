@@ -89,7 +89,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         this.premiumHistoryList = premiumHistoryList;
     }
 
-
     public List<PaymentHistory> getPaymentHistoryList() {
         return paymentHistoryList;
     }
