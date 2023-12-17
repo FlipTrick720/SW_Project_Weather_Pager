@@ -38,6 +38,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
             boolean newPremiumStatus = (boolean) evt.getNewValue();
             Userx user = (Userx) evt.getSource();
             premiumHistoryService.savePremiumHistory(user, newPremiumStatus);
+            paymentHistoryService.createPaymentHistory(user);
         }
     }
 
@@ -180,9 +181,9 @@ public class PremiumStatusListener implements PropertyChangeListener{
         //check balance if there is balance >= payment
         if (random.nextInt(3) == 1) {
             //balance = balance - payment;
-            paymentHistoryService.savePaymentHistory(user, true);
+            paymentHistoryService.updatePaymentStatus(user, true );
         } else {
-            paymentHistoryService.savePaymentHistory(user, false);
+            paymentHistoryService.updatePaymentStatus(user, false);
             user.setPremium(false);
             //send email
         }

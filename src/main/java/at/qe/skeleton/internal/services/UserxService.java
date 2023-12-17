@@ -165,6 +165,8 @@ public class UserxService {
         user.setPassword(newPassword);
     }
     //:TODO: User kann seine Zahlungsinformationen bearbeiten
+
+
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());

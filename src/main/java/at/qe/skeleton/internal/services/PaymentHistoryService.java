@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.services;
 
 
 import at.qe.skeleton.internal.model.PaymentHistory;
+import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 /**
  * Service for accessing and manipulating Payment History Data.
@@ -30,38 +32,46 @@ public class PaymentHistoryService {
     private PaymentHistoryRepository paymentHistoryRepository;
 
 
-    // Save -> übergeben userx -> status offen, rechnen mit localdate tage bis ende monat
-    // oder Charded day einschreiben???
-    /*public void createPaymentHistory(Userx user){
+
+    public void createPaymentHistory(Userx user){
         LocalDateTime now = LocalDateTime.now();
         Integer currentYear = now.getYear();
         Month currentMonth = now.getMonth();
-        YearMonth yearMonth = YearMonth.of(currentYear, currentMonth);
-        Integer daysInCurrentMonth = yearMonth.lengthOfMonth();
-
-        if(paymentHistoryRepository.existsByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth)){
-            return;
+        if(paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth) != null ){
+            System.out.println("already exists");
         } else {
             PaymentHistory paymentHistory = new PaymentHistory();
             paymentHistory.setUser(user);
             paymentHistory.setYear(currentYear);
             paymentHistory.setMonth(currentMonth);
             paymentHistory.setPaymentStatus(false);
-            paymentHistory.setDaysTillEndMonth(daysInCurrentMonth-now.getDayOfMonth());
+            paymentHistoryRepository.save(paymentHistory);
         }
-
-    }*/
-
-    // Save -> übergeben userx, status, verrechneten Tage
-    public void savePaymentHistory(Userx user, Boolean paymentStatus){
-        LocalDateTime now = LocalDateTime.now();
-        PaymentHistory paymentHistory = new PaymentHistory();
-        paymentHistory.setUser(user);
-        paymentHistory.setPaymentStatus(paymentStatus);
-        paymentHistory.setYear(now.getYear());
-        paymentHistory.setMonth(now.getMonth());
-        paymentHistoryRepository.save(paymentHistory);
     }
+
+    public void updatePaymentStatus (Userx user, Boolean paymentStatus, Integer chargedDays){
+        LocalDateTime now = LocalDateTime.now();
+        Integer currentYear = now.getYear();
+        Month currentMonth = now.getMonth();
+
+        PaymentHistory paymentHistory  = paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear,currentMonth);
+
+        if (paymentHistory == null ){
+            PaymentHistory newPaymentHistory = new PaymentHistory();
+            paymentHistory.setUser(user);
+            paymentHistory.setYear(currentYear);
+            paymentHistory.setMonth(currentMonth);
+            paymentHistory.setPaymentStatus(paymentStatus);
+            paymentHistory.setChargedDays(chargedDays);
+            paymentHistoryRepository.save(newPaymentHistory);
+        } else {
+            paymentHistory.setPaymentStatus(paymentStatus);
+            paymentHistory.setChargedDays(chargedDays);
+            paymentHistoryRepository.save(paymentHistory);
+        }
+    }
+
+
 
     /**
      * finds and returns a List of all the Payment-History Entries for a certain year and month.
