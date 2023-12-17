@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui"
+				template="/WEB-INF/templates/main.xhtml">
+
+	<link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+
+	<ui:define name="content">
+		<div class="container">
+			<div class="search-box">
+				<h:graphicImage value="resources/img/location.png" />
+				<h:form>
+					<p:autoComplete value="#{testWeatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" />
+					<p:commandButton value="GO" styleClass="bx bx-search-alt" update="temperature description humidity wind" action="#{testWeatherBean.searchWeather}" oncomplete="showWeather()" />
+				</h:form>
+			</div>
+			<div class="weather-box">
+				<div class="box">
+					<div class="info-weather">
+						<div class="weather">
+							<h:graphicImage value="resources/img/clear.png" styleClass="weather-image" />
+							<div class="temperature-container">
+								<h:outputText styleClass="temparature" id="temperature" value="#{testWeatherBean.temperature}"/>
+								<span>°C</span>
+							</div>
+							<h:outputText styleClass="description" id="description" value="#{testWeatherBean.weatherDescription}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="weather-details">
+				<div class="humidity">
+					<i class='bx bx-water'></i>
+					<div class="text">
+						<div class="info-humidity">
+							<span><h:outputText id="humidity" value="#{testWeatherBean.humidity}"/>%</span>
+						</div>
+						<p>Humidity</p>
+					</div>
+				</div>
+				<div class="wind">
+					<i class='bx bx-wind'></i>
+					<div class="text">
+						<div class="info-wind">
+							<span><h:outputText id="wind" value="#{testWeatherBean.windSpeed}"/>Km/h</span>
+						</div>
+						<p>Wind Speed</p>
+					</div>
+				</div>
+			</div>
+			<div class="not-found">
+				<div class="box">
+					<h:graphicImage value ="resources/img/error.png" />
+					<p>MISTAKE, LOCATION DOES NOT EXIST!!</p>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>
