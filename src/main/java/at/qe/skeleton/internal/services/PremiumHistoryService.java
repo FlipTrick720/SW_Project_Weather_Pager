@@ -57,13 +57,4 @@ public class PremiumHistoryService {
         return premiumHistoryRepository.findAll();
     }
 
-    /**
-     * finds and returns a list of all the dates where a change of the premium status occurred for the user
-     * @param user as username (because that is the primary key)
-     * @return
-     */
-    @PreAuthorize("hasAuthority('MANAGER')" )
-    public List<PremiumHistory> getPremiumIntervall(String user) {
-        return premiumHistoryRepository.findAllByUserId(user);
-    }
 }

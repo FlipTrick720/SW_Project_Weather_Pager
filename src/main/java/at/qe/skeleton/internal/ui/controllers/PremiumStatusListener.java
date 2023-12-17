@@ -47,16 +47,8 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param user
      * @return
      */
-    public List<PremiumHistory> getPremiumIntervalByName(Userx user) {//----
+    public List<PremiumHistory> getPremiumIntervalByName(Userx user) {
         return premiumHistoryService.getPremiumChangedByName(user.getUsername());
-    }
-
-    /**
-     * gets a list of all the dates where a change of the premium status occurred for all users
-     * @return
-     */
-    public List<PremiumHistory> getPremiumIntervals() {
-        return premiumHistoryService.getPremiumChanged();
     }
 
     /**
@@ -64,7 +56,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param allDates
      * @return
      */
-    public List<Integer> getPremiumTupel(List<PremiumHistory> allDates) {
+    public List<Integer> getTimePremiumInerval(List<PremiumHistory> allDates) {
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
             return null;
@@ -85,32 +77,13 @@ public class PremiumStatusListener implements PropertyChangeListener{
     }
 
     /**
-     * gets the time span, of the user, where he/she was a premium user for a certain row count.
-     * this is purely a method for display purposes
-     * @param user
-     * @param rowIndex
-     * @return
-     */
-    public Integer getPremiumTupel(Userx user, int rowIndex) {
-        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
-
-        if (premiumTupelList == null) {
-            return null;
-        } else if (rowIndex >= 0 && rowIndex < premiumTupelList.size()) {
-            return premiumTupelList.get(rowIndex);
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * gets the total time somebody was premium user by user
      * this is purely a method for display purposes
      * @param user
      * @return
      */
-    public Integer getPremiumIntervalByNameTotal(Userx user) {
-        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
+    public Integer getTotalPremiumTimeByName(Userx user) {
+        List<Integer> premiumTupelList = getTimePremiumInerval(getPremiumIntervalByName(user));
         if (premiumTupelList == null) {
             return 0;
         }
@@ -137,11 +110,11 @@ public class PremiumStatusListener implements PropertyChangeListener{
     }
 
     /**
-     * gives the prize for the time span given in the invoiceList until end of current month
+     * gives the sum of charged days for the time span given in the invoiceList until end of current month
      * @param invoiceList
      * @return
      */
-    public int charedDaysTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
+    public int chargedDaysTillEndCurrentMonth(List<PremiumHistory> invoiceList) {
         if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users add temporary end point to calculate
             PremiumHistory dummyEndPoint = new PremiumHistory();
             dummyEndPoint.setNewPremiumStatus(false);
@@ -150,7 +123,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
             dummyEndPoint.setChangeDate(lastDayOfMonth);
             invoiceList.add(dummyEndPoint);
         }
-        List<Integer> totalTimeTillNow = getPremiumTupel(invoiceList);
+        List<Integer> totalTimeTillNow = getTimePremiumInerval(invoiceList);
         return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum();
     }
 
@@ -160,7 +133,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param user
      * @return
      */
-    public double priceForCharedDays(int charedDays, Userx user) {
+    public double priceForChargedDays(int charedDays, Userx user) {
         double pricePerTimeUnit = 0.5; //Time unit is currently a Second
         //paymentHistoryService.createPaymentHistory(user);
         return  charedDays * pricePerTimeUnit;
@@ -173,8 +146,8 @@ public class PremiumStatusListener implements PropertyChangeListener{
      */
     //Not finished waiting for account and e-mail messaging service
     public void cashUpTillEndCurrentMonth (Userx user) {
-        int charedDays = charedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
-        double payment = priceForCharedDays(charedDays ,user);
+        int chargedDays = chargedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
+        double payment = priceForChargedDays(chargedDays, user);
 
         //For test purposes:
         Random random = new Random();
@@ -182,21 +155,32 @@ public class PremiumStatusListener implements PropertyChangeListener{
         //check balance if there is balance >= payment
         if (random.nextInt(3) == 1) {
             //balance = balance - payment;
-            paymentHistoryService.updatePaymentStatus(user, true, charedDays);
+            paymentHistoryService.updatePaymentStatus(user, true, chargedDays);
         } else {
-            paymentHistoryService.updatePaymentStatus(user, false, charedDays);
+            paymentHistoryService.updatePaymentStatus(user, false, chargedDays);
             user.setPremium(false);
             //send email
         }
     }
 
+
     /**
-     * returns the number of days that are left in the current month
+     * gets the time span, of the user, where he/she was a premium user for a certain row count.
+     * this is purely a method for display purposes
+     * @param user
+     * @param rowIndex
      * @return
      */
-    public int daysTillEndCurrentMonth() {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate endOfMonth = currentDate.with(TemporalAdjusters.lastDayOfMonth());
-        return currentDate.until(endOfMonth).getDays();
-    }
+    /*
+    public Integer getPremiumTupelByRowIndex(Userx user, int rowIndex) {
+        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
+        //getPremiumTupelByRowIndex
+        if (premiumTupelList == null) {
+            return null;
+        } else if (rowIndex >= 0 && rowIndex < premiumTupelList.size()) {
+            return premiumTupelList.get(rowIndex);
+        } else {
+            return null;
+        }
+    }*/
 }
