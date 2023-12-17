@@ -38,7 +38,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
             boolean newPremiumStatus = (boolean) evt.getNewValue();
             Userx user = (Userx) evt.getSource();
             premiumHistoryService.savePremiumHistory(user, newPremiumStatus);
-            paymentHistoryService.createPaymentHistory(user);
+         //   paymentHistoryService.createPaymentHistory(user);
         }
     }
 
@@ -128,15 +128,15 @@ public class PremiumStatusListener implements PropertyChangeListener{
     }
 
     /**
-     * calculated the price for charedDays and updated the DB PaymentHistory
-     * @param charedDays
+     * calculated the price for chargedDays and updated the DB PaymentHistory
+     * @param chargedDays
      * @param user
      * @return
      */
-    public double priceForChargedDays(int charedDays, Userx user) {
+    public double priceForChargedDays(int chargedDays, Userx user) {
         double pricePerTimeUnit = 0.5; //Time unit is currently a Second
         //paymentHistoryService.createPaymentHistory(user);
-        return  charedDays * pricePerTimeUnit;
+        return  chargedDays * pricePerTimeUnit;
     }
 
     /**

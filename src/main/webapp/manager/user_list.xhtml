@@ -13,7 +13,7 @@
             <h:outputText value="Selected Month: #{dateSelectionBean.selectedMonth}" />
             <p:separator />
 
-            <p:dataTable id="usersTable" var="paymentHistory" value="#{paymentHistoryController.getPaymentHistoryYearMonth(dateSelectionBean.selectedYear, dateSelectionBean.selectedMonth)}">
+            <p:dataTable id="usersTable" var="paymentHistory" value="#{paymentHistoryController.getPaymentHistoryYearMonth(dateSelectionBean.selectedYear, dateSelectionBean.selectedMonthInt)}">
                 <p:column headerText="Username">
                     <h:outputText value="#{paymentHistory.user.username}"/>
                 </p:column>

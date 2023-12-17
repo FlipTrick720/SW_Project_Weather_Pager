@@ -17,15 +17,19 @@ public interface PaymentHistoryRepository extends AbstractRepository <PaymentHis
 
     public PaymentHistory findByUser (Userx user);
 
-    List<PaymentHistory> findByPaymentYearAndPaymentMonth(Integer jahr, Month monat);
+    @Query("Select ph FROM PaymentHistory ph WHERE YEAR(ph.changeDate) = :paymentYear AND MONTH (ph.changeDate) = :paymentMonth")
+    List<PaymentHistory> findByChangeDate(
+            @Param("paymentYear") int paymentYear,
+            @Param("paymentMonth") int paymentMonth
+    );
 
 
     //count > 0 evaluates to true if the value is greater than 0.
-    @Query("SELECT COUNT(ph) > 0 FROM PaymentHistory ph WHERE ph.user = :user AND ph.paymentYear = :paymentYear AND ph.paymentMonth = :paymentMonth")
+    @Query("SELECT COUNT(ph) > 0 FROM PaymentHistory ph WHERE ph.user = :user AND YEAR(ph.changeDate) = :paymentYear AND MONTH(ph.changeDate) = :paymentMonth")
     PaymentHistory findByUserAndPaymentYearAndPaymentMonth(
             @Param("user") Userx user,
             @Param("paymentYear") int paymentYear,
-            @Param("paymentMonth") Month paymentMonth
+            @Param("paymentMonth") int paymentMonth
     );
 
 }

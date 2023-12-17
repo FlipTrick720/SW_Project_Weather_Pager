@@ -4,6 +4,7 @@ import jakarta.annotation.ManagedBean;
 import jakarta.enterprise.context.RequestScoped;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ public class DateSelectionBean implements Serializable {
     private List<Month> months;
     private Integer selectedYear;
     private Month selectedMonth;
+    private Integer selectedMonthInt;
 
 
     public DateSelectionBean() {
@@ -39,6 +41,7 @@ public class DateSelectionBean implements Serializable {
         //default starting  values, the current year and month
         selectedYear = currentYear;
         selectedMonth = Month.values()[Calendar.getInstance().get(Calendar.MONTH)];
+        selectedMonthInt = selectedMonth.getValue();
     }
 
     public List<Integer> getYears() {
@@ -61,13 +64,23 @@ public class DateSelectionBean implements Serializable {
         return selectedMonth;
     }
 
+    //updates the Int value of the month on the go
     public void setSelectedMonth(Month selectedMonth) {
         this.selectedMonth = selectedMonth;
+        this.selectedMonthInt = selectedMonth.getValue();
+    }
+
+    public Integer getSelectedMonthInt() {
+        return selectedMonthInt;
+    }
+
+    public void setSelectedMonthInt(Integer selectedMonthInt) {
+        this.selectedMonthInt = selectedMonthInt;
     }
 
     public String printDates() {
-        // System.out.println("Selected Year: " + selectedYear);
-        //System.out.println("Selected Month: " + selectedMonth);
+        System.out.println("Selected Year: " + selectedYear);
+        System.out.println("Selected Month: " + selectedMonthInt);
 
         return "/manager/user_list.xhtml";
     }

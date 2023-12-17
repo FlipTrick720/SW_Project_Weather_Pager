@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Objects;
 
@@ -25,10 +26,15 @@ public class PaymentHistory {
     private int chargedDays;
 
     @Column(nullable = false)
-    private int paymentYear;
+    private LocalDateTime changeDate;
 
-    @Column(nullable = false)
-    private Month paymentMonth;
+    public LocalDateTime getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(LocalDateTime changeDate) {
+        this.changeDate = changeDate;
+    }
 
     public Long getId() {
         return id;
@@ -62,33 +68,16 @@ public class PaymentHistory {
         this.chargedDays = chargedDays;
     }
 
-    public int getYear() {
-        return paymentYear;
-    }
-
-    public void setYear(int year) {
-        this.paymentYear = year;
-    }
-
-    public Month getMonth() {
-        return paymentMonth;
-    }
-
-    public void setMonth(Month month) {
-        this.paymentMonth = month;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentHistory that = (PaymentHistory) o;
-        return paymentYear == that.paymentYear && Objects.equals(user, that.user) && paymentMonth == that.paymentMonth;
+        return Objects.equals(user, that.user) && Objects.equals(changeDate, that.changeDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, paymentYear, paymentMonth);
+        return Objects.hash(user, changeDate);
     }
 }

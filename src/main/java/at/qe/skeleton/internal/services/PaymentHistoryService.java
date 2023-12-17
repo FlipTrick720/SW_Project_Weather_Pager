@@ -14,9 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.YearMonth;
 import java.util.List;
-import java.util.function.BiPredicate;
+
 
 /**
  * Service for accessing and manipulating Payment History Data.
@@ -37,13 +36,12 @@ public class PaymentHistoryService {
         LocalDateTime now = LocalDateTime.now();
         Integer currentYear = now.getYear();
         Month currentMonth = now.getMonth();
-        if(paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth) != null ){
+        if(paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth.getValue()) != null ){
             System.out.println("already exists");
         } else {
             PaymentHistory paymentHistory = new PaymentHistory();
             paymentHistory.setUser(user);
-            paymentHistory.setYear(currentYear);
-            paymentHistory.setMonth(currentMonth);
+            paymentHistory.setChangeDate(now);
             paymentHistory.setPaymentStatus(false);
             paymentHistoryRepository.save(paymentHistory);
         }
@@ -54,13 +52,12 @@ public class PaymentHistoryService {
         Integer currentYear = now.getYear();
         Month currentMonth = now.getMonth();
 
-        PaymentHistory paymentHistory  = paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear,currentMonth);
+        PaymentHistory paymentHistory  = paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth.getValue());
 
         if (paymentHistory == null ){
             PaymentHistory newPaymentHistory = new PaymentHistory();
             paymentHistory.setUser(user);
-            paymentHistory.setYear(currentYear);
-            paymentHistory.setMonth(currentMonth);
+            paymentHistory.setChangeDate(now);
             paymentHistory.setPaymentStatus(paymentStatus);
             paymentHistory.setChargedDays(chargedDays);
             paymentHistoryRepository.save(newPaymentHistory);
@@ -80,8 +77,8 @@ public class PaymentHistoryService {
      * @param monat
      * @return
      */
-    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Month monat){
-        return paymentHistoryRepository.findByPaymentYearAndPaymentMonth(year, monat);
+    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Integer monat){
+        return paymentHistoryRepository.findByChangeDate(year, monat);
     }
 
 }
