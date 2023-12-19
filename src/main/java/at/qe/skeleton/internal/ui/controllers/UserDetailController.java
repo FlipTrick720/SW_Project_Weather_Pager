@@ -118,6 +118,7 @@ public class UserDetailController implements Serializable {
         newUser.setEnabled(false); //set to false until confirmed via email
         user = this.userService.saveUser(newUser);
 
+        //logic for verification process
         String token = UUID.randomUUID().toString();
         userService.createVerificationToken(newUser, token);
         emailService.sendConfirmationMail(newUser.getEmail(), token);
