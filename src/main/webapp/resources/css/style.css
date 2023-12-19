@@ -1,0 +1,55 @@
+/* Beispiel-Styling für p:autoComplete */
+.ui-autocomplete-input {
+    width: 200px; /* Passen Sie die Breite nach Bedarf an */
+    padding: 8px; /* Fügen Sie etwas Padding hinzu, um die Klickfläche zu vergrößern */
+    font-size: 14px; /* Passen Sie die Schriftgröße nach Bedarf an */
+}
+
+body .ui-inputfield,
+body .ui-autocomplete-input {
+    width: 200px; /* Passen Sie die Breite nach Bedarf an */
+    padding: 8px; /* Fügen Sie etwas Padding hinzu, um die Klickfläche zu vergrößern */
+    font-size: 14px; /* Passen Sie die Schriftgröße nach Bedarf an */
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    display: flex;
+    margin-left: 0%;
+    background: url("img/background.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+#header {
+    color: white;
+  }
+  
+  #footer {
+    color: white;
+    margin-left: 0;
+    width: auto;
+    padding: 10px;
+}
+
+  
+ #page {
+    border: 2px solid black; /* Fügt einen schwarzen Rand hinzu */
+    margin-left:0; /* Zentriert den Header und Footer */
+    width: auto; /* Setzt die Breite auf 80% der Gesamtbreite */
+    padding: 10px; /* Fügt etwas Innenabstand hinzu */
+ }
+
+
+
+
+
+

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  *
  * This class is part of the skeleton project provided for students of the
  * course "Software Architecture" offered by Innsbruck University.
-*/
+ */
 @Component
 @Scope("view")
 public class UserDetailController implements Serializable {
@@ -117,3 +117,4 @@ public class UserDetailController implements Serializable {
     }
 
 }
+

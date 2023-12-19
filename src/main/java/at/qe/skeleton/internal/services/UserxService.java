@@ -58,7 +58,7 @@ public class UserxService {
      * @return the updated user
      */
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
-   // @PreAuthorize("hasAuthority('ADMIN')")
+    // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
         if (user.isNew()) {
             user.setCreateUser(user);
@@ -115,3 +115,4 @@ public class UserxService {
     }
 
 }
+
