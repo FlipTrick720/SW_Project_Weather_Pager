@@ -10,12 +10,15 @@ public class EmailService{
 
     @Autowired
     private JavaMailSender javaMailSender;
-    public void sendSimpleMessage(String to, String subject, String text){
+    public void sendConfirmationMail(String to, String token){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply.weatherapp.uibk@gmail.com");
         message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
+        message.setSubject("Confirm your email for the WeatherApp");
+
+        message.setText("Please confirm your email by clicking on the link below:\n"
+                + "http://localhost:8080/confirm?token=" + token);
+
         javaMailSender.send(message);
         System.out.println("service sent");
     }

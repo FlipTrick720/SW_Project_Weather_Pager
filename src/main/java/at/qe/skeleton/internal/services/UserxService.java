@@ -5,11 +5,12 @@ import java.util.Collection;
 import java.util.Set;
 
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.model.Token;
+import at.qe.skeleton.internal.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import at.qe.skeleton.internal.repositories.UserxRepository;
@@ -26,6 +27,9 @@ public class UserxService {
 
     @Autowired
     private UserxRepository userRepository;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     /**
      * Returns a collection of all users.
@@ -69,11 +73,21 @@ public class UserxService {
         return userRepository.save(user);
     }
 
-    /**
-     * Deletes the user.
-     *
-     * @param user the user to delete
-     */
+
+    public void createVerificationToken (Userx user, String token){
+        Token myToken = new Token(token, user);
+        tokenRepository.save(myToken);
+    }
+
+    public Userx getUserByConfirmationToken(String token) {
+        Token tokenEntity =  tokenRepository.findByToken(token);
+        if(tokenEntity != null){
+            return tokenEntity.getUser();
+        } else {
+            return null;
+        }
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
