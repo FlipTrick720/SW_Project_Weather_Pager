@@ -3,62 +3,107 @@
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
-				xmlns:o="http://omnifaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui" xmlns:pt="http://java.sun.com/jsp/jstl/core"
+				xmlns:row-height="http://java.sun.com/jsp/jstl/functions"
 				template="/WEB-INF/templates/main.xhtml">
 
-	<link rel="stylesheet" type="text/css" href="resources/css/style.css" />
-
 	<ui:define name="content">
-		<div class="container">
-			<div class="search-box">
-				<h:graphicImage value="resources/img/location.png" />
-				<h:form>
-					<p:autoComplete value="#{testWeatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" />
-					<p:commandButton value="GO" styleClass="bx bx-search-alt" update="temperature description humidity wind" action="#{testWeatherBean.searchWeather}" oncomplete="showWeather()" />
-				</h:form>
-			</div>
-			<div class="weather-box">
-				<div class="box">
-					<div class="info-weather">
-						<div class="weather">
-							<h:graphicImage value="resources/img/clear.png" styleClass="weather-image" />
-							<div class="temperature-container">
-								<h:outputText styleClass="temparature" id="temperature" value="#{testWeatherBean.temperature}"/>
-								<span>°C</span>
-							</div>
-							<h:outputText styleClass="description" id="description" value="#{testWeatherBean.weatherDescription}"/>
+		<h:form>
+			<p:panelGrid columns="2">
+				<p:panel style="width: 100%">
+					<!-- Content for the left column -->
+					<!-- For example: -->
+					<p:card style="width: 300px;">
+						<!-- City Name -->
+						<div style="text-align: center; margin-top: 10px;">
+							<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
 						</div>
-					</div>
-				</div>
-			</div>
 
-			<div class="weather-details">
-				<div class="humidity">
-					<i class='bx bx-water'></i>
-					<div class="text">
-						<div class="info-humidity">
-							<span><h:outputText id="humidity" value="#{testWeatherBean.humidity}"/>%</span>
-						</div>
-						<p>Humidity</p>
+						<!-- Temperature and Weather Image -->
+						<h:panelGrid styleClass="borderless" style="margin: auto">
+							<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
+								<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
+								<br />
+								<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
+								<br />
+								<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
+							</p:panel>
+						</h:panelGrid>
+
+						<!-- Details Panel -->
+						<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;" >
+							<p:panel style="text-align: center;">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
+							</p:panel>
+
+							<p:panel style="text-align: center">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Speed" style="font-size: 10px" />
+							</p:panel>
+							<!-- Add more details as needed -->
+						</h:panelGrid>
+						<p:accordionPanel widgetVar="basic" activeIndex="null">
+							<p:tab title="Details">
+
+								<h:outputText value="#{foreCastBean.dailyWeather.get(0).timestamp()}"/>
+
+							</p:tab>
+						</p:accordionPanel>
+					</p:card>
+				</p:panel>
+
+				<p:panel>
+					<!-- Content for the right column -->
+					<!-- For example: -->
+					<!-- 3 day forecast -->
+					<div class="card">
+						<h:form>
+							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
+								<p:column style="width:2rem">
+									<p:rowToggler/>
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{foreCastBean.getDateFormattedFromTimestamp(day.timestamp())}"/>
+								</p:column>
+
+								<p:column>
+									<p:graphicImage value="#{foreCastBean.getImageUrl(day.weather().icon())}"/>
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{day.dailyTemperatureAggregation().minimumDailyTemperature()} / #{day.dailyTemperatureAggregation().maximumDailyTemperature()} °C">
+									</h:outputText>
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{day.weather().description()}"/>
+								</p:column>
+
+								<p:rowExpansion>
+									<p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
+										<h:outputText value="#{day.summary()}"/>
+										<h:outputText value="Feels like: #{day.feelsLikeTemperatureAggregation().dayTemperature()} °C"/>
+										<h:outputText value="Wind: #{day.windSpeed()} m/s, #{day.windDirection()}°, Gusts of #{day.windGust()} m/s"/>
+
+										<h:outputText value="Sunrise: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunrise())}"/>
+										<h:outputText value="Rain: #{day.rain()} mm/h"/>
+										<h:outputText value="PoP: #{day.probabilityOfPrecipitation()} %"/>
+
+										<h:outputText value="Sunset: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunset())}"/>
+										<h:outputText value="Snow: #{day.snow()} mm/h"/>
+										<h:outputText value="Dew Point: #{day.dewPoint()} °C"/>
+									</p:panelGrid>
+								</p:rowExpansion>
+							</p:dataTable>
+						</h:form>
 					</div>
-				</div>
-				<div class="wind">
-					<i class='bx bx-wind'></i>
-					<div class="text">
-						<div class="info-wind">
-							<span><h:outputText id="wind" value="#{testWeatherBean.windSpeed}"/>Km/h</span>
-						</div>
-						<p>Wind Speed</p>
-					</div>
-				</div>
-			</div>
-			<div class="not-found">
-				<div class="box">
-					<h:graphicImage value ="resources/img/error.png" />
-					<p>MISTAKE, LOCATION DOES NOT EXIST!!</p>
-				</div>
-			</div>
-		</div>
+					<!-- end of 3 day forecast-->				</p:panel>
+			</p:panelGrid>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

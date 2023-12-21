@@ -1,0 +1,4 @@
+body .borderless .ui-panel .ui-panel-content{
+    border: none;
+}
+/* this rule removes the border of panels when inside a panelGrid with styleClass="borderless" */

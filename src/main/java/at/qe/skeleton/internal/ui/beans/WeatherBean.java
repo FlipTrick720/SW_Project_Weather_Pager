@@ -4,6 +4,7 @@ import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswer
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Component
 @Scope("view")
-public class testWeatherBean {
+public class WeatherBean {
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
@@ -26,27 +27,28 @@ public class testWeatherBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
     private double latitude;
     private double longitude;
-    private String location;
-    private double temperature;
-    private String weatherDescription;
-    private double humidity;
-    private double windSpeed;
+    private String location = "Innsbruck";
+
+    private CurrentAndForecastAnswerDTO weather;
+
+    public String imageUrl() {
+        return "https://openweathermap.org/img/wn/" + weather.currentWeather().weather().icon() + "@2x.png";
+    }
+
+    @PostConstruct
     public void searchWeather() {
-        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
+        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData("Innsbruck");
         latitude = geocode.get(0).lat();
         longitude = geocode.get(0).lon();
 
 
         try {
-            CurrentAndForecastAnswerDTO answer = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
-            temperature = Math.round(answer.currentWeather().temperature());
-            weatherDescription = answer.currentWeather().weather().description();
-            humidity = answer.currentWeather().humidity();
-            windSpeed = answer.currentWeather().windSpeed();
+            weather = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
         } catch (final Exception e) {
             LOGGER.error("error in request", e);
         }
     }
+
 
     public double getLatitude() {
         return latitude;
@@ -73,35 +75,11 @@ public class testWeatherBean {
         System.out.println("location set");
     }
 
-    public double getTemperature() {
-        return temperature;
+    public CurrentAndForecastAnswerDTO getWeather() {
+        return weather;
     }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public String getWeatherDescription() {
-        return weatherDescription;
-    }
-
-    public void setWeatherDescription(String weatherDescription) {
-        this.weatherDescription = weatherDescription;
-    }
-
-    public double getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(double humidity) {
-        this.humidity = humidity;
-    }
-
-    public double getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(double windSpeed) {
-        this.windSpeed = windSpeed;
+    public void setWeather(CurrentAndForecastAnswerDTO weather) {
+        this.weather = weather;
     }
 }
