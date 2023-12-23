@@ -3,12 +3,12 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.PaymentHistory;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.time.Month;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Component
@@ -20,6 +20,5 @@ public class PaymentHistoryController {
     public List<PaymentHistory> getPaymentHistoryYearMonth(Integer year, Integer month){
 
             return paymentHistoryService.getAllByYearAndMonth(year, month);
-
-        }
+    }
 }

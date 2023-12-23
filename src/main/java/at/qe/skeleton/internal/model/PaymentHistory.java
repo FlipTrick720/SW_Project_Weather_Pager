@@ -1,9 +1,8 @@
 package at.qe.skeleton.internal.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -20,29 +19,15 @@ public class PaymentHistory {
     @JoinColumn(name = "user_id")
     private Userx user;
 
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private  boolean paymentStatus;
+    private PaymentStatus paymentStatus;
 
     private int chargedDays;
 
     @Column(nullable = false)
     private LocalDateTime changeDate;
-
-    public LocalDateTime getChangeDate() {
-        return changeDate;
-    }
-
-    public void setChangeDate(LocalDateTime changeDate) {
-        this.changeDate = changeDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Userx getUser() {
         return user;
@@ -52,12 +37,12 @@ public class PaymentHistory {
         this.user = user;
     }
 
-    public boolean isPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus  = paymentStatus;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public int getChargedDays() {
@@ -68,12 +53,25 @@ public class PaymentHistory {
         this.chargedDays = chargedDays;
     }
 
+    public LocalDateTime getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(LocalDateTime changeDate) {
+        this.changeDate = changeDate;
+    }
+
+    private String getMonthAndYear(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM")) : null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaymentHistory that = (PaymentHistory) o;
-        return Objects.equals(user, that.user) && Objects.equals(changeDate, that.changeDate);
+        return Objects.equals(user, that.user) &&
+                Objects.equals(getMonthAndYear(changeDate), getMonthAndYear(that.changeDate));
     }
 
     @Override

@@ -20,13 +20,20 @@
                 <p:column headerText="Payment Status">
                     <h:outputText value="#{paymentHistory.paymentStatus}"/>
                 </p:column>
-                <p:column headerText="Charged Days">
-                    <h:outputText value="#{paymentHistory.chargedDays}"/>
+                <p:column headerText="Days Till end Month">
+                </p:column>
+                <p:column headerText="Charged Days" >
+                    <h:outputText value="#{paymentHistory.chargedDays}" rendered="#{paymentHistory.chargedDays ne 0}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
+                    <p:commandButton action="#{premiumStatusListener.cashUpTillEndCurrentMonth(paymentHistory.user)}" update=":userListForm:usersTable" icon="pi pi-euro" title="Cash-up"
+                                     rendered="#{dateSelectionBean.isSelectedDateCurrent() and paymentHistory.paymentStatus eq 'OPEN'}">
+                        <p:confirm header="Confirmation" message="Are you sure to cash up the user?" icon="ui-icon-alert" />
+                    </p:commandButton>
                     <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-info-circle" title="Details">
                         <f:setPropertyActionListener value="#{paymentHistory.user}" target="#{userDetailController.user}" />
                     </p:commandButton>
+
                 </p:column>
             </p:dataTable>
 
@@ -56,7 +63,7 @@
                             <h:outputText value="#{premiumHistory.newPremiumStatus ? 'Premium' : 'Not Premium'}" />
                         </p:column>
                         <p:column headerText="Was Premium for">
-                            <h:outputText value="#{premiumStatusListener.getTimePremiumInerval(premiumStatusListener.getPremiumIntervalByName(userDetailController.user)).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
+                            <h:outputText value="#{premiumStatusListener.getTimePremiumInterval(premiumStatusListener.getPremiumIntervalByName(userDetailController.user)).get(rowIndex / 2)}" rendered="#{rowIndex % 2 == 1}" />
                             <h:outputText value=" seconds" rendered="#{rowIndex % 2 == 1}" />
                         </p:column>
                     </p:dataTable>

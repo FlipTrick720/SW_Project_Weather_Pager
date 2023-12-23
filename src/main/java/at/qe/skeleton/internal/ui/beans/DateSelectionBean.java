@@ -1,10 +1,8 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import jakarta.annotation.ManagedBean;
-import jakarta.enterprise.context.RequestScoped;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +16,6 @@ import java.util.List;
 
 
 @ManagedBean
-@RequestScoped
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;
@@ -27,11 +24,15 @@ public class DateSelectionBean implements Serializable {
     private Month selectedMonth;
     private Integer selectedMonthInt;
 
-
+    /**
+     * This class represents a DateSelectionBean, which provides a list of years
+     * and months for date selection. The default values are set to the current
+     * year and month.
+     */
     public DateSelectionBean() {
         years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = currentYear; i >= currentYear - 10; i--) {
+        for (int i = currentYear+1; i >= currentYear - 11; i--) {
             years.add(i);
         }
 
@@ -79,9 +80,21 @@ public class DateSelectionBean implements Serializable {
     }
 
     public String printDates() {
-        System.out.println("Selected Year: " + selectedYear);
-        System.out.println("Selected Month: " + selectedMonthInt);
+        /* for debugging  reasons.
+       System.out.println("Selected Year: " + selectedYear);
+       System.out.println("Selected Month: " + selectedMonthInt); */
 
         return "/manager/user_list.xhtml";
+    }
+
+    /**
+     * Method to check if the selected Year and Month are the current Year and Month
+     * @return
+     */
+    public boolean isSelectedDateCurrent() {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        Month currentMonth = Month.values()[Calendar.getInstance().get(Calendar.MONTH)];
+
+        return selectedYear.equals(currentYear) && selectedMonth.equals(currentMonth);
     }
 }

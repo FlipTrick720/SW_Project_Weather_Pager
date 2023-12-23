@@ -2,18 +2,15 @@ package at.qe.skeleton.internal.services;
 
 
 import at.qe.skeleton.internal.model.PaymentHistory;
-import at.qe.skeleton.internal.model.PremiumHistory;
+import at.qe.skeleton.internal.model.PaymentStatus;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import org.hibernate.boot.jaxb.internal.stax.JpaOrmXmlEventReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.YearMonth;
 import java.util.List;
 
 
@@ -31,35 +28,36 @@ public class PaymentHistoryService {
     private PaymentHistoryRepository paymentHistoryRepository;
 
 
+    /**
+     * Methode to create a new PaymentHistory. The Methode is only creating a new history if there is
+     * no other history for the user in the selected month and year.
+     * @param user
+     */
+    public void createPaymentHistory(Userx user, LocalDateTime yearMonth){
 
-    public void createPaymentHistory(Userx user){
-        LocalDateTime now = LocalDateTime.now();
-        Integer currentYear = now.getYear();
-        Month currentMonth = now.getMonth();
-        if(paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth.getValue()) != null ){
-            System.out.println("already exists");
-        } else {
+        if(!paymentHistoryRepository.exitsByUserAndPaymentYearAndPaymentMonth(user, yearMonth.getYear(), yearMonth.getMonthValue())) {
             PaymentHistory paymentHistory = new PaymentHistory();
             paymentHistory.setUser(user);
-            paymentHistory.setChangeDate(now);
-            paymentHistory.setPaymentStatus(false);
+            paymentHistory.setChangeDate(yearMonth);
+            paymentHistory.setPaymentStatus(PaymentStatus.OPEN);
             paymentHistoryRepository.save(paymentHistory);
         }
     }
 
-    public void updatePaymentStatus (Userx user, Boolean paymentStatus, Integer chargedDays){
+    public void updatePaymentStatus (Userx user, PaymentStatus paymentStatus, Integer chargedDays){
         LocalDateTime now = LocalDateTime.now();
         Integer currentYear = now.getYear();
-        Month currentMonth = now.getMonth();
+        Integer currentMonth = now.getMonth().getValue();
 
-        PaymentHistory paymentHistory  = paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth.getValue());
 
-        if (paymentHistory == null ){
+        PaymentHistory paymentHistory = paymentHistoryRepository.findByUserAndPaymentYearAndPaymentMonth(user, currentYear, currentMonth);
+
+        if (paymentHistory == null) {
             PaymentHistory newPaymentHistory = new PaymentHistory();
-            paymentHistory.setUser(user);
-            paymentHistory.setChangeDate(now);
-            paymentHistory.setPaymentStatus(paymentStatus);
-            paymentHistory.setChargedDays(chargedDays);
+            newPaymentHistory.setUser(user);
+            newPaymentHistory.setChangeDate(now);
+            newPaymentHistory.setPaymentStatus(paymentStatus);
+            newPaymentHistory.setChargedDays(chargedDays);
             paymentHistoryRepository.save(newPaymentHistory);
         } else {
             paymentHistory.setPaymentStatus(paymentStatus);
@@ -68,17 +66,15 @@ public class PaymentHistoryService {
         }
     }
 
-
-
     /**
      * finds and returns a List of all the Payment-History Entries for a certain year and month.
      *
      * @param year
-     * @param monat
+     * @param month
      * @return
      */
-    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Integer monat){
-        return paymentHistoryRepository.findByChangeDate(year, monat);
+    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Integer month){
+        return paymentHistoryRepository.findByChangeDate(year, month);
     }
 
 }

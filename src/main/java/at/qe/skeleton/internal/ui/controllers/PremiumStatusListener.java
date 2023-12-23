@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.ui.controllers;
 
 
+import at.qe.skeleton.internal.model.PaymentStatus;
 import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.*;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,11 +34,14 @@ public class PremiumStatusListener implements PropertyChangeListener{
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
         if ("premium".equals(evt.getPropertyName())) {
             boolean newPremiumStatus = (boolean) evt.getNewValue();
             Userx user = (Userx) evt.getSource();
             premiumHistoryService.savePremiumHistory(user, newPremiumStatus);
-         //   paymentHistoryService.createPaymentHistory(user);
+            if(newPremiumStatus == true) {
+                paymentHistoryService.createPaymentHistory(user,LocalDateTime.now());
+            }
         }
     }
 
@@ -56,7 +59,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @param allDates
      * @return
      */
-    public List<Integer> getTimePremiumInerval(List<PremiumHistory> allDates) {
+    public List<Integer> getTimePremiumInterval(List<PremiumHistory> allDates) {
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
             return null;
@@ -83,7 +86,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      * @return
      */
     public Integer getTotalPremiumTimeByName(Userx user) {
-        List<Integer> premiumTupelList = getTimePremiumInerval(getPremiumIntervalByName(user));
+        List<Integer> premiumTupelList = getTimePremiumInterval(getPremiumIntervalByName(user));
         if (premiumTupelList == null) {
             return 0;
         }
@@ -123,7 +126,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
             dummyEndPoint.setChangeDate(lastDayOfMonth);
             invoiceList.add(dummyEndPoint);
         }
-        List<Integer> totalTimeTillNow = getTimePremiumInerval(invoiceList);
+        List<Integer> totalTimeTillNow = getTimePremiumInterval(invoiceList);
         return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum();
     }
 
@@ -146,6 +149,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
      */
     //Not finished waiting for account and e-mail messaging service
     public void cashUpTillEndCurrentMonth (Userx user) {
+
         int chargedDays = chargedDaysTillEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
         double payment = priceForChargedDays(chargedDays, user);
 
@@ -153,34 +157,22 @@ public class PremiumStatusListener implements PropertyChangeListener{
         Random random = new Random();
 
         //check balance if there is balance >= payment
-        if (random.nextInt(3) == 1) {
+        if (random.nextInt(2) == 1) {
             //balance = balance - payment;
-            paymentHistoryService.updatePaymentStatus(user, true, chargedDays);
+            paymentHistoryService.updatePaymentStatus(user, PaymentStatus.PAYED, chargedDays);
+            if(user.isPremium()){
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            LocalDateTime nextMonth = currentDateTime.plusMonths(1)
+                    .withDayOfMonth(1)
+                    .withHour(0)
+                    .withMinute(0)
+                    .withSecond(1);
+            paymentHistoryService.createPaymentHistory(user, nextMonth);
+            }
         } else {
-            paymentHistoryService.updatePaymentStatus(user, false, chargedDays);
+            paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
             user.setPremium(false);
             //send email
         }
     }
-
-
-    /**
-     * gets the time span, of the user, where he/she was a premium user for a certain row count.
-     * this is purely a method for display purposes
-     * @param user
-     * @param rowIndex
-     * @return
-     */
-    /*
-    public Integer getPremiumTupelByRowIndex(Userx user, int rowIndex) {
-        List<Integer> premiumTupelList = getPremiumTupel(getPremiumIntervalByName(user));
-        //getPremiumTupelByRowIndex
-        if (premiumTupelList == null) {
-            return null;
-        } else if (rowIndex >= 0 && rowIndex < premiumTupelList.size()) {
-            return premiumTupelList.get(rowIndex);
-        } else {
-            return null;
-        }
-    }*/
 }
