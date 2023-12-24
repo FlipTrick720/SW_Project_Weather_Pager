@@ -70,6 +70,11 @@ public class PremiumHistory {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "|ChangeDate: " + changeDate + " new Status: " + newPremiumStatus + "|";
+    }
 }
 
 
