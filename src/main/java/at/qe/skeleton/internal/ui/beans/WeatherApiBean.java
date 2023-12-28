@@ -38,7 +38,7 @@ public class WeatherApiBean {
             CurrentAndForecastAnswerDTO answer = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
             double temp = answer.currentWeather().temperature();
             double feelsLike = answer.currentWeather().feelsLikeTemperature();
-            setCurrentWeather("Temperature: " + temp + ". Feels like: " + feelsLike);
+            setCurrentWeather("Temperature: " + temp + "°C. Feels like: " + feelsLike + "°C");
         } catch (final Exception e) {
             LOGGER.error("error in request", e);
         }

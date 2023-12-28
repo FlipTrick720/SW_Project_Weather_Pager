@@ -1,11 +1,9 @@
 package at.qe.skeleton.internal.ui.controllers;
 
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
-import at.qe.skeleton.internal.services.LocationService;
+import at.qe.skeleton.internal.services.FavLocationService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
 import java.util.Collection;
@@ -27,8 +25,6 @@ public class UserDetailController implements Serializable {
 
     @Autowired
     private UserxService userService;
-    @Autowired
-    private LocationService locationService;
 
     /**
      * Attribute to cache the currently displayed user
@@ -120,10 +116,6 @@ public class UserDetailController implements Serializable {
         newUser.setCreateUser(newUser);
         newUser.setEnabled(true);
         user = this.userService.saveUser(newUser);
-
     }
 
-    public Collection<FavLocation> getLocations(Userx user){
-        return locationService.getLocations(user);
-    }
 }

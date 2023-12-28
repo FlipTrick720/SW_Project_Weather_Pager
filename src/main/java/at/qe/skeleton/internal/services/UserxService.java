@@ -1,13 +1,11 @@
 package at.qe.skeleton.internal.services;
 
-import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import at.qe.skeleton.internal.model.UserxRole;
-import at.qe.skeleton.internal.repositories.LocationRepository;
+import at.qe.skeleton.internal.repositories.FavLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +27,7 @@ public class UserxService {
     @Autowired
     private UserxRepository userRepository;
     @Autowired
-    private LocationRepository locationRepository;
+    private FavLocationRepository locationRepository;
 
     /**
      * Returns a collection of all users.

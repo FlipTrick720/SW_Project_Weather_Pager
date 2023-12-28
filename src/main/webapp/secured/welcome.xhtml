@@ -8,13 +8,29 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-        <h:form>
-            <p:dataList value="#{userDetailController.getLocations(sessionInfoBean.currentUser)}" var="location">
-                <f:facet name="header">
-                    My Favorites
-                </f:facet>
-                <h:outputText value="#{location.name}" />
-            </p:dataList>
+        <h:form id="welcomeForm">
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+            <h3>Pojo Support with Clip Effect, Captions, Custom Content, Reorder Controls, Events and Responsive</h3>
+            <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
+                <p:ajax event="unselect" listener="#{reorderListBean.onUnselect}" update="msgs"/>
+                <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
+                <f:facet name="caption">Available</f:facet>
+
+                <p:column style="width:40px">
+                    <h:outputText value="#{favLocation.name}" />
+                </p:column>
+            </p:orderList>
+            <p:commandButton value="Submit" update="displayLocations" oncomplete="PF('locationsDialog').show()" style="margin-top:5px" />
+
+            <p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="locationsDialog" header="Locations" width="200" id="dlgLocations">
+                <h:panelGrid id="displayLocations" columns="1">
+                    <ui:repeat value="#{reorderListBean.favLocations}" var="location">
+                        <h:outputText value="#{location.name}" style="margin-right:5px" />
+                        <br />
+                    </ui:repeat>
+                </h:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
