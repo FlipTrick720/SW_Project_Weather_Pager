@@ -9,69 +9,89 @@
 
 	<ui:define name="content">
 		<h:form>
-			<p:panelGrid columns="2">
-				<p:panel style="width: 100%">
-					<!-- Content for the left column -->
-					<!-- For example: -->
-					<p:card style="width: 300px;">
-						<!-- City Name -->
-						<div style="text-align: center; margin-top: 10px;">
-							<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
-						</div>
-
-						<!-- Temperature and Weather Image -->
-						<h:panelGrid styleClass="borderless" style="margin: auto">
-							<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
-								<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
-								<br />
-								<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
-								<br />
-								<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
-							</p:panel>
-						</h:panelGrid>
-
-						<!-- Details Panel -->
-						<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;" >
-							<p:panel style="text-align: center;">
-								<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
-								<br/>
-								<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
-							</p:panel>
-
-							<p:panel style="text-align: center">
-								<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
-								<br/>
-								<h:outputLabel value="Wind Speed" style="font-size: 10px" />
-							</p:panel>
-							<!-- Add more details as needed -->
-						</h:panelGrid>
-						<p:accordionPanel widgetVar="basic" activeIndex="null">
-							<p:tab title="Details">
-
-								<h:outputText value="#{foreCastBean.dailyWeather.get(0).timestamp()}"/>
-
-							</p:tab>
-						</p:accordionPanel>
-					</p:card>
+			<!-- start of top section: searchbar and else -->
+			<p:panelGrid columns="1" styleClass="borderless">
+				<p:panel style="text-align: center;">
+					<p:autoComplete value="#{weatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" style="margin-right: 10px"/>
+					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
+					<p:commandButton icon="pi pi-star" />
 				</p:panel>
+			</p:panelGrid>
+			<!-- end of top section -->
 
-				<p:panel>
-					<!-- Content for the right column -->
-					<!-- For example: -->
-					<!-- 3 day forecast -->
-					<div class="card">
+			<!-- start of middle section: weather information in 2 columns -->
+			<p:panelGrid id="middle" columns="2" columnClasses="thirty-percent, seventy-percent" styleClass="borderless" style="vertical-align: middle">
+
+				<!-- Content for the left column -->
+				<p:panel rendered="#{weatherBean.buttonPressed}">
+						<p:card>
+							<!-- City Name -->
+							<div style="text-align: center; margin-top: 10px;">
+								<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
+							</div>
+
+							<!-- Temperature and Weather Image -->
+							<h:panelGrid styleClass="borderless" style="margin: auto">
+								<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
+									<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
+									<br />
+									<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
+									<br />
+									<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
+								</p:panel>
+							</h:panelGrid>
+
+							<!-- Details Panel -->
+							<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;">
+								<p:panel style="text-align: center;">
+									<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
+									<br/>
+									<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
+								</p:panel>
+
+								<p:panel style="text-align: center">
+									<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
+									<br/>
+									<h:outputLabel value="Wind Speed" style="font-size: 10px" />
+								</p:panel>
+							</h:panelGrid>
+
+<!--							 accordion panel for additional data, not sure if needed -->
+							<p:accordionPanel widgetVar="basic" activeIndex="null">
+								<p:tab title="Summmary">
+									<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+								</p:tab>
+							</p:accordionPanel>
+						</p:card>
+					</p:panel>
+				<!-- end of left column -->
+
+				<!-- Content for the right column -->
+				<p:panel rendered="#{weatherBean.buttonPressed}" style="text-align: center" >
+					<h:form>
+						<p:barChart model="#{chartBean.createMixedModel(weatherBean.weather.hourlyWeather())}"/>
+					</h:form>
+				</p:panel>
+				<!-- end of right column -->
+			</p:panelGrid>
+			<!-- end of middle section -->
+
+			<!-- start of bottom section: 8-day-forecast -->
+			<p:panelGrid id="bottom" columns="1" styleClass="borderless">
+				<p:panel rendered="#{weatherBean.buttonPressed}">
+					<p:panel header="8-Day-Forecast">
 						<h:form>
 							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
-								<p:column style="width:2rem">
+								<p:column style="width:5rem">
 									<p:rowToggler/>
 								</p:column>
 
-								<p:column>
+								<p:column styleClass="smaller-rows">
 									<h:outputText value="#{foreCastBean.getDateFormattedFromTimestamp(day.timestamp())}"/>
 								</p:column>
 
 								<p:column>
-									<p:graphicImage value="#{foreCastBean.getImageUrl(day.weather().icon())}"/>
+									<p:graphicImage value="#{foreCastBean.getImageUrl(day.weather().icon())}" style="width: 20%"/>
 								</p:column>
 
 								<p:column>
@@ -82,26 +102,40 @@
 								<p:column>
 									<h:outputText value="#{day.weather().description()}"/>
 								</p:column>
-
+								<!-- Begin of the details section when the user clicks the ">" -->
 								<p:rowExpansion>
 									<p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
-										<h:outputText value="#{day.summary()}"/>
-										<h:outputText value="Feels like: #{day.feelsLikeTemperatureAggregation().dayTemperature()} °C"/>
-										<h:outputText value="Wind: #{day.windSpeed()} m/s, #{day.windDirection()}°, Gusts of #{day.windGust()} m/s"/>
+										<p:panel>
+											<h:outputText value="#{day.summary()}."/>
+											<br/>
+											<br/>
+											<h:outputText value="Sunrise: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunrise())}."/>
+											<br/>
+											<h:outputText value="Sunset: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunset())}."/>
+										</p:panel>
 
-										<h:outputText value="Sunrise: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunrise())}"/>
-										<h:outputText value="Rain: #{day.rain()} mm/h"/>
-										<h:outputText value="PoP: #{day.probabilityOfPrecipitation()} %"/>
+										<h:form>
+											<p:barChart model="#{chartBean.createStackedBarModel(day)}" />
+										</h:form>
 
-										<h:outputText value="Sunset: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunset())}"/>
-										<h:outputText value="Snow: #{day.snow()} mm/h"/>
-										<h:outputText value="Dew Point: #{day.dewPoint()} °C"/>
+										<p:panel>
+											<h:outputText value="&#x1F343; #{day.windSpeed()} m/s (#{day.windDirection()}°)"/>
+											<br/>
+											<h:outputText value="&#x1F327; #{day.rain()}mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
+											<br/>
+											<h:outputText value="&#x2744; #{day.snow()}mm/h"/>
+											<br/>
+											<h:outputText value="Humidity: #{day.humidity()}%"/>
+											<br/>
+											<h:outputText value="UVI: #{day.uvi()}"/>
+										</p:panel>
+
 									</p:panelGrid>
 								</p:rowExpansion>
 							</p:dataTable>
 						</h:form>
-					</div>
-					<!-- end of 3 day forecast-->				</p:panel>
+					</p:panel>
+				</p:panel>
 			</p:panelGrid>
 		</h:form>
 	</ui:define>

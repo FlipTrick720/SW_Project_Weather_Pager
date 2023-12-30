@@ -27,7 +27,9 @@ public class WeatherBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
     private double latitude;
     private double longitude;
-    private String location = "Innsbruck";
+    private String location;
+
+    private Boolean buttonPressed = false;
 
     private CurrentAndForecastAnswerDTO weather;
 
@@ -35,9 +37,10 @@ public class WeatherBean {
         return "https://openweathermap.org/img/wn/" + weather.currentWeather().weather().icon() + "@2x.png";
     }
 
-    @PostConstruct
     public void searchWeather() {
-        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData("Innsbruck");
+        buttonPressed = true;
+        System.out.println("button pressed yes");
+        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
         latitude = geocode.get(0).lat();
         longitude = geocode.get(0).lon();
 
@@ -81,5 +84,13 @@ public class WeatherBean {
 
     public void setWeather(CurrentAndForecastAnswerDTO weather) {
         this.weather = weather;
+    }
+
+    public Boolean getButtonPressed() {
+        return buttonPressed;
+    }
+
+    public void setButtonPressed(Boolean buttonPressed) {
+        this.buttonPressed = buttonPressed;
     }
 }
