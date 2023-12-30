@@ -85,6 +85,7 @@ INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE)
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user5', 'FAILED', 10 ,'2023-05-19 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user5', 'PAYED', 10,'2023-06-04 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user6', 'PAYED', 10,'2023-07-04 00:00:00');
+INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user6', 'PAYED', 10,'2023-09-04 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'PAYED', 10,'2023-02-01 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'FAILED', 10,'2023-01-01 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'PAYED', 10,'2023-11-01 00:00:00');
