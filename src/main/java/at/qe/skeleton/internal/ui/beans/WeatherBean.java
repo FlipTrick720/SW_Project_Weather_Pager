@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * diese klasse ist nur testweise erstellt worden und sollte schnellstmöglich gelöscht werden
- */
+
 @Component
 @Scope("view")
 public class WeatherBean {

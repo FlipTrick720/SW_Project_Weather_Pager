@@ -20,13 +20,6 @@ public class ForeCastBean {
     @Autowired
     WeatherBean weatherBean;
 
-    public List<DailyWeatherDTO> dailyWeather;
-
-    @PostConstruct
-    public void init(){
-        dailyWeather = weatherBean.getWeather().dailyWeather();
-    }
-
     public String getDateFormattedFromTimestamp(Instant timestamp){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d", Locale.ENGLISH);
         return timestamp.atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
@@ -43,6 +36,6 @@ public class ForeCastBean {
     }
 
     public List<DailyWeatherDTO> getDailyWeather() {
-        return dailyWeather;
+        return weatherBean.getWeather().dailyWeather();
     }
 }

@@ -8,11 +8,12 @@ function chartExtender() {
                     color: '#16739b',
                     anchor: 'end',
                     align: 'top',
+                    rotation: -45,
                     formatter: (val) => {
                         return val + ' mm';
                     }
                 },
-                minBarLength: 0,
+                minBarLength: 5,
             }, {
                 datalabels: {
                     //don't show labels for the second dataset

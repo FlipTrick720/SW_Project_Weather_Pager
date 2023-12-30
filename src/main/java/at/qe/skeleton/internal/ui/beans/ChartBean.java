@@ -141,7 +141,7 @@ public class ChartBean implements Serializable {
 
     public String getTimeFormattedFromTimestamp(Instant timestamp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
-        return timestamp.atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
+        return timestamp.atZone(ZoneId.systemDefault()).toLocalTime().format(formatter); // todo check if this is correct
     }
 
 
