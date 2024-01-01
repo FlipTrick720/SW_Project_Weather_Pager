@@ -30,6 +30,7 @@ public class UserxService {
 
     @Autowired
     private UserxRepository userRepository;
+
     @Autowired
     private PremiumHistoryService premiumHistoryService;
 

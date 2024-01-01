@@ -77,7 +77,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @OneToMany(mappedBy = "user" , cascade = CascadeType.REMOVE) // Die mappedBy-Annotation bezieht sich auf das Attribut "user" in der PremiumHistory-Klasse
     private List<PremiumHistory> premiumHistoryList = new ArrayList<>();
 
-
     @OneToMany(mappedBy ="user" , cascade = CascadeType.REMOVE)
     private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
 

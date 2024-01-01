@@ -3,11 +3,14 @@ package at.qe.skeleton.tests;
 import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
-import at.qe.skeleton.internal.repositories.PremiumHistoryRepository;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
 import at.qe.skeleton.internal.services.UserxService;
+import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -18,7 +21,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -30,6 +35,9 @@ public class PayrollTest {
 
     @Autowired
     private UserxService userxService;
+
+    @Autowired
+    private PremiumStatusListener premiumStatusListener;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -95,6 +103,110 @@ public class PayrollTest {
         Assertions.assertTrue(firstResult.get(0).getNewPremiumStatus());
         Assertions.assertFalse(firstResult.get(1).getNewPremiumStatus());
     }
+
+    private static Stream<Arguments> provideSleepDurations() {
+        //all in Seconds because the time Metric is in Seconds as well
+        return Stream.of(
+                Arguments.of(1000, 2000),
+                Arguments.of(3400, 1500),
+                Arguments.of(1500, 3000),
+                Arguments.of(2500, 4500),
+                Arguments.of(3400, 6500),
+                Arguments.of(1200, 4500)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSleepDurations")
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @DirtiesContext
+    public void testPremiumIntervallLaenge(int sleep1, int sleep2) {
+        try {
+            String testUser = "testUser";
+            Userx user = new Userx();
+            user.setUsername(testUser);
+            user.setPassword("passwd");
+            user.setRoles(Set.of(UserxRole.USER));
+            user.setPremium(true);
+            LocalDateTime time1 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            Thread.sleep(sleep1);
+
+            user.setPremium(false);
+            LocalDateTime time2 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            user.setPremium(true);
+            LocalDateTime time3 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            Thread.sleep(sleep2);
+
+            user.setPremium(false);
+            LocalDateTime time4 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+
+            Duration duration1 = Duration.between(time1, time2);
+
+            Duration duration2 = Duration.between(time3, time4);
+
+            List<Integer> timeList = premiumStatusListener.getTimePremiumInterval(premiumStatusListener.getPremiumIntervalByName(user));
+            System.out.println(duration1.toSeconds());
+            System.out.println((long) timeList.get(0));
+            Assertions.assertEquals(duration1.toSeconds(), (long) timeList.get(0));
+            Assertions.assertEquals(duration2.toSeconds(), (long) timeList.get(1));
+
+        } catch (InterruptedException e) {
+            // Handle interrupted exception if needed
+            e.printStackTrace();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideSleepDurations")
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @DirtiesContext
+    public void testTotalPremiumTime(int sleep1, int sleep2) {
+        try {
+            String testUser = "testUser";
+            Userx user = new Userx();
+            user.setUsername(testUser);
+            user.setPassword("passwd");
+            user.setRoles(Set.of(UserxRole.USER));
+            user.setPremium(true);
+            LocalDateTime time1 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            Thread.sleep(sleep1);
+
+            user.setPremium(false);
+            LocalDateTime time2 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            user.setPremium(true);
+            LocalDateTime time3 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            Thread.sleep(sleep2);
+
+            user.setPremium(false);
+            LocalDateTime time4 = LocalDateTime.now();
+            userxService.saveUser(user);
+
+            Duration duration1 = Duration.between(time1, time2);
+            Duration duration2 = Duration.between(time3, time4);
+
+            Integer totalTime = premiumStatusListener.getTotalPremiumTimeByName(user);
+            Assertions.assertEquals((long) totalTime, duration1.toSeconds() + duration2.toSeconds());
+
+        } catch (InterruptedException e) {
+            // Handle interrupted exception if needed
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
