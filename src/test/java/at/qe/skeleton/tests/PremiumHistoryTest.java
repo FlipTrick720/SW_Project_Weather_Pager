@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 @SpringBootTest
 @WebAppConfiguration
-public class PayrollTest {
+public class PremiumHistoryTest {
 
 
     @Autowired
@@ -103,6 +103,30 @@ public class PayrollTest {
         Assertions.assertTrue(firstResult.get(0).getNewPremiumStatus());
         Assertions.assertFalse(firstResult.get(1).getNewPremiumStatus());
     }
+
+    /*@Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @DirtiesContext
+    public void testUserCascadeDeletiton() {
+        String testUser = "testUser3";
+        Boolean newStatus = false;
+        Userx user = new Userx();
+        user.setUsername(testUser);
+        user.setPassword("passwd");
+        user.setRoles(Set.of(UserxRole.USER));
+        user.setPremium(newStatus);
+        userxService.saveUser(user);
+
+        premiumHistoryService.savePremiumHistory(user, !newStatus);
+        premiumHistoryService.savePremiumHistory(user, newStatus);
+        premiumHistoryService.savePremiumHistory(user, !newStatus);
+        premiumHistoryService.savePremiumHistory(user, newStatus);
+        Assertions.assertEquals(4, premiumHistoryService.getPremiumChangedByName(testUser).toArray().length);
+
+        userxService.deleteUser(user);
+
+        Assertions.assertEquals(0, premiumHistoryService.getPremiumChangedByName(testUser).toArray().length);
+    }*/
 
     private static Stream<Arguments> provideSleepDurations() {
         //all in Seconds because the time Metric is in Seconds as well
