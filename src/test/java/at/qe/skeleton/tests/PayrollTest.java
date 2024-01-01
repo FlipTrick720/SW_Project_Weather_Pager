@@ -207,6 +207,63 @@ public class PayrollTest {
         }
     }
 
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @DirtiesContext
+    public void testTotalPremiumTimeOverMonth() {
+        String testUser = "testUser";
+        Userx user = new Userx();
+        user.setUsername(testUser);
+        user.setPassword("passwd");
+        user.setRoles(Set.of(UserxRole.USER));
+        user.setPremium(true);
+        userxService.saveUser(user);
+        user.setPremium(false);
+        userxService.saveUser(user);
+        user.setPremium(true);
+        userxService.saveUser(user);
+        user.setPremium(false);
+        userxService.saveUser(user);
+        user.setPremium(true);
+        userxService.saveUser(user);
+        user.setPremium(false);
+        userxService.saveUser(user);
 
+        //write Random dates spanning over multiple months in the Premium History's
+        List<PremiumHistory> datesList = premiumStatusListener.getPremiumIntervalByName(user);
+        List<PremiumHistory> newDates = changeTheChangeDatesToMultipelMonths(datesList);
+
+        Integer chargedDays = premiumStatusListener.chargedDaysFromStartToEndCurrentMonth(newDates);
+
+        List<Integer> timeIntervals = premiumStatusListener.getTimePremiumInterval(newDates);
+        Assertions.assertEquals(timeIntervals.stream().mapToInt(Integer::intValue).sum(), chargedDays);
+    }
+
+    private List<PremiumHistory> changeTheChangeDatesToMultipelMonths(List<PremiumHistory> datesList) {
+        List<LocalDateTime> dateTimeRange = new ArrayList<>();
+        Random random = new Random();
+
+        LocalDateTime startDateTime = LocalDateTime.of(1950, 8, 1, 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(2023, 12, 1, 0, 0);
+
+        while (!startDateTime.isAfter(endDateTime)) {
+            // Add a random time within the day
+            int hour = random.nextInt(24);
+            int minute = random.nextInt(60);
+            int second = random.nextInt(60);
+
+            LocalDateTime randomDateTime = startDateTime.withHour(hour).withMinute(minute).withSecond(second);
+            dateTimeRange.add(randomDateTime);
+
+            startDateTime = startDateTime.plusMonths(random.nextInt(2,25));
+        }
+
+        int i = 0;
+        for (PremiumHistory premHist : datesList) {
+            premHist.setChangeDate(dateTimeRange.get(i));
+            i++;
+        }
+        return datesList;
+    }
 
 }

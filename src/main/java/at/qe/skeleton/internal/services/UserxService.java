@@ -87,6 +87,7 @@ public class UserxService {
         }
         return user;
     }
+
     /**
      * Deletes the user.
      *
@@ -96,8 +97,6 @@ public class UserxService {
     public void deleteUser(Userx user) {
         userRepository.delete(user);
     }
-    //:TODO Admin und User kann Premium status hinzufügen, Admin kann ihn auch entziehen
-
 
     /**
      * remove Role from User
@@ -165,8 +164,6 @@ public class UserxService {
     public void changePassword(Userx user, String newPassword){
         user.setPassword(newPassword);
     }
-    //:TODO: User kann seine Zahlungsinformationen bearbeiten
-
 
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -181,7 +178,5 @@ public class UserxService {
     public Collection<Userx> getPremiumUsers() {
         return userRepository.findByPremiumTrue();
     }
-
-
 
 }
