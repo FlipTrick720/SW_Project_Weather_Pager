@@ -81,6 +81,6 @@ public class PaymentHistory {
 
     @Override
     public String toString() {
-        return "Name: " + user.getUsername() + ", Status: " + paymentStatus + ", ChargedDays: " + chargedDays;
+        return "Name: " + user.getUsername() + ", Status: " + paymentStatus + ", ChargedDays: " + chargedDays + ", Date: " + changeDate;
     }
 }

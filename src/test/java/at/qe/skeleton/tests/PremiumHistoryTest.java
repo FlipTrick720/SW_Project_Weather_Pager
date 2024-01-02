@@ -104,7 +104,7 @@ public class PremiumHistoryTest {
         Assertions.assertFalse(firstResult.get(1).getNewPremiumStatus());
     }
 
-    /*@Test
+    @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testUserCascadeDeletiton() {
@@ -126,7 +126,7 @@ public class PremiumHistoryTest {
         userxService.deleteUser(user);
 
         Assertions.assertEquals(0, premiumHistoryService.getPremiumChangedByName(testUser).toArray().length);
-    }*/
+    }
 
     private static Stream<Arguments> provideSleepDurations() {
         //all in Seconds because the time Metric is in Seconds as well
@@ -279,7 +279,7 @@ public class PremiumHistoryTest {
             LocalDateTime randomDateTime = startDateTime.withHour(hour).withMinute(minute).withSecond(second);
             dateTimeRange.add(randomDateTime);
 
-            startDateTime = startDateTime.plusMonths(random.nextInt(2,25));
+            startDateTime = startDateTime.plusMonths(random.nextInt(2, 25));
         }
 
         int i = 0;
