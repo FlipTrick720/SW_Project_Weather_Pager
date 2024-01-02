@@ -17,9 +17,8 @@ import java.util.List;
 import java.util.Random;
 
 
-
 @Component
-public class PremiumStatusListener implements PropertyChangeListener{
+public class PremiumStatusListener implements PropertyChangeListener {
 
     @Autowired
     private PremiumHistoryService premiumHistoryService;
@@ -29,8 +28,9 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     /**
      * Creates a new PremiumHistory entry when an event from the Observer is triggered.
+     *
      * @param evt A PropertyChangeEvent object describing the event source
-     *          and the property that has changed.
+     *            and the property that has changed.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -39,14 +39,15 @@ public class PremiumStatusListener implements PropertyChangeListener{
             boolean newPremiumStatus = (boolean) evt.getNewValue();
             Userx user = (Userx) evt.getSource();
             premiumHistoryService.savePremiumHistory(user, newPremiumStatus);
-            if(newPremiumStatus == true) {
-                paymentHistoryService.createPaymentHistory(user,LocalDateTime.now());
+            if (newPremiumStatus == true) {
+                paymentHistoryService.createPaymentHistory(user, LocalDateTime.now());
             }
         }
     }
 
     /**
      * gets a list of all the dates where a change of the premium status occurred to the user
+     *
      * @param user
      * @return
      */
@@ -57,6 +58,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
     /**
      * gives a list of time spans, where the user of allDates was Premium
      * list must be sorted
+     *
      * @param allDates
      * @return
      */
@@ -64,13 +66,13 @@ public class PremiumStatusListener implements PropertyChangeListener{
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
             return null;
-        } else if (allDates.toArray().length%2 == 0) {
-            for (int i = 0; i < allDates.toArray().length-1; i=i+2) {
-                intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i+1).getChangeDate()));
+        } else if (allDates.toArray().length % 2 == 0) {
+            for (int i = 0; i < allDates.toArray().length - 1; i = i + 2) {
+                intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i + 1).getChangeDate()));
             }
         } else {
-            for (int i = 0; i < allDates.toArray().length-2; i=i+2) {
-                intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i+1).getChangeDate()));
+            for (int i = 0; i < allDates.toArray().length - 2; i = i + 2) {
+                intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i + 1).getChangeDate()));
             }
         }
         List<Integer> intervallsInInt = new ArrayList<>();
@@ -83,6 +85,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
     /**
      * gets the total time somebody was premium user by user
      * this is purely a method for display purposes
+     *
      * @param user
      * @return
      */
@@ -96,6 +99,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     /**
      * gets all ChangeDates by user, month and year
+     *
      * @param user
      * @param year
      * @param month
@@ -115,6 +119,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     /**
      * gives the sum of charged days for the time span given in the invoiceList until end of current month
+     *
      * @param invoiceList
      * @return
      */
@@ -129,10 +134,10 @@ public class PremiumStatusListener implements PropertyChangeListener{
             dummyStartPoint.setChangeDate(firstDayOfMonth);
             invoiceList.add(0, dummyStartPoint);
         }
-        if (invoiceList.get(invoiceList.toArray().length-1).getNewPremiumStatus()) { //still is Premium Users
+        if (invoiceList.get(invoiceList.toArray().length - 1).getNewPremiumStatus()) { //still is Premium Users
             LocalDateTime currentDateTime = LocalDateTime.now();
             LocalDateTime lastDayOfMonth = currentDateTime.withDayOfMonth(currentDateTime.getMonth().length(YearMonth.from(currentDateTime).isLeapYear()));
-            lastDayOfMonth = LocalDateTime.of(lastDayOfMonth.toLocalDate(), LocalTime.of(23, 59));
+            lastDayOfMonth = LocalDateTime.of(lastDayOfMonth.toLocalDate(), LocalTime.of(23, 59, 59));
 
             PremiumHistory dummyEndPoint = new PremiumHistory();
             dummyEndPoint.setNewPremiumStatus(false);
@@ -145,6 +150,7 @@ public class PremiumStatusListener implements PropertyChangeListener{
 
     /**
      * calculated the price for chargedDays and updated the DB PaymentHistory
+     *
      * @param chargedDays
      * @param user
      * @return
@@ -152,18 +158,19 @@ public class PremiumStatusListener implements PropertyChangeListener{
     public double priceForChargedDays(int chargedDays, Userx user) {
         double pricePerTimeUnit = 0.5; //Time unit is currently a Second
         //paymentHistoryService.createPaymentHistory(user);
-        return  chargedDays * pricePerTimeUnit;
+        return chargedDays * pricePerTimeUnit;
     }
 
     /**
      * does the payment until the end of the current month. of account is to empty it sets premium to false and sends a cancellation e-mail.
      * It also updates the PaymentHistory Data Base
+     *
      * @param user
      */
     //Not finished waiting for account and e-mail messaging service
-    public void cashUpTillEndCurrentMonth (Userx user) {
+    public void cashUpTillEndCurrentMonth(Userx user) {
 
-        int chargedDays = chargedDaysFromStartToEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear() ,LocalDate.now().getMonth()));
+        int chargedDays = chargedDaysFromStartToEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear(), LocalDate.now().getMonth()));
         double payment = priceForChargedDays(chargedDays, user);
 
         //For test purposes:
@@ -173,14 +180,14 @@ public class PremiumStatusListener implements PropertyChangeListener{
         if (random.nextInt(2) == 1) {
             //balance = balance - payment;
             paymentHistoryService.updatePaymentStatus(user, PaymentStatus.PAYED, chargedDays);
-            if(user.isPremium()){
-            LocalDateTime currentDateTime = LocalDateTime.now();
-            LocalDateTime nextMonth = currentDateTime.plusMonths(1)
-                    .withDayOfMonth(1)
-                    .withHour(0)
-                    .withMinute(0)
-                    .withSecond(1);
-            paymentHistoryService.createPaymentHistory(user, nextMonth);
+            if (user.isPremium()) {
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                LocalDateTime nextMonth = currentDateTime.plusMonths(1)
+                        .withDayOfMonth(1)
+                        .withHour(0)
+                        .withMinute(0)
+                        .withSecond(1);
+                paymentHistoryService.createPaymentHistory(user, nextMonth);
             }
         } else {
             paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
