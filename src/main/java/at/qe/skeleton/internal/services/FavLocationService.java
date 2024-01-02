@@ -18,9 +18,6 @@ public class FavLocationService {
     @Autowired
     private FavLocationRepository locationRepository;
 
-    public FavLocation saveLocation(GeocodingDTO location, Userx user) {
-        return createLocation(location, user);
-    }
     public FavLocation saveLocation(FavLocation location) {
         return locationRepository.save(location);
     }
@@ -31,11 +28,12 @@ public class FavLocationService {
         favLocation.setLatitude(favLocation.getLatitude());
         favLocation.setLongitude(favLocation.getLongitude());
         favLocation.setUser(user);
+        favLocation.setIndex(0);
         return this.saveLocation(favLocation);
     }
 
-    public FavLocation loadLocation(String name){
-        return locationRepository.findFirstByName(name);
+    public FavLocation loadLocation(Long id){
+        return locationRepository.findFirstById(id);
     }
 
     public void deleteLocation(FavLocation location){
@@ -43,14 +41,17 @@ public class FavLocationService {
     }
 
     public List<FavLocation> getUserLocations(Userx user){
-        return locationRepository.findAllByUser(user);
-
+        List<FavLocation> favLocations = locationRepository.findAllByUser(user);
+        favLocations.sort((l1, l2) -> l1.getIndex().compareTo(l2.getIndex()));
+        return favLocations;
     }
-    public List<FavLocation> getAllLocations(){
-        return locationRepository.findAll();
+    public void updateIndexLocation(Long id, Integer newIndex){
+        FavLocation location = loadLocation(id);
+        location.setIndex(newIndex);
+        saveLocation(location);
     }
 
-    public FavLocation getLocationByName(String name){
-        return locationRepository.findFirstByName(name);
+    public void updateLocations(List<FavLocation> favLocations) {
+        favLocations.stream().forEach(l -> updateIndexLocation(l.getId(), favLocations.indexOf(l)));
     }
 }

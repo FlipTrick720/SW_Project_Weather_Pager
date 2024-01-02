@@ -22,11 +22,14 @@ import java.util.List;
 public class ReorderListBean implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
+    @Autowired
+    private SessionInfoBean sessionInfoBean;
     private List<FavLocation> favLocations;
+
 
     @PostConstruct
     public void init() {
-        favLocations = favLocationService.getAllLocations();
+        favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
     }
     public List<FavLocation> getFavLocations() {
         return favLocations;
@@ -58,6 +61,7 @@ public class ReorderListBean implements Serializable {
     public void onReorder() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
+        favLocationService.updateLocations(favLocations);
     }
 
 }
