@@ -78,4 +78,9 @@ public class PaymentHistory {
     public int hashCode() {
         return Objects.hash(user, changeDate);
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + user.getUsername() + ", Status: " + paymentStatus + ", ChargedDays: " + chargedDays;
+    }
 }
