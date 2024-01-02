@@ -68,7 +68,6 @@ public class PaymentHistoryTest {
             user.setPremium(false);
             userxService.saveUser(user);
         }
-        System.out.println(paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()));
         Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
     }
 
@@ -118,5 +117,22 @@ public class PaymentHistoryTest {
         Assertions.assertEquals(0, totaldifferenz);
     }
 
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @DirtiesContext
+    public void testUserCascadeDeletion() {
+        String testUser = "testUser";
+        Userx user = new Userx();
+        user.setUsername(testUser);
+        user.setPassword("passwd");
+        user.setRoles(Set.of(UserxRole.USER));
+        user.setPremium(true);
+        userxService.saveUser(user);
 
+        Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+
+        userxService.deleteUser(user);
+
+        Assertions.assertEquals(0, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+    }
 }

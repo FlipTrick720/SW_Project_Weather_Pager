@@ -78,7 +78,6 @@ public class PremiumHistoryTest {
         Assertions.assertNotNull(firstResult.isEmpty() ? null : firstResult);
 
         Duration duration = Duration.between(firstResult.get(0).getChangeDate(), LocalDateTime.now());
-        System.out.println(duration);
         Assertions.assertTrue(duration.toSeconds() < 0.1);
     }
 
@@ -107,7 +106,7 @@ public class PremiumHistoryTest {
     /*@Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
-    public void testUserCascadeDeletiton() {
+    public void testUserCascadeDeletion() {
         String testUser = "testUser3";
         Boolean newStatus = false;
         Userx user = new Userx();
@@ -177,8 +176,6 @@ public class PremiumHistoryTest {
             Duration duration2 = Duration.between(time3, time4);
 
             List<Integer> timeList = premiumStatusListener.getTimePremiumInterval(premiumStatusListener.getPremiumIntervalByName(user));
-            System.out.println(duration1.toSeconds());
-            System.out.println((long) timeList.get(0));
             Assertions.assertEquals(duration1.toSeconds(), (long) timeList.get(0));
             Assertions.assertEquals(duration2.toSeconds(), (long) timeList.get(1));
 
