@@ -10,16 +10,28 @@ public class EmailService{
 
     @Autowired
     private JavaMailSender javaMailSender;
-    public void sendConfirmationMail(String to, String token){
+
+    private EmailStrategy emailStrategy;
+
+
+    public void sendMail(String to, String token){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply.weatherapp.uibk@gmail.com");
         message.setTo(to);
-        message.setSubject("Confirm your email for the WeatherApp");
 
-        message.setText("Please confirm your email by clicking on the link below:\n"
-                + "http://localhost:8080/confirm?token=" + token);
+        //strategy pattern to configure the mail text
+        if (emailStrategy != null) {
+            emailStrategy.configureMail(message, token);
+        } else {
+            throw new IllegalStateException("Email strategy is not set.");
+        }
 
         javaMailSender.send(message);
-        System.out.println("service sent");
+        System.out.println("mail sent");
     }
+
+    public void setEmailStrategy(EmailStrategy emailStrategy) {
+        this.emailStrategy = emailStrategy;
+    }
+
 }

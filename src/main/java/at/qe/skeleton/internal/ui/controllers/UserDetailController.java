@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
@@ -121,7 +122,10 @@ public class UserDetailController implements Serializable {
         //logic for verification process
         String token = UUID.randomUUID().toString();
         userService.createVerificationToken(newUser, token);
-        emailService.sendConfirmationMail(newUser.getEmail(), token);
+
+        //send confirmation mail
+        emailService.setEmailStrategy(new ConfirmationMailStrategy());
+        emailService.sendMail(newUser.getEmail(), token);
 
         return "/login.xhtml?faces-redirect=true";
     }
