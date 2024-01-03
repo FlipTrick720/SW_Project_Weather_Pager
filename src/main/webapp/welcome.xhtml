@@ -121,9 +121,9 @@
 										<p:panel>
 											<h:outputText value="&#x1F343; #{day.windSpeed()} m/s (#{day.windDirection()}°)"/>
 											<br/>
-											<h:outputText value="&#x1F327; #{day.rain()}mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
+											<h:outputText value="&#x1F327; #{day.rain() ne null ? day.rain() : 0} mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
 											<br/>
-											<h:outputText value="&#x2744; #{day.snow()}mm/h"/>
+											<h:outputText value="&#x2744; #{day.snow() ne null ? day.snow() : 0} mm/h"/>
 											<br/>
 											<h:outputText value="Humidity: #{day.humidity()}%"/>
 											<br/>
