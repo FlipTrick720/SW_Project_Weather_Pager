@@ -1,8 +1,8 @@
-package at.qe.skeleton.internal.services;
+package at.qe.skeleton.internal.services.email;
 
 import org.springframework.mail.SimpleMailMessage;
 
-public class ConfirmationMailStrategy implements EmailStrategy{
+public class ConfirmationMailStrategy implements EmailStrategy {
     @Override
     public void configureMail(SimpleMailMessage message, String token) {
         message.setSubject("Confirm your email for the WeatherApp");

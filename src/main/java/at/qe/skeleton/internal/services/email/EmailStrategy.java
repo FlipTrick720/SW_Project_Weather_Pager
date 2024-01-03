@@ -1,4 +1,4 @@
-package at.qe.skeleton.internal.services;
+package at.qe.skeleton.internal.services.email;
 
 import org.springframework.mail.SimpleMailMessage;
 
