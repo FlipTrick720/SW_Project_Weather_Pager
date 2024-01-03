@@ -22,7 +22,7 @@ public class WeatherBean {
     private WeatherApiRequestService weatherApiRequestService;
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherBean.class);
     private double latitude;
     private double longitude;
     private String location;
