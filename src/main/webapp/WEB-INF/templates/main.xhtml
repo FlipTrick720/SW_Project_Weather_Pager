@@ -6,13 +6,18 @@
 
 <h:head>
     <title>Weather Application</title>
-    <h:outputScript library="js" name="main.js" />
+
+    <!-- include global script for changing primefaces charts    -->
     <h:outputScript library="js" name="extender.js" />
 
 </h:head>
 
 <h:body style="margin: 0;">
+
+    <!-- include global css    -->
     <h:outputStylesheet name="css/styles.css"/>
+
+    <!-- include script to enable point labels in primefaces charts, this plugin is used in externder.js   -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"/>
 
     <div id="page">

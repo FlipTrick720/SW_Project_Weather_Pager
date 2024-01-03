@@ -9,6 +9,7 @@
         <ui:composition>
             <h:form>
                 <p:menubar>
+                    <p:menuitem value="Weather" url="/"/>
                     <p:submenu label="Manager Submenu" rendered="#{sessionInfoBean.hasRole('MANAGER')}">
                         <p:menuitem value="Manager Action 1"/>
                         <p:menuitem value="Manager Action 2"/>
