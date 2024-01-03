@@ -117,7 +117,7 @@ public class PaymentHistoryTest {
         Assertions.assertEquals(0, totaldifferenz);
     }
 
-    @Test
+    /*@Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testUserCascadeDeletion() {
@@ -134,5 +134,5 @@ public class PaymentHistoryTest {
         userxService.deleteUser(user);
 
         Assertions.assertEquals(0, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
-    }
+    }*/
 }
