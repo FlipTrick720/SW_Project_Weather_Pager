@@ -20,11 +20,13 @@ public class ForeCastBean {
     @Autowired
     WeatherBean weatherBean;
 
+    //todo move into a service class
     public String getDateFormattedFromTimestamp(Instant timestamp){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d", Locale.ENGLISH);
         return timestamp.atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
     }
 
+    //todo move into a service class
     public String getTimeFormattedFromTimestamp(Instant timestamp) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
         return timestamp.atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
