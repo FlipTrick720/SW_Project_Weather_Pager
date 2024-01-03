@@ -24,6 +24,7 @@ public class GeocodingApiDemoBean {
     private GeocodingApiRequestService geocodingApiRequestService;
     private String geocodingData;
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
+    private String cityName;
     @Autowired
     private AutocompleteBean autocompleteBean;
     private double longitude;
@@ -36,6 +37,7 @@ public class GeocodingApiDemoBean {
             List<GeocodingDTO> answer = this.geocodingApiRequestService.retrieveGeocodingData(input);
             latitude = answer.get(0).lat();
             longitude = answer.get(0).lon();
+            cityName = input;
             this.geocodingData = "Lat: " + latitude + " Lon: " + longitude;
         } catch (final Exception e) {
             LOGGER.error("error in request", e);
@@ -64,5 +66,13 @@ public class GeocodingApiDemoBean {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

@@ -20,6 +20,12 @@
                 <p:column style="width:40px">
                     <h:outputText value="#{favLocation.name}" />
                 </p:column>
+                <p:column style="width:40px">
+                    <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
+                </p:column>
+                <p:column style="width:40px">
+                    <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
+                </p:column>
             </p:orderList>
 
         </h:form>

@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
+import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.repositories.FavLocationRepository;
@@ -17,19 +18,11 @@ import java.util.List;
 public class FavLocationService {
     @Autowired
     private FavLocationRepository locationRepository;
+    @Autowired
+    private GeocodingApiRequestService geocodingApiRequestService;
 
     public FavLocation saveLocation(FavLocation location) {
         return locationRepository.save(location);
-    }
-
-    public FavLocation createLocation(GeocodingDTO geocodingDTO, Userx user) {
-        FavLocation favLocation = new FavLocation();
-        favLocation.setName(geocodingDTO.name());
-        favLocation.setLatitude(favLocation.getLatitude());
-        favLocation.setLongitude(favLocation.getLongitude());
-        favLocation.setUser(user);
-        favLocation.setIndex(0);
-        return this.saveLocation(favLocation);
     }
 
     public FavLocation loadLocation(Long id){
@@ -45,13 +38,28 @@ public class FavLocationService {
         favLocations.sort((l1, l2) -> l1.getIndex().compareTo(l2.getIndex()));
         return favLocations;
     }
+    public void updateLocations(List<FavLocation> favLocations) {
+        favLocations.stream().forEach(l -> updateIndexLocation(l.getId(), favLocations.indexOf(l)));
+    }
+
+    /**public FavLocation getFavLocationById(Long id){
+     return locationRepository.findFirstById(id);
+     }*/
     public void updateIndexLocation(Long id, Integer newIndex){
         FavLocation location = loadLocation(id);
         location.setIndex(newIndex);
         saveLocation(location);
     }
 
-    public void updateLocations(List<FavLocation> favLocations) {
-        favLocations.stream().forEach(l -> updateIndexLocation(l.getId(), favLocations.indexOf(l)));
+    public FavLocation StringToFavLocation(String city, Userx user){
+        FavLocation favLocation = new FavLocation();
+        favLocation.setName(city);
+        favLocation.setLatitude(geocodingApiRequestService.retrieveGeocodingData(city).get(0).lat());
+        favLocation.setLongitude(geocodingApiRequestService.retrieveGeocodingData(city).get(0).lon());
+        favLocation.setUser(user);
+        favLocation.setIndex(0);
+        saveLocation(favLocation);
+        return favLocation;
     }
+
 }
