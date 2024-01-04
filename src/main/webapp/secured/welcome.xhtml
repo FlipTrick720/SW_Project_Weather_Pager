@@ -8,26 +8,27 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-        <h:form id="welcomeForm">
-            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
-            <h3>My Favorites</h3>
-            <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
-                <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
-                <p:ajax event="unselect" listener="#{reorderListBean.onUnselect}" update="msgs"/>
-                <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
-                <f:facet name="caption">Location</f:facet>
-
-                <p:column style="width:40px">
-                    <h:outputText value="#{favLocation.name}" />
-                </p:column>
-                <p:column style="width:40px">
-                    <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
-                </p:column>
-                <p:column style="width:40px">
-                    <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
-                </p:column>
-            </p:orderList>
-
-        </h:form>
+        <p:panel header="Favorite Locations" toggleable="true" collapsed="false" style="width: 800px; height: 200px;">
+            <h:form id="FavLocationForm">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+                <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                    <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
+                    <p:ajax event="unselect" listener="#{reorderListBean.onUnselect}" update="msgs"/>
+                    <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocation.name}" />
+                    </p:column>
+                    <p:column style="width:40px">
+                        <p:graphicImage value="#{foreCastBean.getImageUrl(favLocationController.currentWeather(favLocation).icon())}" style="width: 40%"/>
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
+                    </p:column>
+                </p:orderList>
+            </h:form>
+        </p:panel>
     </ui:define>
 </ui:composition>

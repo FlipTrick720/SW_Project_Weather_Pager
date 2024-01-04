@@ -24,7 +24,7 @@
 		<p:panel header="Weather API Call">
 			<div>
 				<h:outputText id="weather" escape="false" value="#{weatherApiBean.currentWeather}"/>
-				<p:commandButton value="Add to Favorite" action="#{favLocationService.saveLocation(favLocationService.StringToFavLocation(geocodingApiDemoBean.cityName, sessionInfoBean.currentUser))}" />
+				<p:commandButton value="Add to Favorite" action="#{favLocationController.doSafeLocationByName(geocodingApiDemoBean.cityName, sessionInfoBean.currentUser)}" />
 			</div>
 		</p:panel>
 	</ui:define>
