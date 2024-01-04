@@ -103,7 +103,7 @@
 								</p:column>
 
 								<p:column>
-									<h:outputText value="#{day.dailyTemperatureAggregation().minimumDailyTemperature()} / #{day.dailyTemperatureAggregation().maximumDailyTemperature()} °C">
+									<h:outputText value="#{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().maximumDailyTemperature())} / #{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().minimumDailyTemperature())} °C">
 									</h:outputText>
 								</p:column>
 

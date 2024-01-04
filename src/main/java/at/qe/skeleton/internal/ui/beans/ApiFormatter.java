@@ -20,4 +20,8 @@ public class ApiFormatter {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
         return timestamp.atZone(ZoneId.of("UTC")).plusSeconds(offset).format(formatter);
     }
+
+    public static int roundTemperature(double temperature) {
+        return (int) Math.round(temperature);
+    }
 }
