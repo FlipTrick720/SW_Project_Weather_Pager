@@ -74,7 +74,9 @@
             </p:dialog>
 
             <p:dialog header="Credit Card Details" id="creditCardDialog" widgetVar="creditCardDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <h:panelGrid columns="2" rendered="#{not empty userDetailController.user}">
+                <p:outputPanel id="creditCardData" rendered="#{not empty userDetailController.user}">
+                <h:panelGrid columns="2" rendered="#{empty userDetailController.user.creditCard}">
+
                     <p:outputLabel for="number" value="CreditCard number: " />
                     <p:inputText id="number" value="#{creditCardController.newCreditCard.number}"
                                  placeholder="****-****-****-****"  required="true" >
@@ -82,7 +84,8 @@
                     </p:inputText>
 
                     <p:outputLabel for="cvc" value="CVC: " />
-                    <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true">
+                    <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true"
+                        placeholder="***">
                         <f:validateRegex pattern="\d{3}" />
                     </p:inputText>
 
@@ -93,10 +96,26 @@
                     <p:inputText id="expirationDate" value="#{creditCardController.newCreditCard.expirationDate}" placeholder="MM/YYYY" required="true">
                         <f:validateRegex pattern="(0[1-9]|1[0-2])\/\d{4}" />
                     </p:inputText>
-                </h:panelGrid>
-                <h:panelGrid columns="3">
+                    <h:panelGrid columns="3">
                     <p:commandButton value="Save" action="#{creditCardController.doSaveCreditCard}"
                                      oncomplete="if(#{empty userDetailController.user.creditCard}) PF('premiumConfirmationDialog').show(); PF('creditCardDialog').hide();"
+                                     update=":oneUserForm:userInformation" />
+                    <p:commandButton value="Abort" onclick="PF('premiumConfirmationDialog').hide()" />
+                </h:panelGrid>
+                </h:panelGrid>
+                <h:panelGrid columns="2" rendered="#{not empty userDetailController.user.creditCard}">
+                    <p:outputLabel for="numberOld" value="Credit Card Number: " />
+                    <p:inputText id="numberOld" value="#{creditCardController.newCreditCard.number}" placeholder ="#{userDetailController.user.creditCard.number}"/>
+                    <p:outputLabel for="cvcOld" value="CVC: " />
+                    <p:inputText id="cvcOld" value="#{creditCardController.newCreditCard.cvc}"/>
+                    <p:outputLabel for="cardholderOld" value="Cardholder: " />
+                    <p:inputText id="cardholderOld" value="#{creditCardController.newCreditCard.name}"/>
+                    <p:outputLabel for="expirationDateOld" value="ExpirationDate: " />
+                    <p:inputText id="expirationDateOld" value="#{creditCardController.newCreditCard.expirationDate}"/>
+
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Save" action="#{creditCardController.doSaveCreditCard}"
+                                     oncomplete=" PF('creditCardDialog').hide();"
                                      update=":oneUserForm:userInformation" />
 
                     <p:commandButton value="#{userDetailController.user.premium ? 'Cancel Subscription' : 'Go Premium'}"
@@ -105,6 +124,8 @@
                                      rendered="#{not empty userDetailController.user.creditCard}"/>
                     <p:commandButton value="Abort" onclick="PF('creditCardDialog').hide()" />
                 </h:panelGrid>
+                </h:panelGrid>
+                </p:outputPanel>
             </p:dialog>
 
             <p:dialog header="Premium Confirmation" id="premiumConfirmationDialog" widgetVar="premiumConfirmationDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
@@ -114,6 +135,7 @@
                     <p:commandButton value="No, Thanks" onclick="PF('premiumConfirmationDialog').hide()" />
                 </h:panelGrid>
             </p:dialog>
+
 
 
 
