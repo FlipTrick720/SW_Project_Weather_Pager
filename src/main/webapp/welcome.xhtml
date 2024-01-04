@@ -81,7 +81,29 @@
 				<p:panel rendered="#{weatherBean.buttonPressed}">
 					<p:accordionPanel widgetVar="basic" activeIndex="null" rendered="#{weatherBean.buttonPressed}">
 						<p:tab title="Next 24h Details" titleStyle="font-weight: bold">
-							<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+							<p:dataTable var="hour" value="#{weatherBean.weather.hourlyWeather()}" scrollable="true" scrollHeight="250">
+								<p:column headerText="Hour">
+									<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(hour.timestamp())}, #{apiFormatter.getTimeFormattedFromTimestamp(hour.timestamp(), weatherBean.weather.timezoneOffset())}"/>
+								</p:column>
+								<p:column headerText="Temperature">
+									<h:outputText value="#{hour.temperature()} °C"/>
+								</p:column>
+								<p:column headerText="Feels like">
+									<h:outputText value="#{hour.feelsLikeTemperature()} °C"/>
+								</p:column>
+								<p:column headerText="Windspeed">
+									<h:outputText value="#{hour.windSpeed()} m/s"/>
+								</p:column>
+								<p:column headerText="Wind Degree">
+									<h:outputText value="#{hour.windDirection()}°"/>
+								</p:column>
+								<p:column headerText="Description">
+									<h:outputText value="#{hour.weather().description()}"/>
+								</p:column>
+								<p:column headerText="Pop">
+									<h:outputText value="#{hour.probabilityOfPrecipitation()*100} %"/>
+								</p:column>
+							</p:dataTable>
 						</p:tab>
 					</p:accordionPanel>
 				</p:panel>
