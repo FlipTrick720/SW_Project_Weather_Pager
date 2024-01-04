@@ -14,7 +14,7 @@
 				<p:panel style="text-align: center;">
 					<p:autoComplete value="#{weatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" style="margin-right: 10px"/>
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
-					<p:commandButton icon="pi pi-star" />
+					<p:commandButton value="Add to Favorite" icon="pi pi-star" action="#{favLocationController.doSafeLocationByName(weatherBean.location, sessionInfoBean.currentUser)}"/>
 				</p:panel>
 			</p:panelGrid>
 			<!-- end of top section -->

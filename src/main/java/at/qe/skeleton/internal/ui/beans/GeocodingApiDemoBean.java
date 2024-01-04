@@ -23,7 +23,7 @@ public class GeocodingApiDemoBean {
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
     private String geocodingData;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(WeatherApiBean.class);
     private String cityName;
     @Autowired
     private AutocompleteBean autocompleteBean;
@@ -31,7 +31,7 @@ public class GeocodingApiDemoBean {
     private double latitude;
 
 
-    public void init() {
+    /*public void init() {
         try {
             String input = autocompleteBean.getText();
             List<GeocodingDTO> answer = this.geocodingApiRequestService.retrieveGeocodingData(input);
@@ -42,7 +42,7 @@ public class GeocodingApiDemoBean {
         } catch (final Exception e) {
             LOGGER.error("error in request", e);
         }
-    }
+    }*/
 
     public String getGeocodingData() {
         return geocodingData;
