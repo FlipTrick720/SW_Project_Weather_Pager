@@ -38,6 +38,10 @@ public class ForeCastBean {
     }
 
     public List<DailyWeatherDTO> getDailyWeather() {
-        return weatherBean.getWeather().dailyWeather();
-    }
+        List<DailyWeatherDTO> dailyWeather = weatherBean.getWeather().dailyWeather();
+        int startIndex = 1;
+        int endIndex = startIndex + 3;
+        return dailyWeather.subList(startIndex, endIndex);
+        }
+
 }
