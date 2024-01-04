@@ -27,6 +27,8 @@
 						<p:card>
 							<!-- City Name -->
 							<div style="text-align: center; margin-top: 10px;">
+								<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(weatherBean.weather.currentWeather().timestamp())}, #{apiFormatter.getTimeFormattedFromTimestamp(weatherBean.weather.currentWeather().timestamp(), weatherBean.weather.timezoneOffset())}"/>
+								<br/>
 								<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
 							</div>
 
@@ -56,12 +58,9 @@
 								</p:panel>
 							</h:panelGrid>
 
-<!--							 accordion panel for additional data, not sure if needed -->
-							<p:accordionPanel widgetVar="basic" activeIndex="null">
-								<p:tab title="Summary" titleStyle="font-weight: normal">
-									<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
-								</p:tab>
-							</p:accordionPanel>
+<!--							<p:panel>-->
+<!--								<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>-->
+<!--							</p:panel>-->
 						</p:card>
 					</p:panel>
 				<!-- end of left column -->
@@ -69,7 +68,7 @@
 				<!-- Content for the right column -->
 				<p:panel rendered="#{weatherBean.buttonPressed}" style="text-align: center" >
 					<h:form>
-						<p:barChart model="#{chartBean.createMixedModel(weatherBean.weather.hourlyWeather())}"/>
+						<p:barChart model="#{chartBean.createMixedModel(weatherBean.weather.hourlyWeather(), weatherBean.weather.timezoneOffset())}"/>
 					</h:form>
 				</p:panel>
 				<!-- end of right column -->
@@ -78,6 +77,15 @@
 
 			<!-- start of bottom section: 8-day-forecast -->
 			<p:panelGrid id="bottom" columns="1" styleClass="borderless">
+
+				<p:panel rendered="#{weatherBean.buttonPressed}">
+					<p:accordionPanel widgetVar="basic" activeIndex="null" rendered="#{weatherBean.buttonPressed}">
+						<p:tab title="Next 24h Details" titleStyle="font-weight: bold">
+							<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+						</p:tab>
+					</p:accordionPanel>
+				</p:panel>
+
 				<p:panel rendered="#{weatherBean.buttonPressed}">
 					<p:panel header="8-Day-Forecast">
 						<h:form>
@@ -87,7 +95,7 @@
 								</p:column>
 
 								<p:column styleClass="smaller-rows">
-									<h:outputText value="#{foreCastBean.getDateFormattedFromTimestamp(day.timestamp())}"/>
+									<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(day.timestamp())}"/>
 								</p:column>
 
 								<p:column>
@@ -109,9 +117,9 @@
 											<h:outputText value="#{day.summary()}."/>
 											<br/>
 											<br/>
-											<h:outputText value="Sunrise: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunrise())}."/>
+											<h:outputText value="Sunrise: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunrise(), weatherBean.weather.timezoneOffset())}."/>
 											<br/>
-											<h:outputText value="Sunset: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunset())}."/>
+											<h:outputText value="Sunset: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunset(), weatherBean.weather.timezoneOffset())}."/>
 										</p:panel>
 
 										<h:form>
