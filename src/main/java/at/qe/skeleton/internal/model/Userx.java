@@ -2,10 +2,13 @@ package at.qe.skeleton.internal.model;
 
 import  java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import at.qe.skeleton.configs.WebSecurityConfig;
+import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -54,6 +57,8 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @Enumerated(EnumType.STRING)
     private Set<UserxRole> roles;
 
+    @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
+    private List<FavLocation> favoriteLocations = new ArrayList<>();
     @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
@@ -160,6 +165,14 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public List<FavLocation> getLocations() {
+        return favoriteLocations;
+    }
+
+    public void setLocations(List<FavLocation> locations) {
+        this.favoriteLocations = locations;
     }
 
     @Override

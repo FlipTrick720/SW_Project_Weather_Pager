@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.repositories.FavLocationRepository;
 import at.qe.skeleton.internal.model.Token;
 import at.qe.skeleton.internal.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class UserxService {
 
     @Autowired
     private UserxRepository userRepository;
+    @Autowired
+    private FavLocationRepository locationRepository;
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -127,6 +130,5 @@ public class UserxService {
     private void setAuthenticatedUser() {
         SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
     }
-
 }
 

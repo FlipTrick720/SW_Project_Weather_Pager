@@ -37,9 +37,9 @@ public class SecurityTestBean {
         showOkDialog = true;
     }
 
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('USER')")
     public void doEmployeeAction() {
-        performedAction = "EMPLOYEE";
+        performedAction = "USER";
         showOkDialog = true;
     }
 
