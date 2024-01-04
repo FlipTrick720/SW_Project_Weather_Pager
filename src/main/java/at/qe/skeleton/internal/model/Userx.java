@@ -1,5 +1,7 @@
 package at.qe.skeleton.internal.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,11 +26,12 @@ import org.springframework.data.domain.Persistable;
 public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
 
     private static final long serialVersionUID = 1L;
+    //the following 3 classes are for the  observations of premium
 
     @Id
     @Column(length = 100)
     private String username;
-        //changed optional to true because of the missing logged in user in the moment of
+    //changed optional to true because of the missing logged in user in the moment of
     //the registration, need to think of the importance of this column in our application
     @ManyToOne(optional = true)
     private Userx createUser;
@@ -48,9 +51,20 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String phone;
 
     private String bankAccountNumber;
+
+    private Integer BALANCE;
+
     boolean premium;
 
     boolean enabled;
+
+    public Integer getBALANCE() {
+        return BALANCE;
+    }
+
+    public void setBALANCE(Integer BALANCE) {
+        this.BALANCE = BALANCE;
+    }
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "Userx_UserxRole")
@@ -62,6 +76,28 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.REMOVE) // Die mappedBy-Annotation bezieht sich auf das Attribut "user" in der PremiumHistory-Klasse
+    private List<PremiumHistory> premiumHistoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy ="user" , cascade = CascadeType.REMOVE)
+    private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
+
+    public List<PremiumHistory> getPremiumHistoryList() {
+        return premiumHistoryList;
+    }
+
+    public void setPremiumHistoryList(List<PremiumHistory> premiumHistoryList) {
+        this.premiumHistoryList = premiumHistoryList;
+    }
+
+    public List<PaymentHistory> getPaymentHistoryList() {
+        return paymentHistoryList;
+    }
+
+    public void setPaymentHistoryList(List<PaymentHistory> paymentHistoryList) {
+        this.paymentHistoryList = paymentHistoryList;
+    }
 
     public String getUsername() {
         return username;
@@ -193,6 +229,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     public boolean isPremium() {
         return premium;
     }
+
 
     public void setPremium(boolean premium) {
         this.premium = premium;
