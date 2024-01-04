@@ -79,7 +79,7 @@
 			<!-- start of bottom section: 8-day-forecast -->
 			<p:panelGrid id="bottom" columns="1" styleClass="borderless">
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-					<p:panel header="8-Day-Forecast">
+					<p:panel header="3-Day-Forecast">
 						<h:form>
 							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
 								<p:column style="width:5rem">
