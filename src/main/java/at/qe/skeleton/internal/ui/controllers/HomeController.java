@@ -8,6 +8,6 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home() {
-        return "login.xhtml"; // here you can change the default landing page
+        return "welcome.xhtml"; // change default landing page here
     }
 }

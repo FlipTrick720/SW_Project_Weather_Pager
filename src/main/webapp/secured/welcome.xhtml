@@ -8,14 +8,27 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
-        <h:form>
-            <p:panel header="What do you see here?">
-                    <div style="height: 50px">This is a simple PrimeFaces 13
-                            project running on Spring Boot 3.1.5</div>
-            </p:panel>
-            <p:panel header="JSF 2.2 Bean Access">
-                #{helloWorldBean.hello}
-            </p:panel>
-        </h:form>
+        <p:panel header="Favorite Locations" toggleable="true" collapsed="false" style="width: 800px; height: 200px;">
+            <h:form id="FavLocationForm">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+                <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                    <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
+                    <p:ajax event="unselect" listener="#{reorderListBean.onUnselect}" update="msgs"/>
+                    <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocation.name}" />
+                    </p:column>
+                    <p:column style="width:40px">
+                        <p:graphicImage value="#{foreCastBean.getImageUrl(favLocationController.currentWeather(favLocation).icon())}" style="width: 40%"/>
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
+                    </p:column>
+                </p:orderList>
+            </h:form>
+        </p:panel>
     </ui:define>
 </ui:composition>

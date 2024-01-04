@@ -1,10 +1,16 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
+import at.qe.skeleton.internal.services.email.EmailService;
+import at.qe.skeleton.internal.services.FavLocationService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,13 +21,16 @@ import org.springframework.stereotype.Component;
  *
  * This class is part of the skeleton project provided for students of the
  * course "Software Architecture" offered by Innsbruck University.
-*/
+ */
 @Component
 @Scope("view")
 public class UserDetailController implements Serializable {
 
     @Autowired
     private UserxService userService;
+
+    @Autowired
+    EmailService emailService;
 
     /**
      * Attribute to cache the currently displayed user
@@ -108,12 +117,21 @@ public class UserDetailController implements Serializable {
     /**
      * Action to register the user by the inout data of the Html file.
      */
-    //setEnabled to true, we could use this to set the premium option
-    public void doRegisterUser(){
+    public String doRegisterUser(){
         newUser.setCreateUser(newUser);
-        newUser.setEnabled(true);
+        newUser.setEnabled(false); //set to false until confirmed via email
         user = this.userService.saveUser(newUser);
 
+        //logic for verification process
+        String token = UUID.randomUUID().toString();
+        userService.createVerificationToken(newUser, token);
+
+        //send confirmation mail
+        emailService.setEmailStrategy(new ConfirmationMailStrategy());
+        emailService.sendMail(newUser.getEmail(), token);
+
+        return "/login.xhtml?faces-redirect=true";
     }
 
 }
+

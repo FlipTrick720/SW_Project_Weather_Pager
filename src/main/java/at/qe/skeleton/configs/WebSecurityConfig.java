@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,7 +30,6 @@ public class WebSecurityConfig {
     private static final String MANAGER = UserxRole.MANAGER.name();
     private static final String USER = UserxRole.USER.name();
     private static final String LOGIN = "/login.xhtml";
-    private static final String REGISTER = "/register_page.xhtml";
     private static final String ACCESSDENIED = "/error/access_denied.xhtml";
     
     @Autowired
@@ -47,13 +45,18 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)) // needed for H2 console
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(new AntPathRequestMatcher(REGISTER)).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/welcome.xhtml")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/register_page.xhtml")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/verification/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/confirm")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/**.jsf")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/jakarta.faces.resource/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/error/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyAuthority("ADMIN")
+                .requestMatchers(new AntPathRequestMatcher("/manager/**")).hasAnyAuthority("MANAGER")
                 .requestMatchers(new AntPathRequestMatcher("/secured/**")).hasAnyAuthority(ADMIN, MANAGER, USER)
                 .anyRequest().authenticated()
             )
@@ -61,13 +64,12 @@ public class WebSecurityConfig {
             .formLogin(form -> form
                 .loginPage(LOGIN)
                 .permitAll()
-                .defaultSuccessUrl("/secured/welcome.xhtml")
+                .defaultSuccessUrl("/welcome.xhtml")
                 .loginProcessingUrl("/login")
                 .successForwardUrl("/secured/welcome.xhtml")
-                .failureForwardUrl(ACCESSDENIED)
-            )
+            )//before changing secured/welcome.xhtlm
             .logout(logout -> logout
-                .logoutSuccessUrl(LOGIN)
+                .logoutSuccessUrl("/welcome.xhtml")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

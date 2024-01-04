@@ -5,13 +5,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui" 
       xml:lang="en">
-    <body>
+    <body style="background-color: transparent">
         <ui:composition>
             <h:form>
                 <p:menubar>
+                    <p:menuitem value="Weather" url="/"/>
+                    <p:menuitem value="Home" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
                     <p:submenu label="Manager Submenu" rendered="#{sessionInfoBean.hasRole('MANAGER')}">
-                        <p:menuitem value="Manager Action 1"/>
-                        <p:menuitem value="Manager Action 2"/>
+                        <p:menuitem value="Manage Users" url="/manager/select.xhtml"/>
                     </p:submenu>
                     <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
                         <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>
@@ -25,8 +26,7 @@
                     </p:submenu>
                     <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Register" url="/register_page.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
-                    <p:menuitem value="Logout" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>                    
-                    
+                    <p:menuitem value="Logout" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>
                 </p:menubar>
             </h:form>
         </ui:composition>

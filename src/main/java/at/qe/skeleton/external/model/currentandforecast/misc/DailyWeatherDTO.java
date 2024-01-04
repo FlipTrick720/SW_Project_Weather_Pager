@@ -64,5 +64,5 @@ public record DailyWeatherDTO(
 
     @Serial
     private static final long serialVersionUID = 1;
-
 }
+

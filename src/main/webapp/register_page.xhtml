@@ -18,15 +18,12 @@
                 <p:inputText id="username"  value="#{userDetailController.newUser.username}" required="true"/>
 
                 <p:outputLabel for="password" value="Password:"/>
-                <p:inputText id="password"  value="#{userDetailController.newUser.password}" required="true"/>
+                <p:inputText id="password" type="password" value="#{userDetailController.newUser.password}" required="true"/>
 
                 <p:outputLabel for="email" value="Email:"/>
                 <p:inputText id="email"  value="#{userDetailController.newUser.email}" required="true"/>
 
-                <p:outputLabel for="bankAccountNumber" value="Bankaccount-number:"/>
-                <p:inputText id="bankAccountNumber"  value="#{userDetailController.newUser.bankAccountNumber}" required="false"/>
-
-                <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}" oncomplete="window.location ='login.xhtml';"/>
+                <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}"/>
 
             </h:panelGrid>
         </h:form>
