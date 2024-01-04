@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/WEB-INF/templates/main.xhtml">
+    <ui:define name="content">
+        <p:panel header="Favorite Locations" toggleable="true" collapsed="false" style="width: 800px; height: 200px;">
+            <h:form id="FavLocationForm">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+                <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                    <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
+                    <p:ajax event="unselect" listener="#{reorderListBean.onUnselect}" update="msgs"/>
+                    <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocation.name}" />
+                    </p:column>
+                    <p:column style="width:40px">
+                        <p:graphicImage value="#{foreCastBean.getImageUrl(favLocationController.currentWeather(favLocation).icon())}" style="width: 40%"/>
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
+                    </p:column>
+                    <p:column style="width:20px">
+                        <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
+                    </p:column>
+                </p:orderList>
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

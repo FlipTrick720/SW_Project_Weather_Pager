@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -57,6 +56,7 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/jakarta.faces.resource/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/error/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyAuthority("ADMIN")
+                .requestMatchers(new AntPathRequestMatcher("/manager/**")).hasAnyAuthority("MANAGER")
                 .requestMatchers(new AntPathRequestMatcher("/secured/**")).hasAnyAuthority(ADMIN, MANAGER, USER)
                 .anyRequest().authenticated()
             )
@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .defaultSuccessUrl("/welcome.xhtml")
                 .loginProcessingUrl("/login")
-                .successForwardUrl("/welcome.xhtml")
+                .successForwardUrl("/secured/welcome.xhtml")
             )//before changing secured/welcome.xhtlm
             .logout(logout -> logout
                 .logoutSuccessUrl("/welcome.xhtml")
@@ -98,6 +98,6 @@ public class WebSecurityConfig {
      */
     @Bean
     public static PasswordEncoder passwordEncoder() {
-        return (PasswordEncoder) new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 }

@@ -1,11 +1,14 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
+import at.qe.skeleton.internal.services.FavLocationService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 

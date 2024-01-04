@@ -43,6 +43,7 @@ public class WeatherBean {
         longitude = geocode.get(0).lon();
 
 
+
         try {
             weather = this.weatherApiRequestService.retrieveCurrentAndForecastWeather(getLatitude(), getLongitude());
         } catch (final Exception e) {
