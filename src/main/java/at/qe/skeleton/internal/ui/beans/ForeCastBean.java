@@ -39,8 +39,12 @@ public class ForeCastBean {
 
     public List<DailyWeatherDTO> getDailyWeather() {
         List<DailyWeatherDTO> dailyWeather = weatherBean.getWeather().dailyWeather();
+        //startIndex is 1 because forecast starts from tomorrow
         int startIndex = 1;
+        //endIndex is 3 because we want to show 3 days forecast
         int endIndex = startIndex + 3;
+        // subList does not create new objects, it just returns a
+        // "view" into a portion of the original list
         return dailyWeather.subList(startIndex, endIndex);
         }
 
