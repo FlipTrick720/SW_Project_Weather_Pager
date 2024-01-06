@@ -72,6 +72,13 @@
 									<h:outputLabel value="Wind Speed" style="font-size: 10px" />
 								</p:panel>
 							</h:panelGrid>
+
+							<p:accordionPanel widgetVar="summary" activeIndex="null">
+								<p:tab title="Summary" titleStyle="font-weight: normal">
+									<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+								</p:tab>
+							</p:accordionPanel>
+
 						</p:card>
 					</p:panel>
 				<!-- end of left column -->
