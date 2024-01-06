@@ -12,7 +12,17 @@
 			<!-- start of top section: searchbar and else -->
 			<p:panelGrid columns="1" styleClass="borderless">
 				<p:panel style="text-align: center;">
-					<p:autoComplete value="#{weatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" style="margin-right: 10px"/>
+					<p:autoComplete id="event"
+									completeMethod="#{autocompleteBean.getAutocompletion}"
+									forceSelection="true"
+									var="location"
+									itemValue="#{location}"
+									itemLabel="#{autocompleteBean.getDisplayName(location)}"
+									style="margin-right: 10px">
+						<p:ajax event="itemSelect" listener="#{autocompleteBean.onItemSelect}"/>
+					</p:autoComplete>
+
+
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
 					<p:commandButton value="Add to Favorite" icon="pi pi-star" rendered="#{sessionInfoBean.loggedIn}" action="#{favLocationController.doSafeLocationByName(weatherBean.location, sessionInfoBean.currentUser)}"/>
 
@@ -115,7 +125,7 @@
 				</p:panel>
 
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-					<p:panel header="8-Day-Forecast">
+					<p:panel header="#{foreCastBean.title}">
 						<h:form>
 							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
 								<p:column style="width:5rem">

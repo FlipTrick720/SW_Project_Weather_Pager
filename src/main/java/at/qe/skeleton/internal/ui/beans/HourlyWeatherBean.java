@@ -17,11 +17,11 @@ public class HourlyWeatherBean {
     WeatherBean weatherBean;
 
     public String getTitle() {
-        return sessionInfoBean.isPremium() ? "Next 48h Details" : "Next 24h Details";
+        return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "Next 48h Details" : "Next 24h Details";
     }
 
     public List<HourlyWeatherDTO> getHourlyWeather() {
-        if (sessionInfoBean.isPremium()){
+        if (sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium()){
             return weatherBean.getWeather().hourlyWeather().subList(0, 48);
         } else {
             return weatherBean.getWeather().hourlyWeather().subList(0, 24);
