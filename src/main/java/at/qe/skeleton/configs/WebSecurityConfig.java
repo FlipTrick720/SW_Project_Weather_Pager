@@ -68,7 +68,6 @@ public class WebSecurityConfig {
                 .loginProcessingUrl("/login")
                 .successForwardUrl("/secured/welcome.xhtml") //before changing secured/welcome.xhtlm
                 .failureUrl(ACCESSDENIED)
-                .failureForwardUrl(ACCESSDENIED)
             )
             .logout(logout -> logout
                 .logoutSuccessUrl("/welcome.xhtml")
