@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:pt="http://java.sun.com/jsp/jstl/core"
+                xmlns:row-height="http://java.sun.com/jsp/jstl/functions"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="Vacation">
+        <h:form>
+            <!-- start of bottom section: X-day-forecast -->
+            <p:panelGrid id="bottom" columns="1" styleClass="borderless">
+                <p:panel rendered="#{weatherBean.buttonPressed}">
+                    <p:panel header="X-Day-Forecast">
+                        <!-- Using the DateBean to fetch daily weather -->
+                        <p:dataTable var="day" value="#{dateBean.dailyWeather}" rowKey="#{day.timestamp()}">
+                            <p:column style="width:5rem">
+                                <p:rowToggler/>
+                            </p:column>
+
+                            <p:column styleClass="smaller-rows">
+                                <h:outputText value="#{dateBean.getDateFormattedFromTimestamp(day.timestamp())}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:graphicImage value="#{foreCastBean.getImageUrl(day.weather().icon())}" style="width: 20%"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{day.dailyTemperatureAggregation().minimumDailyTemperature()} / #{day.dailyTemperatureAggregation().maximumDailyTemperature()} °C">
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{day.weather().description()}"/>
+                            </p:column>
+                            <!-- Begin of the details section when the user clicks the ">" -->
+                            <p:rowExpansion>
+                                <p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
+                                    <p:panel>
+                                        <h:outputText value="#{day.summary()}."/>
+                                        <br/>
+                                        <h:outputText value="Sunrise: #{dateBean.getTimeFormattedFromTimestamp(day.sunrise())}."/>
+                                        <br/>
+                                        <h:outputText value="Sunset: #{dateBean.getTimeFormattedFromTimestamp(day.sunset())}."/>
+                                    </p:panel>
+
+                                    <h:form>
+                                        <p:barChart model="#{chartBean.createStackedBarModel(day)}" />
+                                    </h:form>
+
+                                    <p:panel>
+                                        <h:outputText value="&#x1F343; #{day.windSpeed()} m/s (#{day.windDirection()}°)"/>
+                                        <br/>
+                                        <h:outputText value="&#x1F327; #{day.rain() ne null ? day.rain() : 0} mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
+                                        <br/>
+                                        <h:outputText value="&#x2744; #{day.snow() ne null ? day.snow() : 0} mm/h"/>
+                                        <br/>
+                                        <h:outputText value="Humidity: #{day.humidity()}%"/>
+                                        <br/>
+                                        <h:outputText value="UVI: #{day.uvi()}"/>
+                                    </p:panel>
+                                </p:panelGrid>
+                            </p:rowExpansion>
+                        </p:dataTable>
+                    </p:panel>
+                </p:panel>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
