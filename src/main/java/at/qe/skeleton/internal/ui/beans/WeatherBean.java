@@ -37,7 +37,6 @@ public class WeatherBean {
 
     public void searchWeather() {
         buttonPressed = true;
-        System.out.println("button pressed yes");
         List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
         latitude = geocode.get(0).lat();
         longitude = geocode.get(0).lon();
@@ -74,7 +73,6 @@ public class WeatherBean {
 
     public void setLocation(String location) {
         this.location = location;
-        System.out.println("location set");
     }
 
     public CurrentAndForecastAnswerDTO getWeather() {
