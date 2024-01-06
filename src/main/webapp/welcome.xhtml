@@ -24,7 +24,7 @@
 
 
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
-					<p:commandButton value="Add to Favorite" icon="pi pi-star" rendered="#{sessionInfoBean.loggedIn}" action="#{favLocationController.doSafeLocationByName(weatherBean.location, sessionInfoBean.currentUser)}"/>
+					<p:commandButton value="Add to Favorite" icon="pi pi-star" rendered="#{sessionInfoBean.loggedIn}" action="#{favLocationController.doSafeLocationByName(autocompleteBean.selectedGeocodingDTO.name(), sessionInfoBean.currentUser)}"/>
 
 					<h:panelGroup id="disabled_button" rendered="#{!sessionInfoBean.loggedIn}">
 						<p:tooltip for="disabled_button" value="Create an account or log in to use Favorites!" />

@@ -26,7 +26,7 @@ public class WeatherBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherBean.class);
     private double latitude;
     private double longitude;
-    private String location;
+    private String location; //same as displayName shown in autocomplete dropdown
 
     private Boolean buttonPressed = false;
 
