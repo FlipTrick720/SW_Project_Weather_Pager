@@ -27,13 +27,17 @@
 							<p:calendar id="endDate" value="#{dateBean.endDate}" pattern="dd/MM/yyyy" showOn="button" style="margin-right: 10px"/>
 
 							<!-- Submit button for dates -->
-							<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}"  oncomplete="PF('dateDialog').hide();" />
+							<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}" oncomplete="PF('dateDialog').show();" />
+
 						</h:form>
 					</p:dialog>
 
 					<!-- Search Button -->
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
-					<p:commandButton icon="pi pi-star" />
+					<p:commandButton value="Add to Favorite" icon="pi pi-star" action="#{favLocationController.doSafeLocationByName(weatherBean.location, sessionInfoBean.currentUser)}"/>
+
+
+
 				</p:panel>
 			</p:panelGrid>
 
