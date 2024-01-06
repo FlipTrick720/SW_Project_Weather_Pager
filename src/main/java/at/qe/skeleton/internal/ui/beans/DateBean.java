@@ -1,91 +1,93 @@
 package at.qe.skeleton.internal.ui.beans;
 
+import at.qe.skeleton.external.model.currentandforecast.misc.DailyWeatherDTO;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.web.bind.WebDataBinder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
-@Scope("request") // Correct scope for Spring Web Flow
+@Scope("view")
 public class DateBean {
 
-    private Date startDate;
-    private Date endDate;
-    private Date[] dateRange = new Date[2]; // Array to hold start and end dates
+    @Autowired
+    private WeatherBean weatherBean;
 
-    // Getters and Setters for dateRange
-    public Date[] getDateRange() {
-        return dateRange;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Boolean buttonPressed = false;
+
+    private List<DailyWeatherDTO> selectedWeatherData;
+
+    public List<DailyWeatherDTO> getSelectedWeatherData() {
+        return selectedWeatherData;
     }
 
-    public void setDateRange(Date[] dateRange) {
-        this.dateRange = dateRange;
-        if (dateRange != null && dateRange.length == 2) {
-            this.startDate = dateRange[0];
-            this.endDate = dateRange[1];
-        }
+    public void setSelectedWeatherData(List<DailyWeatherDTO> selectedWeatherData) {
+        this.selectedWeatherData = selectedWeatherData;
     }
 
-    // Getters and Setters
-    public Date getStartDate() {
+    // Getters and Setters for start and end dates
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    // InitBinder should be in a Controller class, not in this bean
-    // Consider moving this to the appropriate @Controller class
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
-
-    // Method to validate the dates
-    private boolean validateDates() {
+    private boolean isDateRangeValid() {
         if (startDate == null || endDate == null) {
-            return false;
+            return false; // Either start or end date is not set
         }
-
-        long diffInMillies = Math.abs(endDate.getTime() - startDate.getTime());
-        long diffInDays = diffInMillies / (24 * 60 * 60 * 1000);
-
-        return diffInDays <= 14;
+        return !startDate.isAfter(endDate); // Check if start date is not after end date
     }
-
-    // Method to check if the start date is valid
-    private boolean isStartDateValid() {
-        Date currentDate = new Date();
-        long diffInMillies = Math.abs(currentDate.getTime() - startDate.getTime());
-        long diffInDays = diffInMillies / (24 * 60 * 60 * 1000);
-
-        return diffInDays >= 0 && diffInDays <= 365;
-    }
-
-    // Method to submit dates
 
     public String submitDates() {
-        if (dateRange != null && dateRange.length == 2) {
-            this.startDate = dateRange[0];
-            this.endDate = dateRange[1];
+        buttonPressed = true;
+        System.out.println("submit button pressed yes");
+        if (isDateRangeValid()) {
+            // Rufen Sie die Methode in der DateBean auf, um die Wetterdaten vorzubereiten
+            prepareSelectedWeatherData();
+            return "vacation"; // Navigate to vacation.xhtml
+        } else {
+            // If the date range is not valid, show an error message
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid date range. Please select a valid start and end date."));
 
-            if (isStartDateValid() && validateDates()) {
-                return "success";
-            }
+            return null; // Stay on the current page
         }
-        return "failure";
     }
+
+    // Methode, um die Wetterdaten für den ausgewählten Zeitraum vorzubereiten
+    private void prepareSelectedWeatherData() {
+        if (startDate == null || endDate == null) {
+            selectedWeatherData = null;
+            return;
+        }
+
+        List<DailyWeatherDTO> allWeatherData = weatherBean.getWeather().dailyWeather();
+
+        selectedWeatherData = allWeatherData.stream()
+                .filter(dto -> !dto.timestamp().isBefore(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                        && !dto.timestamp().isAfter(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .collect(Collectors.toList());
+    }
+
+
 }
