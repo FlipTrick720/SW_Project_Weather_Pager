@@ -19,7 +19,6 @@
 
 					<!-- Dialog for Date Selection -->
 					<p:dialog header="Select Dates" widgetVar="dateDialog" modal="true" showEffect="fade" hideEffect="fade">
-						<h:form>
 							<!-- Start Date Picker -->
 							<p:calendar id="startDate" value="#{dateBean.startDate}" pattern="dd/MM/yyyy" showOn="button" style="margin-right: 10px"/>
 
@@ -27,9 +26,8 @@
 							<p:calendar id="endDate" value="#{dateBean.endDate}" pattern="dd/MM/yyyy" showOn="button" style="margin-right: 10px"/>
 
 							<!-- Submit button for dates -->
-							<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}" oncomplete="PF('dateDialog').show();" />
+							<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dateDialog').hide();" />
 
-						</h:form>
 					</p:dialog>
 
 					<!-- Search Button -->
@@ -41,52 +39,51 @@
 				</p:panel>
 			</p:panelGrid>
 
-
 			<!-- start of middle section: weather information in 2 columns -->
 			<p:panelGrid id="middle" columns="2" columnClasses="thirty-percent, seventy-percent" styleClass="borderless" style="vertical-align: middle">
 
 				<!-- Content for the left column -->
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-						<p:card>
-							<!-- City Name -->
-							<div style="text-align: center; margin-top: 10px;">
-								<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
-							</div>
+					<p:card>
+						<!-- City Name -->
+						<div style="text-align: center; margin-top: 10px;">
+							<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
+						</div>
 
-							<!-- Temperature and Weather Image -->
-							<h:panelGrid styleClass="borderless" style="margin: auto">
-								<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
-									<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
-									<br />
-									<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
-									<br />
-									<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
-								</p:panel>
-							</h:panelGrid>
+						<!-- Temperature and Weather Image -->
+						<h:panelGrid styleClass="borderless" style="margin: auto">
+							<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
+								<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
+								<br />
+								<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
+								<br />
+								<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
+							</p:panel>
+						</h:panelGrid>
 
-							<!-- Details Panel -->
-							<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;">
-								<p:panel style="text-align: center;">
-									<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
-									<br/>
-									<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
-								</p:panel>
+						<!-- Details Panel -->
+						<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;">
+							<p:panel style="text-align: center;">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
+							</p:panel>
 
-								<p:panel style="text-align: center">
-									<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
-									<br/>
-									<h:outputLabel value="Wind Speed" style="font-size: 10px" />
-								</p:panel>
-							</h:panelGrid>
+							<p:panel style="text-align: center">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Speed" style="font-size: 10px" />
+							</p:panel>
+						</h:panelGrid>
 
-<!--							 accordion panel for additional data, not sure if needed -->
-							<p:accordionPanel widgetVar="basic" activeIndex="null">
-								<p:tab title="Summary" titleStyle="font-weight: normal">
-									<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
-								</p:tab>
-							</p:accordionPanel>
-						</p:card>
-					</p:panel>
+						<!--							 accordion panel for additional data, not sure if needed -->
+						<p:accordionPanel widgetVar="basic" activeIndex="null">
+							<p:tab title="Summary" titleStyle="font-weight: normal">
+								<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+							</p:tab>
+						</p:accordionPanel>
+					</p:card>
+				</p:panel>
 				<!-- end of left column -->
 
 				<!-- Content for the right column -->

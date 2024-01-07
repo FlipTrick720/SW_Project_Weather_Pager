@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -55,23 +56,49 @@ public class DateBean {
         if (startDate == null || endDate == null) {
             return false; // Either start or end date is not set
         }
-        return !startDate.isAfter(endDate); // Check if start date is not after end date
+
+        // Check if start date is before end date
+        if (startDate.isAfter(endDate)) {
+            return false;
+        }
+
+        // Check if date range is within a two-week window
+        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+        if (daysBetween > 14) {
+            return false;
+        }
+
+        return true; // Date range is valid
     }
+
+
 
     public String submitDates() {
         buttonPressed = true;
-        System.out.println("submit button pressed yes");
+        System.out.println("vacation button pressed yes");
         if (isDateRangeValid()) {
-            // Rufen Sie die Methode in der DateBean auf, um die Wetterdaten vorzubereiten
-            prepareSelectedWeatherData();
-            return "vacation"; // Navigate to vacation.xhtml
+            prepareSelectedWeatherData(); // Diese Methode filtert und bereitet die Daten vor.
+            return "vacation"; // oder die Seite, die aktualisiert werden soll
         } else {
-            // If the date range is not valid, show an error message
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid date range. Please select a valid start and end date."));
-
-            return null; // Stay on the current page
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid date range."));
+            return null;
         }
+    }
+
+    public WeatherBean getWeatherBean() {
+        return weatherBean;
+    }
+
+    public void setWeatherBean(WeatherBean weatherBean) {
+        this.weatherBean = weatherBean;
+    }
+
+    public Boolean getButtonPressed() {
+        return buttonPressed;
+    }
+
+    public void setButtonPressed(Boolean buttonPressed) {
+        this.buttonPressed = buttonPressed;
     }
 
     // Methode, um die Wetterdaten für den ausgewählten Zeitraum vorzubereiten

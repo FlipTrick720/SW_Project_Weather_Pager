@@ -12,7 +12,7 @@
         <h:form>
             <!-- start of bottom section: X-day-forecast -->
             <p:panelGrid id="bottom" columns="1" styleClass="borderless">
-                <p:panel rendered="#{weatherBean.buttonPressed}">
+                <p:panel rendered="#{DateBean.buttonPressed}">
                     <p:panel header="X-Day-Forecast">
                         <!-- Using the DateBean to fetch daily weather -->
                         <p:dataTable var="day" value="#{dateBean.dailyWeather}" rowKey="#{day.timestamp()}">
