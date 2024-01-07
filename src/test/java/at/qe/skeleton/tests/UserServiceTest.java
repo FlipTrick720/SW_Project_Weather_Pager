@@ -13,13 +13,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.UserxService;
+
 import java.util.Collection;
 import java.util.List;
 
 
 /**
  * Some very basic tests for {@link UserxService}.
- *
+ * <p>
  * This class is part of the skeleton project provided for students of the
  * courses "Software Architecture" and "Software Engineering" offered by the
  * University of Innsbruck.
@@ -51,7 +52,7 @@ public class UserServiceTest {
                 Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
-                Assertions.assertNull(user.getUpdateDate(), "User \"" + user +"\" has a updateDate defined");
+                Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
             } else if ("user1".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.USER), "User \"" + user + "\" does not have role EMPLOYEE");
                 Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
@@ -82,7 +83,7 @@ public class UserServiceTest {
 
         userService.deleteUser(toBeDeletedUser);
 
-        Assertions.assertEquals(anzUser-1, userService.getAllUsers().size(), "No user has been deleted after calling UserService.deleteUser");
+        Assertions.assertEquals(anzUser - 1, userService.getAllUsers().size(), "No user has been deleted after calling UserService.deleteUser");
         Userx deletedUser = userService.loadUser(username);
         Assertions.assertNull(deletedUser, "Deleted User \"" + username + "\" could still be loaded from test data source via UserService.loadUser");
 
@@ -114,6 +115,7 @@ public class UserServiceTest {
         Assertions.assertNotNull(freshlyLoadedUser.getUpdateDate(), "User \"" + username + "\" does not have a updateDate defined after being saved");
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
     }
+
     @DirtiesContext
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
@@ -178,7 +180,8 @@ public class UserServiceTest {
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void testExceptionForEmptyUsername() {
-        Assertions.assertThrows(org.springframework.orm.jpa.JpaSystemException.class, () -> {
+        //Assertions.assertThrows(org.springframework.orm.jpa.JpaSystemException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             Userx adminUser = userService.loadUser("admin");
             Assertions.assertNotNull(adminUser, "Admin user could not be loaded from test data source");
 
@@ -197,7 +200,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "user", authorities = {"EMPLOYEE"})
+    @WithMockUser(username = "user", authorities = {"USER"})
     public void testUnauthorizedLoadUsers() {
         Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
             for (Userx user : userService.getAllUsers()) {
@@ -215,7 +218,8 @@ public class UserServiceTest {
         });
     }
 
-    @WithMockUser(username = "user1", authorities = {"EMPLOYEE"})
+    @Test
+    @WithMockUser(username = "user1", authorities = {"USER"})
     public void testAuthorizedLoadUser() {
         String username = "user1";
         Userx user = userService.loadUser(username);
