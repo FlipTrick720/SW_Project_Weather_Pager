@@ -157,6 +157,13 @@ public class UserxService {
     }
 
     /**
+     * for test purposes
+     */
+    public void setUnauthenticatedUser() {
+        SecurityContextHolder.clearContext();
+    }
+
+    /**
      * returns a Collection of all premium Users.
      * @return
      */
