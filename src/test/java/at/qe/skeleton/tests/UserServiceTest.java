@@ -28,10 +28,12 @@ public class UserServiceTest {
     @Autowired
     UserxService userService;
 
+    private final int anzUser = 9;
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void testDatainitialization() {
-        Assertions.assertEquals(9, userService.getAllUsers().size(), "Insufficient amount of users initialized for test data source");
+        Assertions.assertEquals(anzUser, userService.getAllUsers().size(), "Insufficient amount of users initialized for test data source");
         List<Userx> allUsers = (List<Userx>) userService.getAllUsers();
         for (int i = 0; i < Math.min(4, allUsers.size()); i++) {
             Userx user = allUsers.get(i);
@@ -77,7 +79,7 @@ public class UserServiceTest {
 
         userService.deleteUser(toBeDeletedUser);
 
-        Assertions.assertEquals(3, userService.getAllUsers().size(), "No user has been deleted after calling UserService.deleteUser");
+        Assertions.assertEquals(anzUser-1, userService.getAllUsers().size(), "No user has been deleted after calling UserService.deleteUser");
         Userx deletedUser = userService.loadUser(username);
         Assertions.assertNull(deletedUser, "Deleted User \"" + username + "\" could still be loaded from test data source via UserService.loadUser");
 
