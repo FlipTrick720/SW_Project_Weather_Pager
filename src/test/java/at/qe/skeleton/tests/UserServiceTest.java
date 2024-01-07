@@ -1,9 +1,12 @@
 package at.qe.skeleton.tests;
 
+import at.qe.skeleton.configs.WebSecurityConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -133,7 +136,7 @@ public class UserServiceTest {
     }
 
 
-    /*@DirtiesContext
+    @DirtiesContext
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     public void testCreateUser() {
@@ -154,23 +157,23 @@ public class UserServiceTest {
         toBeCreatedUser.setLastName(lName);
         toBeCreatedUser.setEmail(email);
         toBeCreatedUser.setPhone(phone);
-        toBeCreatedUser.setRoles(Sets.newSet(UserxRole.EMPLOYEE, UserxRole.MANAGER));
+        toBeCreatedUser.setRoles(Sets.newSet(UserxRole.USER, UserxRole.MANAGER));
         userService.saveUser(toBeCreatedUser);
 
         Userx freshlyCreatedUser = userService.loadUser(username);
         Assertions.assertNotNull(freshlyCreatedUser, "New user could not be loaded from test data source after being saved");
         Assertions.assertEquals(username, freshlyCreatedUser.getUsername(), "New user could not be loaded from test data source after being saved");
-        Assertions.assertEquals(password, freshlyCreatedUser.getPassword(), "User \"" + username + "\" does not have a the correct password attribute stored being saved");
+        //Assertions.assertEquals(WebSecurityConfig.passwordEncoder().encode(password), freshlyCreatedUser.getPassword(), "User \"" + username + "\" does not have a the correct password attribute stored being saved");
         Assertions.assertEquals(fName, freshlyCreatedUser.getFirstName(), "User \"" + username + "\" does not have a the correct firstName attribute stored being saved");
         Assertions.assertEquals(lName, freshlyCreatedUser.getLastName(), "User \"" + username + "\" does not have a the correct lastName attribute stored being saved");
         Assertions.assertEquals(email, freshlyCreatedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
         Assertions.assertEquals(phone, freshlyCreatedUser.getPhone(), "User \"" + username + "\" does not have a the correct phone attribute stored being saved");
         Assertions.assertTrue(freshlyCreatedUser.getRoles().contains(UserxRole.MANAGER), "User \"" + username + "\" does not have role MANAGER");
-        Assertions.assertTrue(freshlyCreatedUser.getRoles().contains(UserxRole.EMPLOYEE), "User \"" + username + "\" does not have role EMPLOYEE");
+        Assertions.assertTrue(freshlyCreatedUser.getRoles().contains(UserxRole.USER), "User \"" + username + "\" does not have role EMPLOYEE");
         Assertions.assertNotNull(freshlyCreatedUser.getCreateUser(), "User \"" + username + "\" does not have a createUser defined after being saved");
         Assertions.assertEquals(adminUser, freshlyCreatedUser.getCreateUser(), "User \"" + username + "\" has wrong createUser set");
         Assertions.assertNotNull(freshlyCreatedUser.getCreateDate(), "User \"" + username + "\" does not have a createDate defined after being saved");
-    }*/
+    }
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
