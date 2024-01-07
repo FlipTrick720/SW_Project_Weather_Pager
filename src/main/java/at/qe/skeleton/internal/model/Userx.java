@@ -1,16 +1,12 @@
 package at.qe.skeleton.internal.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import at.qe.skeleton.configs.WebSecurityConfig;
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

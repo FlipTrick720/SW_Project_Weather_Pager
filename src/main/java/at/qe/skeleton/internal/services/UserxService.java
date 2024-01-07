@@ -1,13 +1,9 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
-
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Set;
-
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import at.qe.skeleton.internal.repositories.FavLocationRepository;

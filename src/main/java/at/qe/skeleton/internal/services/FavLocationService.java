@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.services;
 
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
@@ -8,9 +7,6 @@ import at.qe.skeleton.internal.repositories.FavLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
 import java.util.List;
 
 @Component
