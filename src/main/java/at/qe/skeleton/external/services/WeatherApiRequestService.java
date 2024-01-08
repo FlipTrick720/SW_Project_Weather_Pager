@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
+
 
 /**
  * This class is part of the skeleton project provided for students of the
@@ -22,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class WeatherApiRequestService {
 
     private static final String CURRENT_AND_FORECAST_URI = "/data/3.0/onecall";
+    private static final String DAILY_AGGREGATION_URI = "/data/3.0/onecall/day_summary";
 
     private static final String LONGITUDE_PARAMETER = "lon";
 
@@ -53,4 +56,18 @@ public class WeatherApiRequestService {
         return responseEntity.getBody();
     }
 
+   public CurrentAndForecastAnswerDTO retrieveDailyAggregationWeather(@Min(-90) @Max(90) double latitude,
+                                                                      @Min(-180) @Max(180) double longitude,
+                                                                      LocalDate date) {
+        ResponseEntity<CurrentAndForecastAnswerDTO> responseEntity = this.restClient.get()
+                .uri(UriComponentsBuilder.fromPath(DAILY_AGGREGATION_URI)
+                        .queryParam(LATITUDE_PARAMETER, String.valueOf(latitude))
+                        .queryParam(LONGITUDE_PARAMETER, String.valueOf(longitude))
+                        .queryParam("date", date.toString())
+                        .build().toUriString())
+                .retrieve()
+                .toEntity(CurrentAndForecastAnswerDTO.class);
+
+       return responseEntity.getBody();
+}
 }
