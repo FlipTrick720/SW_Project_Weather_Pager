@@ -119,7 +119,8 @@ public class UserxService {
      *
      * @param user the user to delete
      */
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username eq #username")
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username == #user.id")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
     }
