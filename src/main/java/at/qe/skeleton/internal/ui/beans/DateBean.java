@@ -1,39 +1,72 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import at.qe.skeleton.external.model.currentandforecast.misc.DailyWeatherDTO;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import org.primefaces.PrimeFaces;
+import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
+import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
+import at.qe.skeleton.external.services.GeocodingApiRequestService;
+import at.qe.skeleton.external.services.WeatherApiRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Scope("view")
 public class DateBean {
 
-    @Autowired
-    private WeatherBean weatherBean;
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateBean.class);
 
+    @Autowired
+    private WeatherApiRequestService weatherApiRequestService;
+    @Autowired
+    private GeocodingApiRequestService geocodingApiRequestService;
+
+    private double latitude;
+    private double longitude;
+    private String location;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Boolean buttonPressed = false;
+    private List<CurrentAndForecastAnswerDTO> weatherDataList = new ArrayList<>();
 
-    private List<DailyWeatherDTO> selectedWeatherData;
-
-    public List<DailyWeatherDTO> getSelectedWeatherData() {
-        return selectedWeatherData;
+    private boolean isDateRangeValid() {
+        if (startDate == null || endDate == null) {
+            return false;
+        }
+        if (startDate.isAfter(endDate)) {
+            return false;
+        }
+        return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
     }
 
-    public void setSelectedWeatherData(List<DailyWeatherDTO> selectedWeatherData) {
-        this.selectedWeatherData = selectedWeatherData;
+    public void submitDates() {
+        if (!isDateRangeValid()) {
+            LOGGER.error("Invalid date range.");
+            return;
+        }
+
+        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
+        if (geocode.isEmpty()) {
+            LOGGER.error("Geocoding returned no results.");
+            return;
+        }
+
+        latitude = geocode.get(0).lat();
+        longitude = geocode.get(0).lon();
+        weatherDataList.clear();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            try {
+                CurrentAndForecastAnswerDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
+                weatherDataList.add(dailyWeather);
+            } catch (final Exception e) {
+                LOGGER.error("Error retrieving weather for date: " + date, e);
+            }
+        }
     }
+
 
     // Getters and Setters for start and end dates
     public LocalDate getStartDate() {
@@ -52,68 +85,47 @@ public class DateBean {
         this.endDate = endDate;
     }
 
-    private boolean isDateRangeValid() {
-        if (startDate == null || endDate == null) {
-            return false; // Either start or end date is not set
-        }
 
-        // Check if start date is before end date
-        if (startDate.isAfter(endDate)) {
-            return false;
-        }
-
-        // Check if date range is within a two-week window
-        long daysBetween = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-        if (daysBetween > 14) {
-            return false;
-        }
-
-        return true; // Date range is valid
+    public WeatherApiRequestService getWeatherApiRequestService() {
+        return weatherApiRequestService;
     }
 
-
-
-    public String submitDates() {
-        buttonPressed = true;
-        System.out.println("vacation button pressed yes");
-        if (isDateRangeValid()) {
-            prepareSelectedWeatherData(); // Diese Methode filtert und bereitet die Daten vor.
-            return "vacation"; // oder die Seite, die aktualisiert werden soll
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid date range."));
-            return null;
-        }
+    public void setWeatherApiRequestService(WeatherApiRequestService weatherApiRequestService) {
+        this.weatherApiRequestService = weatherApiRequestService;
     }
 
-    public WeatherBean getWeatherBean() {
-        return weatherBean;
+    public GeocodingApiRequestService getGeocodingApiRequestService() {
+        return geocodingApiRequestService;
     }
 
-    public void setWeatherBean(WeatherBean weatherBean) {
-        this.weatherBean = weatherBean;
+    public void setGeocodingApiRequestService(GeocodingApiRequestService geocodingApiRequestService) {
+        this.geocodingApiRequestService = geocodingApiRequestService;
     }
 
-    public Boolean getButtonPressed() {
-        return buttonPressed;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setButtonPressed(Boolean buttonPressed) {
-        this.buttonPressed = buttonPressed;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    // Methode, um die Wetterdaten für den ausgewählten Zeitraum vorzubereiten
-    private void prepareSelectedWeatherData() {
-        if (startDate == null || endDate == null) {
-            selectedWeatherData = null;
-            return;
-        }
+    public double getLongitude() {
+        return longitude;
+    }
 
-        List<DailyWeatherDTO> allWeatherData = weatherBean.getWeather().dailyWeather();
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
-        selectedWeatherData = allWeatherData.stream()
-                .filter(dto -> !dto.timestamp().isBefore(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-                        && !dto.timestamp().isAfter(endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                .collect(Collectors.toList());
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+        System.out.println("location set");
+
     }
 
 
