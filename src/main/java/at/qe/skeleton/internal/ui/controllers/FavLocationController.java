@@ -5,6 +5,7 @@ import at.qe.skeleton.external.services.WeatherApiRequestService;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.FavLocationService;
+import at.qe.skeleton.internal.services.UserxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,6 @@ public class FavLocationController implements Serializable {
     private WeatherApiRequestService weatherApiRequestService;
     @Autowired
     private FavLocationService favLocationService;
-
     public String getFeelsLikeTemp(FavLocation favLocation){
         return "Feels like: " + weatherApiRequestService.retrieveCurrentAndForecastWeather
                 (favLocation.getLatitude(), favLocation.getLongitude()).currentWeather().feelsLikeTemperature() + "°C";
@@ -37,6 +37,10 @@ public class FavLocationController implements Serializable {
     public void doSafeLocationByName(String city, Userx user){
         favLocationService.StringToFavLocation(city, user);
     }
-    // TODO: implement delete Button in dataList
-    public void doDeleteLocation(FavLocation favLocation) {favLocationService.deleteLocation(favLocation);}
+    public void doDeleteLocation() {
+        if (favLocationService.getSelectedLocation() == null) {
+            return;
+        } else
+            favLocationService.deleteLocation(favLocationService.getSelectedLocation());
+    }
 }
