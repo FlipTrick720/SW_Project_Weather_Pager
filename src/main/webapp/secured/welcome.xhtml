@@ -9,9 +9,16 @@
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <p:panel header="Favorite Locations" toggleable="true" collapsed="false" style="width: 100%; height: 300px;">
+            <!-- filter input -->
+            <h:form id="filterForm">
+                <p:inputText id="filterInput" value="#{reorderListBean.filterValue}" placeholder="Filter by name">
+                    <p:ajax update="FavLocationForm" />
+                </p:inputText>
+            </h:form>
+
             <h:form id="FavLocationForm">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
-                <p:orderList value="#{reorderListBean.favLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                <p:orderList value="#{reorderListBean.filteredFavLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
                     <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
                     <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
                     <p:column style="width:20%">

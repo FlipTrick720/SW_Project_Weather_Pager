@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Bean for managing and interacting with the favorite location list on the homepage.
@@ -25,6 +26,7 @@ public class ReorderListBean implements Serializable {
     @Autowired
     private SessionInfoBean sessionInfoBean;
     private List<FavLocation> favLocations;
+    private String filterValue;
 
     /**
      * Initializes the favorite locations list for the current user.
@@ -40,6 +42,16 @@ public class ReorderListBean implements Serializable {
 
     public void setFavLocations(List<FavLocation> favLocations) {
         this.favLocations = favLocations;
+    }
+
+    private List<FavLocation> filteredFavLocations; // Declare the property
+
+    public String getFilterValue() {
+        return filterValue;
+    }
+
+    public void setFilterValue(String filterValue) {
+        this.filterValue = filterValue;
     }
 
     /**
@@ -84,5 +96,21 @@ public class ReorderListBean implements Serializable {
                 break;
             }
         }
+    }
+
+    public List<FavLocation> getFilteredFavLocations() {
+        if (filterValue == null || filterValue.isEmpty()) {
+            filteredFavLocations = favLocations;
+            return favLocations; // Assuming favLocations is the list of all favorite locations
+        } else {
+            filteredFavLocations = favLocations.stream()
+                    .filter(location -> location.getName().toLowerCase().contains(filterValue.toLowerCase()))
+                    .collect(Collectors.toList());
+            return filteredFavLocations;
+        }
+    }
+
+    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
+        this.filteredFavLocations = filteredFavLocations;
     }
 }

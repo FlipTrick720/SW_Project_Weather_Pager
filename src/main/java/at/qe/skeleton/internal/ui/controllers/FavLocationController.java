@@ -37,10 +37,5 @@ public class FavLocationController implements Serializable {
     public void doSafeLocationByName(String city, Userx user){
         favLocationService.StringToFavLocation(city, user);
     }
-    public void doDeleteLocation() {
-        if (favLocationService.getSelectedLocation() == null) {
-            return;
-        } else
-            favLocationService.deleteLocation(favLocationService.getSelectedLocation());
-    }
+
 }
