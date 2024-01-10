@@ -133,5 +133,12 @@ public class UserDetailController implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
+    public void togglePremium(){
+        if(user != null){
+            user.setPremium(!user.isPremium());
+            userService.saveUser(user);
+        }
+    }
+
 }
 

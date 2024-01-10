@@ -22,7 +22,7 @@
                     <h:outputText value="#{user.email}"/>
                 </p:column>
                 <p:column headerText="Bank Information">
-                    <h:outputText value="#{user.bankAccountNumber}"/>
+                    <h:outputText value="#{user.creditCard.number}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit My information">
@@ -35,7 +35,7 @@
                     </p:commandButton>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-star" title="Go Premium">
+                    <p:commandButton update=":oneUserForm:creditCardDialog" oncomplete="PF('creditCardDialog').show()" icon="pi pi-star" title="Go Premium">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                     <p:commandButton update=":oneUserForm:deleteAccountDialog" oncomplete="PF('deleteAccountDialog').show()" icon="pi pi-trash" title="Delete Account">
@@ -53,8 +53,7 @@
                         <p:inputText id="lastName" value="#{userDetailController.user.lastName}"/>
                         <p:outputLabel for="email" value="E-Mail: " />
                         <p:inputText id="email" value="#{userDetailController.user.email}"/>
-                        <p:outputLabel for="bankaccountnumber" value="Bank Account Number: " />
-                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.bankAccountNumber}"/>
+
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">
@@ -81,6 +80,61 @@
                 <p:outputPanel id="deleteAccount" rendered="#{not empty userDetailController.user}">
                         <p:commandButton value="Yes" action="#{userDetailController.doDeleteUser}" oncomplete="/logout;"  update=":oneUserForm:userInformation"/>
                         <p:commandButton value="No" onclick="PF('deleteAccountDialog').hide()"/>
+                </p:outputPanel>
+            </p:dialog>
+
+
+            <p:dialog header="Credit Card Details" id="creditCardDialog" widgetVar="creditCardDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="creditCardData" rendered="#{not empty userDetailController.user}">
+                <h:panelGrid columns="3" >
+
+                    <p:outputLabel for="number" value="CreditCard number: " />
+                    <p:inputText id="number" value="#{creditCardController.newCreditCard.number}"
+                        placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.number : '****-****-****-****'}"
+                        required= "true"
+                        validatorMessage="Please enter a valid CreditCard number">
+                        <f:validateRegex pattern="\d{4}-\d{4}-\d{4}-\d{4}" />
+                        <p:ajax event="keyup" update="numberMessage" />
+                    </p:inputText>
+                    <p:message id="numberMessage" for="number" />
+                    <p:outputLabel for="cvc" value="CVC: " />
+                    <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true"
+                        placeholder="***"
+                        validatorMessage="Please enter a valid CVC number">
+                        <f:validateRegex pattern="\d{3}" />
+                        <p:ajax event="keyup" update="cvcMessage" />
+                    </p:inputText>
+                    <p:message id="cvcMessage" for="cvc"/>
+                    <p:outputLabel for="name" value="Cardholder: " />
+                    <p:inputText id="name" value="#{creditCardController.newCreditCard.name}"
+                                 placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.name : 'Max Mustermann'}"
+                                 required="true"
+                                 validatorMessage="Please enter a CardholderName">
+                    <p:ajax event="keyup" update="nameMessage" />
+                    </p:inputText>
+                    <p:message id="nameMessage" for="name" />
+
+                    <p:outputLabel for="expirationDate" value="Expiration Date: " />
+                    <p:inputText id="expirationDate" value="#{creditCardController.newCreditCard.expirationDate}"
+                                 placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.expirationDate : 'MM/YYYY'}"
+                                 required="true"
+                                 validatorMessage="Please enter a valid ExpirationDate!">
+                        <f:validateRegex pattern="(0[1-9]|1[0-2])\/\d{4}" />
+                        <p:ajax event="keyup" update="dateMessage" />
+                    </p:inputText>
+                    <p:message id="dateMessage" for="expirationDate" />
+                    <h:panelGrid columns="3">
+                    <p:commandButton value="Save" action="#{creditCardController.doSaveCreditCard}"
+                                     oncomplete="if(#{not empty userDetailController.user.creditCard}) PF('creditCardDialog').hide(); else PF('creditCardDialog').show()"
+                                     update="creditCardDialog :oneUserForm:userInformation">
+                    </p:commandButton>
+                    <p:commandButton value="#{userDetailController.user.premium ? 'Cancel Subscription' : 'Go Premium'}"
+                                     action="#{userDetailController.togglePremium}"
+                                     oncomplete="PF('creditCardDialog').hide();" update=":oneUserForm:userInformation"
+                                     rendered="#{not empty userDetailController.user.creditCard}" immediate="true"/>
+                    <p:commandButton value="Abort" onclick="PF('creditCardDialog').hide()" />
+                </h:panelGrid>
+                </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 
