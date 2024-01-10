@@ -21,11 +21,11 @@ public class WeatherBean {
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
     @Autowired
-    private GeocodingApiRequestService geocodingApiRequestService;
+    private AutocompleteBean autocompleteBean;
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherBean.class);
     private double latitude;
     private double longitude;
-    private String location;
+    private String location; //same as displayName shown in autocomplete dropdown
 
     private Boolean buttonPressed = false;
 
@@ -38,10 +38,9 @@ public class WeatherBean {
     public void searchWeather() {
         buttonPressed = true;
         System.out.println("button pressed yes");
-        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
-        latitude = geocode.get(0).lat();
-        longitude = geocode.get(0).lon();
-
+        latitude = autocompleteBean.getSelectedGeocodingDTO().lat();
+        longitude = autocompleteBean.getSelectedGeocodingDTO().lon();
+        location = autocompleteBean.getDisplayName(autocompleteBean.getSelectedGeocodingDTO());
 
 
         try {
@@ -56,16 +55,8 @@ public class WeatherBean {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getLocation() {
@@ -74,7 +65,6 @@ public class WeatherBean {
 
     public void setLocation(String location) {
         this.location = location;
-        System.out.println("location set");
     }
 
     public CurrentAndForecastAnswerDTO getWeather() {

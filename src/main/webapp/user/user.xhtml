@@ -38,6 +38,9 @@
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-star" title="Go Premium">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
+                    <p:commandButton update=":oneUserForm:deleteAccountDialog" oncomplete="PF('deleteAccountDialog').show()" icon="pi pi-trash" title="Delete Account">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
 
@@ -73,6 +76,14 @@
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
+
+            <p:dialog header="Delete Account?" id="deleteAccountDialog" widgetVar="deleteAccountDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="deleteAccount" rendered="#{not empty userDetailController.user}">
+                        <p:commandButton value="Yes" action="#{userDetailController.doDeleteUser}" oncomplete="/logout;"  update=":oneUserForm:userInformation"/>
+                        <p:commandButton value="No" onclick="PF('deleteAccountDialog').hide()"/>
+                </p:outputPanel>
+            </p:dialog>
+
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />

@@ -8,7 +8,7 @@
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
         <h:form id="oneUserForm">
-            <p:dataTable id="userInformation" var="user" value="#{userDetailController.doLoadUser(sessionInfoBean.currentUser.username)}">
+            <p:dataTable id="userInformation" var="user" value="#{userListController.users}">
                 <p:column headerText="Username">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
