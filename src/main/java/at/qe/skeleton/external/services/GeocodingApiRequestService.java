@@ -12,7 +12,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Service class for making requests to the geocoding API from "openweathermap" to retrieve information about locations.
@@ -57,8 +60,20 @@ public class GeocodingApiRequestService {
      * @return The trimmed and URL-encoded city string.
      */
     private String encodeCity(String city){
-        String[] parts = city.split(",");
-        String trimmedCity = parts[0];
-        return URLEncoder.encode(trimmedCity, StandardCharsets.UTF_8);
+        return URLEncoder.encode(city, StandardCharsets.UTF_8);
+    }
+
+    public List<GeocodingDTO> getSuggestedLocations(String city) {
+        String encodedCity = encodeCity(city);
+        ResponseEntity<List<GeocodingDTO>> responseEntity = this.restClient.get()
+                .uri(UriComponentsBuilder.fromPath(GEOCODING_URI)
+                        .queryParam(CITY_PARAMETER, encodedCity)
+                        .queryParam(LIMIT_PARAMETER, 5)
+                        .build().toUriString())
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<List<GeocodingDTO>>() {});
+
+        // todo: introduce error handling using responseEntity.getStatusCode.isXXXError
+        return responseEntity.getBody();
     }
 }

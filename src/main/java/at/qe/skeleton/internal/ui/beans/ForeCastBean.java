@@ -20,24 +20,22 @@ public class ForeCastBean {
     @Autowired
     WeatherBean weatherBean;
 
-    //todo move into a service class
-    public String getDateFormattedFromTimestamp(Instant timestamp){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d", Locale.ENGLISH);
-        return timestamp.atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
-    }
-
-    //todo move into a service class
-    public String getTimeFormattedFromTimestamp(Instant timestamp) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
-        return timestamp.atZone(ZoneId.systemDefault()).toLocalTime().format(formatter);
-    }
-
+    @Autowired
+    SessionInfoBean sessionInfoBean;
 
     public String getImageUrl(String icon){
         return "https://openweathermap.org/img/wn/" + icon + "@2x.png";
     }
 
     public List<DailyWeatherDTO> getDailyWeather() {
-        return weatherBean.getWeather().dailyWeather();
+        if (sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium()){
+            return weatherBean.getWeather().dailyWeather();
+        } else {
+            return weatherBean.getWeather().dailyWeather().subList(0, 4);
+        }
+    }
+
+    public String getTitle() {
+        return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "8-Day-Forecast" : "3-Day-Forecast";
     }
 }

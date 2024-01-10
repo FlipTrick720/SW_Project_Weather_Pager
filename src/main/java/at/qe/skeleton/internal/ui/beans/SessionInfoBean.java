@@ -116,6 +116,10 @@ public class SessionInfoBean implements Serializable {
         return false;
     }
 
+    public boolean isPremium(){
+        return getCurrentUser().isPremium();
+    }
+
 
 
 }
