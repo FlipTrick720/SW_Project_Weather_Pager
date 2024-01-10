@@ -75,53 +75,57 @@
 
             <p:dialog header="Credit Card Details" id="creditCardDialog" widgetVar="creditCardDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="creditCardData" rendered="#{not empty userDetailController.user}">
-                <h:panelGrid columns="2" >
+                <h:panelGrid columns="3" >
 
                     <p:outputLabel for="number" value="CreditCard number: " />
                     <p:inputText id="number" value="#{creditCardController.newCreditCard.number}"
                         placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.number : '****-****-****-****'}"
-                        required= "true" >
+                        required= "true"
+                        validatorMessage="Please enter a valid CreditCard number">
                         <f:validateRegex pattern="\d{4}-\d{4}-\d{4}-\d{4}" />
+                        <p:ajax event="keyup" update="numberMessage" />
                     </p:inputText>
+                    <p:message id="numberMessage" for="number" />
                     <p:outputLabel for="cvc" value="CVC: " />
                     <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true"
-                        placeholder="***">
+                        placeholder="***"
+                        validatorMessage="Please enter a valid CVC number">
                         <f:validateRegex pattern="\d{3}" />
+                        <p:ajax event="keyup" update="cvcMessage" />
                     </p:inputText>
+                    <p:message id="cvcMessage" for="cvc"/>
                     <p:outputLabel for="name" value="Cardholder: " />
                     <p:inputText id="name" value="#{creditCardController.newCreditCard.name}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.name : 'Max Mustermann'}"
-                                 required="true"/>
+                                 required="true"
+                                 validatorMessage="Please enter a CardholderName">
+                    <p:ajax event="keyup" update="nameMessage" />
+                    </p:inputText>
+                    <p:message id="nameMessage" for="name" />
 
                     <p:outputLabel for="expirationDate" value="Expiration Date: " />
                     <p:inputText id="expirationDate" value="#{creditCardController.newCreditCard.expirationDate}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.expirationDate : 'MM/YYYY'}"
-                                 required="true">
+                                 required="true"
+                                 validatorMessage="Please enter a valid ExpirationDate!">
                         <f:validateRegex pattern="(0[1-9]|1[0-2])\/\d{4}" />
+                        <p:ajax event="keyup" update="dateMessage" />
                     </p:inputText>
+                    <p:message id="dateMessage" for="expirationDate" />
                     <h:panelGrid columns="3">
                     <p:commandButton value="Save" action="#{creditCardController.doSaveCreditCard}"
-                                     oncomplete="if(#{empty userDetailController.user.creditCard}) PF('premiumConfirmationDialog').show(); PF('creditCardDialog').hide();"
-                                     update=":oneUserForm:userInformation" />
+                                     oncomplete="if(#{not empty userDetailController.user.creditCard}) PF('creditCardDialog').hide(); else PF('creditCardDialog').show()"
+                                     update="creditCardDialog :oneUserForm:userInformation">
+                    </p:commandButton>
                     <p:commandButton value="#{userDetailController.user.premium ? 'Cancel Subscription' : 'Go Premium'}"
                                      action="#{userDetailController.togglePremium}"
                                      oncomplete="PF('creditCardDialog').hide();" update=":oneUserForm:userInformation"
-                                     rendered="#{not empty userDetailController.user.creditCard}"/>
-                    <p:commandButton value="Abort" onclick="PF('premiumConfirmationDialog').hide()" />
+                                     rendered="#{not empty userDetailController.user.creditCard}" immediate="true"/>
+                    <p:commandButton value="Abort" onclick="PF('creditCardDialog').hide()" />
                 </h:panelGrid>
                 </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
-
-            <p:dialog header="Premium Confirmation" id="premiumConfirmationDialog" widgetVar="premiumConfirmationDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <h:panelGrid columns="1">
-                    <h:outputText value="Do you want to subscribe to our premoim features?" />
-                    <p:commandButton value="Yes, Go Premium" action="#{userDetailController.togglePremium}" oncomplete="PF('premiumConfirmationDialog').hide();" update=":oneUserForm:userInformation" />
-                    <p:commandButton value="No, Thanks" onclick="PF('premiumConfirmationDialog').hide()" />
-                </h:panelGrid>
-            </p:dialog>
-
-
 
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" width="300">

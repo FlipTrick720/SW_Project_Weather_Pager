@@ -74,7 +74,6 @@ public class CreditCardController {
 
         creditCardService.saveCreditCard(newCreditCard);
         userDetailController.doSaveUser();
-
     }
 
     /**
