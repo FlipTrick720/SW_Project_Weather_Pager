@@ -9,6 +9,7 @@
 	template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
         <p:panel header="Favorite Locations" toggleable="true" collapsed="false" style="width: 100%; height: 300px;">
+
             <!-- filter input -->
             <h:form id="filterForm">
                 <p:inputText id="filterInput" value="#{reorderListBean.filterValue}" placeholder="Filter by name">
@@ -16,6 +17,26 @@
                 </p:inputText>
             </h:form>
 
+            <!-- configure shown data -->
+            <h:form id="configureForm">
+                <p:commandButton update=":FavLocationForm" oncomplete="PF('configureColumnDialog').show()" icon="pi pi-cog">
+                        <f:setPropertyActionListener value="#{favLocation}" target="#{favLocationController.favLocation}"/>
+                </p:commandButton>
+
+                <p:dialog header="Configure shown data" id="configureColumnDialog" widgetVar="configureColumnDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="configureData" rendered="#{not empty favLocationController.favLocation}" >
+                        <h:panelGrid columns="2">
+                            <p:selectBooleanCheckbox value="#{favLocationController.showCurrentTemp}" itemLabel="Temp"/>
+                        </h:panelGrid>
+                        <p:separator />
+                        <h:panelGrid columns="3">
+                            <p:commandButton value="Close" onclick="PF('userEditDialog').hide()"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+
+            <!-- favoritenListe -->
             <h:form id="FavLocationForm">
                 <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
                 <p:orderList value="#{reorderListBean.filteredFavLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
@@ -28,7 +49,7 @@
                         <p:graphicImage value="#{foreCastBean.getImageUrl(favLocationController.currentWeather(favLocation).icon())}" style="width: 40%"/>
                     </p:column>
                     <p:column style="width:20%">
-                        <h:outputText value="#{favLocationController.currentTemp(favLocation)}" />
+                        <h:outputText value="#{favLocationController.currentTemp(favLocation)}" rendered="#{favLocationController.showCurrentTemp}" />
                     </p:column>
                     <p:column style="width:20%">
                         <h:outputText value="#{favLocationController.getFeelsLikeTemp(favLocation)}" />
