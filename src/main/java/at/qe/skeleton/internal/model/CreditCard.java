@@ -13,7 +13,7 @@ public class CreditCard {
     private String cvc;
     private String expirationDate;
 
-    private Integer balance;
+    private double balance;
     @OneToOne(mappedBy = "creditCard")
     private Userx user;
 
@@ -57,11 +57,11 @@ public class CreditCard {
         this.user = user;
     }
 
-    public Integer getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 }
