@@ -38,6 +38,8 @@
                     <p:commandButton update=":oneUserForm:creditCardDialog" oncomplete="PF('creditCardDialog').show()" icon="pi pi-star" title="Go Premium">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
+                </p:column>
+                <p:column style="width:100px;text-align: center">
                     <p:commandButton update=":oneUserForm:deleteAccountDialog" oncomplete="PF('deleteAccountDialog').show()" icon="pi pi-trash" title="Delete Account">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
