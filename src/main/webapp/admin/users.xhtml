@@ -21,9 +21,6 @@
                 <p:column headerText="Email">
                     <h:outputText value="#{user.email}"/>
                 </p:column>
-                <p:column headerText="Bank Information">
-                    <h:outputText value="#{user.bankAccountNumber}"/>
-                </p:column>
                 <p:column style="width:100px;text-align: center">
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit My information">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>

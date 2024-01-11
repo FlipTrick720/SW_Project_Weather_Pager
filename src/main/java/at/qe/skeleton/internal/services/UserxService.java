@@ -3,8 +3,6 @@ package at.qe.skeleton.internal.services;
 import at.qe.skeleton.internal.model.Userx;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Set;
 
@@ -29,7 +27,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService {
+public class UserxService{
 
     @Autowired
     private UserxRepository userRepository;
@@ -45,6 +43,8 @@ public class UserxService {
 
     @Autowired
     private PremiumStatusListener premiumStatusListener;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
     /**
