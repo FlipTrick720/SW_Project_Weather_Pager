@@ -26,7 +26,7 @@ public class AutocompleteBean {
     GeocodingApiRequestService geocodingApiRequestService;
 
     public List<GeocodingDTO> getAutocompletion(String input) {
-         List<GeocodingDTO> currentSuggestions = geocodingApiRequestService.getSuggestedLocations(input);
+         List<GeocodingDTO> currentSuggestions = geocodingApiRequestService.retrieveGeocodingData(input);
 
          if (currentSuggestions != null){
              currentSuggestions.forEach(this::saveCurrentSuggestions); //save current suggestions in a map to be able to retrieve them later
