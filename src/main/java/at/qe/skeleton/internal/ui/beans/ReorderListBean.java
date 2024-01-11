@@ -25,26 +25,19 @@ public class ReorderListBean implements Serializable {
     private FavLocationService favLocationService;
     @Autowired
     private SessionInfoBean sessionInfoBean;
+    /**
+     * FavLocations = the original List of FavoriteLocations (shown if filter value = "")
+     */
     private List<FavLocation> favLocations;
+    /**
+     * filteredFavLocations = the actual shown List (according to the filter value)
+     */
+    private List<FavLocation> filteredFavLocations; // Declare the property
     private String filterValue;
 
     /**
-     * Initializes the favorite locations list for the current user.
+     * currentlyToDeleteId value is only for test purpose
      */
-    @PostConstruct
-    public void init() {
-        favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
-    }
-
-    public List<FavLocation> getFavLocations() {
-        return favLocations;
-    }
-
-    public void setFavLocations(List<FavLocation> favLocations) {
-        this.favLocations = favLocations;
-    }
-
-    private List<FavLocation> filteredFavLocations; // Declare the property
 
     public String getFilterValue() {
         return filterValue;
@@ -54,9 +47,29 @@ public class ReorderListBean implements Serializable {
         this.filterValue = filterValue;
     }
 
+    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
+        this.filteredFavLocations = filteredFavLocations;
+    }
+
+    /**
+     * This function is only to simulate for testing and should not be used in the real Application
+     * @param favLocations
+     */
+    public void setFavLocations(List<FavLocation> favLocations) {
+        this.favLocations = favLocations;
+    }
+
+    /**
+     * Initializes the favorite locations list for the current user.
+     */
+    @PostConstruct
+    public void init() {
+        favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
+    }
+
     /**
      * Handles the case where a favorite location is selected from the list.
-     *
+     * No test for this function because we weren't able to simulate the FacesContext.
      * @param event The selection event
      */
     public void onSelect(SelectEvent<?> event) {
@@ -75,16 +88,19 @@ public class ReorderListBean implements Serializable {
 
     /**
      * Handles the reordering of the favorite locations list.
+     * No test for this function because we weren't able to simulate the FacesContext.
      */
     public void onReorder() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-        favLocationService.updateLocations(favLocations);
+        favLocationService.updateIndexLocations(favLocations);
+        favLocationService.updateIndexLocations(filteredFavLocations);
     }
 
     /**
      * Deletes the currently selected Location from the List.
      * The ID of the location to be deleted is obtained from the request parameter 'idFavLocation' (defined in the /secured/welcome.xhtml).
+     * Not test because we weren't able to simulate the FacesContext
      */
     public void deleteLocation() {
         long id = Long.parseLong(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idFavLocation"));
@@ -98,6 +114,10 @@ public class ReorderListBean implements Serializable {
         }
     }
 
+    /**
+     * This function edits the FavLocation List according to the currently entered filteredValue
+     * @return the List of favorite Locations associated with the current user
+     */
     public List<FavLocation> getFilteredFavLocations() {
         if (filterValue == null || filterValue.isEmpty()) {
             filteredFavLocations = favLocations;
@@ -108,9 +128,5 @@ public class ReorderListBean implements Serializable {
                     .collect(Collectors.toList());
             return filteredFavLocations;
         }
-    }
-
-    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
-        this.filteredFavLocations = filteredFavLocations;
     }
 }

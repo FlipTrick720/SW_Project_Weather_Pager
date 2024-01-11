@@ -1,8 +1,5 @@
 package at.qe.skeleton.internal.services;
 
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
-import at.qe.skeleton.internal.model.Userx;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -23,8 +20,6 @@ public class FavLocationConverter implements Converter {
 
     @Autowired
     private FavLocationService favLocationService; // Inject your FavLocationService here
-    @Autowired
-    private GeocodingApiRequestService geocodingApiRequestService;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
