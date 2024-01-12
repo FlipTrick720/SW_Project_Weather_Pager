@@ -99,12 +99,6 @@ public class UserxService{
         return user;
     }
 
-
-    public void createVerificationToken (Userx user, String token){
-        Token myToken = new Token(token, user);
-        tokenRepository.save(myToken);
-    }
-
     public Userx getUserByConfirmationToken(String token) {
         Token tokenEntity =  tokenRepository.findByToken(token);
         if(tokenEntity != null){
@@ -112,6 +106,10 @@ public class UserxService{
         } else {
             return null;
         }
+    }
+
+    public Userx getUserByEmail(String email){
+        return userRepository.findFirstByEmail(email);
     }
 
     /**

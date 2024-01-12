@@ -19,14 +19,14 @@ import java.util.Map;
 @Scope("session")
 public class AutocompleteBean {
 
-    private final Map<String, GeocodingDTO> currentFiveSuggestedDTOs = new HashMap<>();
+    private Map<String, GeocodingDTO> currentFiveSuggestedDTOs = new HashMap<>();
     private GeocodingDTO selectedGeocodingDTO;
 
     @Autowired
     GeocodingApiRequestService geocodingApiRequestService;
 
     public List<GeocodingDTO> getAutocompletion(String input) {
-         List<GeocodingDTO> currentSuggestions = geocodingApiRequestService.getSuggestedLocations(input);
+         List<GeocodingDTO> currentSuggestions = geocodingApiRequestService.retrieveGeocodingData(input);
 
          if (currentSuggestions != null){
              currentSuggestions.forEach(this::saveCurrentSuggestions); //save current suggestions in a map to be able to retrieve them later
@@ -58,5 +58,13 @@ public class AutocompleteBean {
 
     public GeocodingDTO getSelectedGeocodingDTO() {
         return selectedGeocodingDTO;
+    }
+
+    public Map<String, GeocodingDTO> getCurrentFiveSuggestedDTOs() {
+        return currentFiveSuggestedDTOs;
+    }
+
+    public void setCurrentFiveSuggestedDTOs(Map<String, GeocodingDTO> currentFiveSuggestedDTOs) {
+        this.currentFiveSuggestedDTOs = currentFiveSuggestedDTOs;
     }
 }

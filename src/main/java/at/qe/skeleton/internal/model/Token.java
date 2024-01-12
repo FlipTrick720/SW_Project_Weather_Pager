@@ -24,7 +24,7 @@ public class Token {
 
     private String token;
 
-    @OneToOne(targetEntity = Userx.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Userx.class, fetch = FetchType.EAGER)
     Userx user;
     private Date expiryDate; //not used yet, we assume that the user performs the verification within 24 hours
 

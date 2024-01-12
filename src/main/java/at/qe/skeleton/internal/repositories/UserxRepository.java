@@ -16,6 +16,8 @@ public interface UserxRepository extends AbstractRepository<Userx, String> {
 
     Userx findFirstByUsername(String username);
 
+    Userx findFirstByEmail(String email);
+
     List<Userx> findByUsernameContaining(String username);
 
     List<Userx> findByPremiumTrue();
