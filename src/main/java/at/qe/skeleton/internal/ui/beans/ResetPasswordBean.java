@@ -39,9 +39,9 @@ public class ResetPasswordBean implements Serializable {
         if(tokenservice.getUserByConfirmationToken(token) == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Invalid token"));
             System.out.println("message added");
-            this.validToken = false;
+            setValidToken(false);
         } else {
-            this.validToken = true;
+            setValidToken(true);
         }
     }
 
@@ -58,11 +58,23 @@ public class ResetPasswordBean implements Serializable {
         return validToken;
     }
 
+    public void setValidToken(boolean validToken) {
+        this.validToken = validToken;
+    }
+
     public String getNewPassword() {
         return newPassword;
     }
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
