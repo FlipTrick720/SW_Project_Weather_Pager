@@ -1,5 +1,6 @@
 package at.qe.skeleton.tests;
 
+import at.qe.skeleton.internal.model.Token;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
@@ -72,10 +73,15 @@ class ResetPasswordBeanTest {
 
     @Test
     void testResetPassword() {
+        Userx user = new Userx();
+        Token token = new Token("validToken", user);
+
         // mock the token service to return a user
-        when(tokenService.getUserByConfirmationToken(anyString())).thenReturn(new Userx());
+        when(tokenService.getUserByConfirmationToken(anyString())).thenReturn(user);
         // mock the user service to return the same user after saving
         when(userxService.saveUser(any(Userx.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        when(tokenService.findByTokenString("validToken")).thenReturn(token);
 
         // set valid token
         resetPasswordBean.setToken("validToken");
@@ -85,10 +91,10 @@ class ResetPasswordBeanTest {
         // call the resetPassword method
         resetPasswordBean.resetPassword();
 
-        // Verify saveUser method was called with a user
-        verify(userxService, times(1)).saveUser(any(Userx.class));
-        // verify deleteToken method was called
-        verify(tokenService, times(1)).deleteToken(any());
+        // Verify saveUser method was called with this user
+        verify(userxService, times(1)).saveUser(user);
+        // verify deleteToken method was called with this token
+        verify(tokenService, times(1)).deleteToken(token);
     }
 }
 
