@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Token;
 import at.qe.skeleton.internal.model.Userx;
+import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
@@ -23,6 +24,9 @@ public class ResetPasswordController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private TokenService tokenService;
     private String email;
 
     public void requestPasswordChange(){
@@ -35,8 +39,8 @@ public class ResetPasswordController {
         }
 
         //create token and send email
-        String token = UUID.randomUUID().toString();
-        userxService.createVerificationToken(user, token);
+        String token = tokenService.generateTokenString();
+        tokenService.createVerificationToken(user, token);
 
         emailService.setEmailStrategy(new PasswordChangeMailStrategy());
         emailService.sendMail(user.getEmail(), token);
