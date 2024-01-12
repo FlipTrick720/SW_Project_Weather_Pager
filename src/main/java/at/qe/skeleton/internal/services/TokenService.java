@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Scope("application")
 public class TokenService {
@@ -33,5 +35,9 @@ public class TokenService {
 
     public Token findByTokenString(String token){
         return tokenRepository.findByToken(token);
+    }
+
+    public String generateTokenString() {
+        return UUID.randomUUID().toString();
     }
 }
