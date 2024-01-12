@@ -17,11 +17,14 @@ import java.util.Random;
 @Component
 @Scope("view")
 public class CreditCardController {
+
     @Autowired
     private CreditCardService creditCardService;
 
     @Autowired
     private UserDetailController userDetailController;
+
+    private Random random = new Random();
 
     /**
      * Attribute to cache the CreditCard Information.
@@ -67,7 +70,6 @@ public class CreditCardController {
      * Action to save the currently displayed creditCard.
      */
     public void doSaveCreditCard() {
-        Random random = new Random();
         newCreditCard.setUser(userDetailController.getUser());
         newCreditCard.setBalance(random.nextInt(51));
         userDetailController.getUser().setCreditCard(newCreditCard);
