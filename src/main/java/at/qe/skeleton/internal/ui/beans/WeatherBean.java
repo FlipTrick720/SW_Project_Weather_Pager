@@ -32,7 +32,6 @@ public class WeatherBean {
 
     public void searchWeather() {
         buttonPressed = true;
-        System.out.println("button pressed yes");
         latitude = autocompleteBean.getSelectedGeocodingDTO().lat();
         longitude = autocompleteBean.getSelectedGeocodingDTO().lon();
         location = autocompleteBean.getDisplayName(autocompleteBean.getSelectedGeocodingDTO());

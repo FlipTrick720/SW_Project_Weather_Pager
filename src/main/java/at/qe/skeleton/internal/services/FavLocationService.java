@@ -47,7 +47,7 @@ public class FavLocationService {
         saveLocation(location);
     }
 
-    public FavLocation StringToFavLocation(String city, Userx user){
+    public FavLocation stringToFavLocation(String city, Userx user){
         FavLocation favLocation = new FavLocation();
         favLocation.setName(city);
         favLocation.setLatitude(geocodingApiRequestService.retrieveGeocodingData(city).get(0).lat());

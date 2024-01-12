@@ -80,7 +80,6 @@ public class UserxService{
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
     // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
-        Userx oldUser = getAuthenticatedUser();
         if (user.isNew()) {
             user.setCreateUser(getAuthenticatedUser());
         } else {
@@ -147,10 +146,6 @@ public class UserxService{
     private Userx getAuthenticatedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findFirstByUsername(auth.getName());
-    }
-
-    private void setAuthenticatedUser() {
-        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
     }
 
     /**
