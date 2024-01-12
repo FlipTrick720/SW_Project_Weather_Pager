@@ -8,6 +8,6 @@ public class PasswordChangeMailStrategy implements EmailStrategy {
     public void configureMail(SimpleMailMessage message, String token) {
         message.setSubject("Password change for the WeatherApp");
         message.setText("Please click this link to change your password:\n"
-                + "http://localhost:8080/resetpassword?token=" + token);
+                + "http://localhost:8080/user/reset_password.xhtml?token=" + token);
     }
 }
