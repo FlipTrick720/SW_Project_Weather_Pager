@@ -1,6 +1,7 @@
 package at.qe.skeleton.external.services;
 
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
+import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,17 +57,17 @@ public class WeatherApiRequestService {
         return responseEntity.getBody();
     }
 
-   public CurrentAndForecastAnswerDTO retrieveDailyAggregationWeather(@Min(-90) @Max(90) double latitude,
+   public DailyAggregationDTO retrieveDailyAggregationWeather(@Min(-90) @Max(90) double latitude,
                                                                       @Min(-180) @Max(180) double longitude,
                                                                       LocalDate date) {
-        ResponseEntity<CurrentAndForecastAnswerDTO> responseEntity = this.restClient.get()
+        ResponseEntity<DailyAggregationDTO> responseEntity = this.restClient.get()
                 .uri(UriComponentsBuilder.fromPath(DAILY_AGGREGATION_URI)
                         .queryParam(LATITUDE_PARAMETER, String.valueOf(latitude))
                         .queryParam(LONGITUDE_PARAMETER, String.valueOf(longitude))
                         .queryParam("date", date.toString())
                         .build().toUriString())
                 .retrieve()
-                .toEntity(CurrentAndForecastAnswerDTO.class);
+                .toEntity(DailyAggregationDTO.class);
 
        return responseEntity.getBody();
 }

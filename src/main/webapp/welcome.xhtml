@@ -21,10 +21,27 @@
 						<p:calendar id="endDate" value="#{dateBean.endDate}" pattern="yyy-MM-dd" showOn="button" style="margin-right: 10px"/>
 						<!-- Submit button for dates -->
 						<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}" oncomplete="if (args&amp;&amp;!args.validationFailed) PF('dateDialog').hide();"/>
+
 					</p:dialog>
-					<p:autoComplete value="#{weatherBean.location}" completeMethod="#{autocompleteBean.getAutocompletion}" style="margin-right: 10px"/>
+
+					<p:autoComplete id="event"
+									completeMethod="#{autocompleteBean.getAutocompletion}"
+									forceSelection="true"
+									var="location"
+									itemValue="#{location}"
+									itemLabel="#{autocompleteBean.getDisplayName(location)}"
+									style="margin-right: 10px">
+						<p:ajax event="itemSelect" listener="#{autocompleteBean.onItemSelect}"/>
+					</p:autoComplete>
+
+
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
-					<p:commandButton value="Add to Favorite" icon="pi pi-star" action="#{favLocationController.doSafeLocationByName(weatherBean.location, sessionInfoBean.currentUser)}"/>
+					<p:commandButton value="Add to Favorite" icon="pi pi-star" rendered="#{sessionInfoBean.loggedIn}" action="#{favLocationController.doSafeLocationByName(autocompleteBean.selectedGeocodingDTO.name(), sessionInfoBean.currentUser)}"/>
+
+					<h:panelGroup id="disabled_button" rendered="#{!sessionInfoBean.loggedIn}">
+						<p:tooltip for="disabled_button" value="Create an account or log in to use Favorites!" />
+						<p:commandButton value="Add to Favorite" icon="pi pi-star" styleClass="ui-state-disabled" disabled="true"/>
+					</h:panelGroup>
 				</p:panel>
 			</p:panelGrid>
 			<!-- end of top section -->
@@ -34,52 +51,54 @@
 
 				<!-- Content for the left column -->
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-						<p:card>
-							<!-- City Name -->
-							<div style="text-align: center; margin-top: 10px;">
-								<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
-							</div>
+					<p:card>
+						<!-- City Name -->
+						<div style="text-align: center; margin-top: 10px;">
+							<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(weatherBean.weather.currentWeather().timestamp())}, #{apiFormatter.getTimeFormattedFromTimestamp(weatherBean.weather.currentWeather().timestamp(), weatherBean.weather.timezoneOffset())}"/>
+							<br/>
+							<h:outputText value="#{weatherBean.location}" style="font-weight: bold; font-size: 18px;" />
+						</div>
 
-							<!-- Temperature and Weather Image -->
-							<h:panelGrid styleClass="borderless" style="margin: auto">
-								<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
-									<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
-									<br />
-									<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
-									<br />
-									<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
-								</p:panel>
-							</h:panelGrid>
+						<!-- Temperature and Weather Image -->
+						<h:panelGrid styleClass="borderless" style="margin: auto">
+							<p:panel style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
+								<p:graphicImage value="#{weatherBean.imageUrl()}" alt="Weather Icon" style="margin-top: 10px;" />
+								<br />
+								<h:outputText value="#{weatherBean.weather.currentWeather().temperature()} °C" style="font-size: 24px; font-weight: bold;" />
+								<br />
+								<h:outputText value="Feels like #{weatherBean.weather.currentWeather().feelsLikeTemperature()} °C. #{weatherBean.weather.currentWeather().weather().description()}" style="font-size: 15px" />
+							</p:panel>
+						</h:panelGrid>
 
-							<!-- Details Panel -->
-							<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;">
-								<p:panel style="text-align: center;">
-									<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
-									<br/>
-									<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
-								</p:panel>
+						<!-- Details Panel -->
+						<h:panelGrid styleClass="borderless" columns="2" style="margin: auto;">
+							<p:panel style="text-align: center;">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windDirection()} °" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Direction" style="font-size: 10px;"/>
+							</p:panel>
 
-								<p:panel style="text-align: center">
-									<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
-									<br/>
-									<h:outputLabel value="Wind Speed" style="font-size: 10px" />
-								</p:panel>
-							</h:panelGrid>
+							<p:panel style="text-align: center">
+								<h:outputText value="#{weatherBean.weather.currentWeather().windSpeed()} m/s" style="font-weight: bold;"/>
+								<br/>
+								<h:outputLabel value="Wind Speed" style="font-size: 10px" />
+							</p:panel>
+						</h:panelGrid>
 
-<!--							 accordion panel for additional data, not sure if needed -->
-							<p:accordionPanel widgetVar="basic" activeIndex="null">
-								<p:tab title="Summary" titleStyle="font-weight: normal">
-									<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
-								</p:tab>
-							</p:accordionPanel>
-						</p:card>
-					</p:panel>
+						<p:accordionPanel widgetVar="summary" activeIndex="null">
+							<p:tab title="Summary" titleStyle="font-weight: normal">
+								<h:outputText value="#{foreCastBean.dailyWeather.get(0).summary()}"/>
+							</p:tab>
+						</p:accordionPanel>
+
+					</p:card>
+				</p:panel>
 				<!-- end of left column -->
 
 				<!-- Content for the right column -->
 				<p:panel rendered="#{weatherBean.buttonPressed}" style="text-align: center" >
 					<h:form>
-						<p:barChart model="#{chartBean.createMixedModel(weatherBean.weather.hourlyWeather())}"/>
+						<p:barChart model="#{chartBean.createMixedModel(weatherBean.weather.hourlyWeather(), weatherBean.weather.timezoneOffset())}"/>
 					</h:form>
 				</p:panel>
 				<!-- end of right column -->
@@ -88,8 +107,44 @@
 
 			<!-- start of bottom section: 8-day-forecast -->
 			<p:panelGrid id="bottom" columns="1" styleClass="borderless">
+
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-					<p:panel header="8-Day-Forecast">
+					<p:accordionPanel widgetVar="basic" activeIndex="null" rendered="#{weatherBean.buttonPressed}">
+						<p:tab title="#{hourlyWeatherBean.title}" titleStyle="font-weight: bold">
+							<p:dataTable var="hour" value="#{hourlyWeatherBean.hourlyWeather}" scrollable="true" scrollHeight="250">
+								<p:column headerText="Hour">
+									<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(hour.timestamp())}, #{apiFormatter.getTimeFormattedFromTimestamp(hour.timestamp(), weatherBean.weather.timezoneOffset())}"/>
+								</p:column>
+								<p:column headerText="Temperature">
+									<h:outputText value="#{hour.temperature()} °C"/>
+								</p:column>
+								<p:column headerText="Feels like">
+									<h:outputText value="#{hour.feelsLikeTemperature()} °C"/>
+								</p:column>
+								<p:column headerText="Windspeed">
+									<h:outputText value="#{hour.windSpeed()} m/s"/>
+								</p:column>
+								<p:column headerText="Wind Degree">
+									<h:outputText value="#{hour.windDirection()}°"/>
+								</p:column>
+								<p:column headerText="Description">
+									<h:outputText value="#{hour.weather().description()}"/>
+								</p:column>
+								<p:column headerText="Pop">
+									<h:outputText value="#{hour.probabilityOfPrecipitation()*100} %"/>
+								</p:column>
+							</p:dataTable>
+							<f:facet name="actions">
+								<p:tooltip for="infoText" value="Get a premium plan to see details for the next 48 hours" />
+								<h:outputText id="infoText" styleClass="pi pi-question" style="cursor: pointer;" />
+							</f:facet>
+						</p:tab>
+
+					</p:accordionPanel>
+				</p:panel>
+
+				<p:panel rendered="#{weatherBean.buttonPressed}">
+					<p:panel header="#{foreCastBean.title}">
 						<h:form>
 							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
 								<p:column style="width:5rem">
@@ -97,7 +152,7 @@
 								</p:column>
 
 								<p:column styleClass="smaller-rows">
-									<h:outputText value="#{foreCastBean.getDateFormattedFromTimestamp(day.timestamp())}"/>
+									<h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(day.timestamp())}"/>
 								</p:column>
 
 								<p:column>
@@ -105,7 +160,7 @@
 								</p:column>
 
 								<p:column>
-									<h:outputText value="#{day.dailyTemperatureAggregation().minimumDailyTemperature()} / #{day.dailyTemperatureAggregation().maximumDailyTemperature()} °C">
+									<h:outputText value="#{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().maximumDailyTemperature())} / #{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().minimumDailyTemperature())} °C">
 									</h:outputText>
 								</p:column>
 
@@ -119,9 +174,9 @@
 											<h:outputText value="#{day.summary()}."/>
 											<br/>
 											<br/>
-											<h:outputText value="Sunrise: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunrise())}."/>
+											<h:outputText value="Sunrise: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunrise(), weatherBean.weather.timezoneOffset())}."/>
 											<br/>
-											<h:outputText value="Sunset: #{foreCastBean.getTimeFormattedFromTimestamp(day.sunset())}."/>
+											<h:outputText value="Sunset: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunset(), weatherBean.weather.timezoneOffset())}."/>
 										</p:panel>
 
 										<h:form>
@@ -146,8 +201,9 @@
 						</h:form>
 					</p:panel>
 				</p:panel>
-			</p:panelGrid>
+		</p:panelGrid>
 		</h:form>
 	</ui:define>
 
 </ui:composition>
+

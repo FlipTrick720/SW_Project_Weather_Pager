@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
+import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
@@ -23,15 +24,19 @@ public class DateBean {
     private WeatherApiRequestService weatherApiRequestService;
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
-
-    private double latitude;
-    private double longitude;
-    private String location;
+    @Autowired
+    private AutocompleteBean autocompleteBean;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<CurrentAndForecastAnswerDTO> weatherDataList = new ArrayList<>();
+    private List<DailyAggregationDTO> weatherDataList = new ArrayList<>();
+    @Autowired
+    private WeatherBean weatherBean;
+    private Boolean buttonPressed = false;
+
 
     private boolean isDateRangeValid() {
+        buttonPressed = true;
+        System.out.println("submit button pressed yes");
         if (startDate == null || endDate == null) {
             return false;
         }
@@ -41,32 +46,42 @@ public class DateBean {
         return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
     }
 
-    public void submitDates() {
+    public String submitDates() {
         if (!isDateRangeValid()) {
             LOGGER.error("Invalid date range.");
-            return;
+            return "error"; // Return an appropriate outcome for invalid date range
         }
 
-        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
-        if (geocode.isEmpty()) {
-            LOGGER.error("Geocoding returned no results.");
-            return;
+        GeocodingDTO geocodingData = autocompleteBean.getSelectedGeocodingDTO();
+        if (geocodingData == null) {
+            LOGGER.error("No location selected.");
+            return "error"; // Return an appropriate outcome for no location selected
         }
 
-        latitude = geocode.get(0).lat();
-        longitude = geocode.get(0).lon();
+        double latitude = geocodingData.lat();
+        double longitude = geocodingData.lon();
+
         weatherDataList.clear();
-
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             try {
-                CurrentAndForecastAnswerDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
+                DailyAggregationDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
                 weatherDataList.add(dailyWeather);
-            } catch (final Exception e) {
-                LOGGER.error("Error retrieving weather for date: " + date, e);
+            } catch (Exception e) {
+                LOGGER.error("Error retrieving weather data for date: " + date, e);
             }
         }
+
+        return "success"; // Return the appropriate outcome for success
     }
 
+
+    public Boolean getButtonPressed() {
+        return buttonPressed;
+    }
+
+    public void setButtonPressed(Boolean buttonPressed) {
+        this.buttonPressed = buttonPressed;
+    }
 
     // Getters and Setters for start and end dates
     public LocalDate getStartDate() {
@@ -102,31 +117,27 @@ public class DateBean {
         this.geocodingApiRequestService = geocodingApiRequestService;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public AutocompleteBean getAutocompleteBean() {
+        return autocompleteBean;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setAutocompleteBean(AutocompleteBean autocompleteBean) {
+        this.autocompleteBean = autocompleteBean;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public List<DailyAggregationDTO> getWeatherDataList() {
+        return weatherDataList;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setWeatherDataList(List<DailyAggregationDTO> weatherDataList) {
+        this.weatherDataList = weatherDataList;
     }
 
-    public String getLocation() {
-        return location;
+    public WeatherBean getWeatherBean() {
+        return weatherBean;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-        System.out.println("location set");
-
+    public void setWeatherBean(WeatherBean weatherBean) {
+        this.weatherBean = weatherBean;
     }
-
-
 }
