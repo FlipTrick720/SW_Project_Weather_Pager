@@ -114,6 +114,10 @@ public class UserxService {
         }
     }
 
+    public Userx getUserByEmail(String email){
+        return userRepository.findFirstByEmail(email);
+    }
+
     /**
      * Deletes the user.
      *
