@@ -10,7 +10,6 @@ import at.qe.skeleton.internal.services.PremiumHistoryService;
 import at.qe.skeleton.internal.services.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.*;

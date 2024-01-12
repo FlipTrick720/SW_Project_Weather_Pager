@@ -41,9 +41,9 @@ public class UserxService{
 
     @Autowired
     private PremiumStatusListener premiumStatusListener;
+
     @Autowired
     private UserUpdater userUpdater;
-
 
     /**
      * Returns a collection of all users.

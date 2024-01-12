@@ -31,6 +31,8 @@ public class WebSecurityConfig {
     private static final String USER = UserxRole.USER.name();
     private static final String LOGIN = "/login.xhtml";
     private static final String ACCESSDENIED = "/error/access_denied.xhtml";
+
+    private static final String WELCOME = "/welcome.xhtml";
     
     @Autowired
     DataSource dataSource;
@@ -45,7 +47,7 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(FrameOptionsConfig::sameOrigin)) // needed for H2 console
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(new AntPathRequestMatcher("/welcome.xhtml")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher(WELCOME)).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/register_page.xhtml")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/resources/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/verification/**")).permitAll()
@@ -65,13 +67,13 @@ public class WebSecurityConfig {
             .formLogin(form -> form
                 .loginPage(LOGIN)
                 .permitAll()
-                .defaultSuccessUrl("/welcome.xhtml")
+                .defaultSuccessUrl(WELCOME)
                 .loginProcessingUrl("/login")
                 .successForwardUrl("/secured/welcome.xhtml") //before changing secured/welcome.xhtlm
                 .failureUrl(ACCESSDENIED)
             )
             .logout(logout -> logout
-                .logoutSuccessUrl("/welcome.xhtml")
+                .logoutSuccessUrl(WELCOME)
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

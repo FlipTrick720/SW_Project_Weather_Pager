@@ -2,7 +2,6 @@ package at.qe.skeleton.external.services;
 
 
 import com.google.maps.GeoApiContext;
-import com.google.maps.PlaceAutocompleteRequest;
 import com.google.maps.PlaceAutocompleteRequest.SessionToken;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.AutocompletePrediction;

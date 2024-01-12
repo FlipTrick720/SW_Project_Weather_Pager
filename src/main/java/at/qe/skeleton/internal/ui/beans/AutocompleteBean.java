@@ -2,15 +2,10 @@ package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
-import at.qe.skeleton.external.services.GooglePlacesAutocompleteApiService;
-import jakarta.faces.event.ValueChangeEvent;
-import jakarta.faces.event.ValueChangeListener;
-import org.primefaces.event.ItemSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

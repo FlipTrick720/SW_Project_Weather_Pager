@@ -8,7 +8,6 @@ import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

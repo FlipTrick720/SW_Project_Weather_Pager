@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.ui.beans;
 
-
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
@@ -10,7 +9,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.Serializable;
 import java.util.Map;
 

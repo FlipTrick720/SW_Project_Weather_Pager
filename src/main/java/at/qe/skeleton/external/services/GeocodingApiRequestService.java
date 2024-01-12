@@ -13,10 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Service class for making requests to the geocoding API from "openweathermap" to retrieve information about locations.
