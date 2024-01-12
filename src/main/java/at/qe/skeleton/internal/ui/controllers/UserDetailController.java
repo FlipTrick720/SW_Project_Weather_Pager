@@ -127,7 +127,7 @@ public class UserDetailController implements Serializable {
         user = this.userService.saveUser(newUser);
 
         //logic for verification process
-        String token = UUID.randomUUID().toString();
+        String token = tokenService.generateTokenString();
         tokenService.createVerificationToken(newUser, token);
 
         //send confirmation mail
