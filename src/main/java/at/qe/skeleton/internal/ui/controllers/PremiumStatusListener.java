@@ -46,7 +46,7 @@ public class PremiumStatusListener implements PropertyChangeListener {
             boolean newPremiumStatus = (boolean) evt.getNewValue();
             Userx user = (Userx) evt.getSource();
             premiumHistoryService.savePremiumHistory(user, newPremiumStatus);
-            if (newPremiumStatus == true) {
+            if (newPremiumStatus) {
                 paymentHistoryService.createPaymentHistory(user, LocalDateTime.now());
             }
         }
@@ -162,9 +162,8 @@ public class PremiumStatusListener implements PropertyChangeListener {
      * @param user
      * @return
      */
-    public double priceForChargedDays(int chargedDays, Userx user) {
+    public double priceForChargedDays(int chargedDays) {
         double pricePerTimeUnit = 0.005; //Time unit is currently a Second
-        //paymentHistoryService.createPaymentHistory(user);
         return chargedDays * pricePerTimeUnit;
     }
 
@@ -178,7 +177,7 @@ public class PremiumStatusListener implements PropertyChangeListener {
     public void cashUpTillEndCurrentMonth(Userx user) {
 
         int chargedDays = chargedDaysFromStartToEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear(), LocalDate.now().getMonth()));
-        double payment = priceForChargedDays(chargedDays, user);
+        double payment = priceForChargedDays(chargedDays);
         double currentBalance = creditCardService.findByUser(user).getBalance();
 
         if(currentBalance >= payment){
