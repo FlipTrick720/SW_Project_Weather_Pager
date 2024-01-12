@@ -3,6 +3,7 @@ package at.qe.skeleton.internal.ui.controllers;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.FavLocationService;
@@ -30,7 +31,10 @@ public class UserDetailController implements Serializable {
     private UserxService userService;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * Attribute to cache the currently displayed user
@@ -124,7 +128,7 @@ public class UserDetailController implements Serializable {
 
         //logic for verification process
         String token = UUID.randomUUID().toString();
-        userService.createVerificationToken(newUser, token);
+        tokenService.createVerificationToken(newUser, token);
 
         //send confirmation mail
         emailService.setEmailStrategy(new ConfirmationMailStrategy());
