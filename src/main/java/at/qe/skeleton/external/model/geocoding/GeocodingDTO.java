@@ -1,8 +1,6 @@
 package at.qe.skeleton.external.model.geocoding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import java.io.Serializable;
 import java.util.Map;
