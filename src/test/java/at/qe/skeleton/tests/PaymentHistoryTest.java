@@ -1,9 +1,7 @@
 package at.qe.skeleton.tests;
 
-import at.qe.skeleton.internal.model.PaymentHistory;
-import at.qe.skeleton.internal.model.PaymentStatus;
-import at.qe.skeleton.internal.model.Userx;
-import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.model.*;
+import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.UserxService;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
@@ -19,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @SpringBootTest
@@ -33,6 +32,9 @@ public class PaymentHistoryTest {
 
     @Autowired
     public PremiumStatusListener premiumStatusListener;
+
+    @Autowired
+    public CreditCardService creditCardService;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -95,12 +97,24 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testCashUpFunction() {
+        Random random = new Random();
+
         String testUser = "testUser";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
         user.setRoles(Set.of(UserxRole.USER));
         user.setPremium(true);
+        userxService.saveUser(user);
+
+        CreditCard testCreditCard = new CreditCard();
+        testCreditCard.setNumber("1234567890123456");
+        testCreditCard.setName("Test User");
+        testCreditCard.setCvc("123");
+        testCreditCard.setBalance(random.nextInt(10000) + 1);
+        creditCardService.saveCreditCard(testCreditCard);
+
+        user.setCreditCard(testCreditCard);
         userxService.saveUser(user);
 
         premiumStatusListener.cashUpTillEndCurrentMonth(user);
