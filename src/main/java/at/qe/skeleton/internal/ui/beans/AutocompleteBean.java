@@ -19,7 +19,7 @@ import java.util.Map;
 @Scope("session")
 public class AutocompleteBean {
 
-    private final Map<String, GeocodingDTO> currentFiveSuggestedDTOs = new HashMap<>();
+    private Map<String, GeocodingDTO> currentFiveSuggestedDTOs = new HashMap<>();
     private GeocodingDTO selectedGeocodingDTO;
 
     @Autowired
@@ -58,5 +58,13 @@ public class AutocompleteBean {
 
     public GeocodingDTO getSelectedGeocodingDTO() {
         return selectedGeocodingDTO;
+    }
+
+    public Map<String, GeocodingDTO> getCurrentFiveSuggestedDTOs() {
+        return currentFiveSuggestedDTOs;
+    }
+
+    public void setCurrentFiveSuggestedDTOs(Map<String, GeocodingDTO> currentFiveSuggestedDTOs) {
+        this.currentFiveSuggestedDTOs = currentFiveSuggestedDTOs;
     }
 }
