@@ -36,6 +36,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @DirtiesContext
     public void testDatainitialization() {
         Assertions.assertEquals(anzUser, userService.getAllUsers().size(), "Insufficient amount of users initialized for test data source");
         List<Userx> allUsers = (List<Userx>) userService.getAllUsers();
@@ -71,9 +72,10 @@ public class UserServiceTest {
         }
     }
 
-    @DirtiesContext
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @DirtiesContext
     public void testDeleteUser() {
         String username = "user1";
         Userx adminUser = userService.loadUser("admin");
@@ -92,9 +94,9 @@ public class UserServiceTest {
         }
     }
 
-    @DirtiesContext
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @DirtiesContext
     public void testUpdateUser() {
         String username = "user1";
         Userx adminUser = userService.loadUser("admin");
@@ -116,9 +118,9 @@ public class UserServiceTest {
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
     }
 
-    @DirtiesContext
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testEditUser() {
 
         Userx toBeChangedUser = userService.loadUser("admin");
@@ -138,9 +140,9 @@ public class UserServiceTest {
     }
 
 
-    @DirtiesContext
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @DirtiesContext
     public void testCreateUser() {
         Userx adminUser = userService.loadUser("admin");
         Assertions.assertNotNull(adminUser, "Admin user could not be loaded from test data source");
@@ -179,6 +181,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @DirtiesContext
     public void testExceptionForEmptyUsername() {
         //Assertions.assertThrows(org.springframework.orm.jpa.JpaSystemException.class, () -> {
         Assertions.assertThrows(RuntimeException.class, () -> {
@@ -191,6 +194,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DirtiesContext
     public void testUnauthenticateddLoadUsers() {
         Assertions.assertThrows(org.springframework.security.authentication.AuthenticationCredentialsNotFoundException.class, () -> {
             for (Userx user : userService.getAllUsers()) {
@@ -201,6 +205,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "user", authorities = {"USER"})
+    @DirtiesContext
     public void testUnauthorizedLoadUsers() {
         Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
             for (Userx user : userService.getAllUsers()) {
@@ -211,6 +216,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = {"EMPLOYEE"})
+    @DirtiesContext
     public void testUnauthorizedLoadUser() {
         Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
             Userx user = userService.loadUser("admin");
@@ -220,6 +226,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = {"USER"})
+    @DirtiesContext
     public void testAuthorizedLoadUser() {
         String username = "user1";
         Userx user = userService.loadUser(username);
@@ -228,6 +235,7 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = {"USER"})
+    @DirtiesContext
     public void testUnauthorizedSaveUser() {
         //Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
         Assertions.assertThrows(RuntimeException.class, () -> {
@@ -241,6 +249,21 @@ public class UserServiceTest {
 
     @Test
     @WithMockUser(username = "user1", authorities = {"USER"})
+    @DirtiesContext
+    public void testAuthorizedDeleteUser() {
+        // Check that deleting a user by an unauthorized user does not throw an AccessDeniedException
+        Assertions.assertDoesNotThrow(() -> {
+            Userx user = userService.loadUser("user1");
+            Assertions.assertEquals("user1", user.getUsername(), "Call to userService.loadUser returned wrong user");
+
+            // Try to delete the user, should not throw an AccessDeniedException
+            userService.deleteUser(user);
+        });
+    }
+
+    @Test
+    @WithMockUser(username = "user2", authorities = {"USER"})
+    @DirtiesContext
     public void testUnauthorizedDeleteUser() {
         Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
             Userx user = userService.loadUser("user1");
@@ -248,5 +271,4 @@ public class UserServiceTest {
             userService.deleteUser(user);
         });
     }
-
 }
