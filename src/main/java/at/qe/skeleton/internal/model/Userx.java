@@ -46,21 +46,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String email;
     private String phone;
 
-    private String bankAccountNumber;
-
-    private Integer BALANCE;
-
     boolean premium;
 
     boolean enabled;
-
-    public Integer getBALANCE() {
-        return BALANCE;
-    }
-
-    public void setBALANCE(Integer BALANCE) {
-        this.BALANCE = BALANCE;
-    }
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "Userx_UserxRole")
@@ -69,7 +57,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
     private List<FavLocation> favoriteLocations = new ArrayList<>();
-    @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
 
@@ -214,18 +202,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return hash;
     }
 
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
-    }
-
     public boolean isPremium() {
         return premium;
     }
-
 
     public void setPremium(boolean premium) {
         this.premium = premium;

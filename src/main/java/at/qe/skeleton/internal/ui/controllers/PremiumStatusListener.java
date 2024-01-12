@@ -4,8 +4,10 @@ package at.qe.skeleton.internal.ui.controllers;
 import at.qe.skeleton.internal.model.PaymentStatus;
 import at.qe.skeleton.internal.model.PremiumHistory;
 import at.qe.skeleton.internal.model.Userx;
+import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
+import at.qe.skeleton.internal.services.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,6 @@ import java.beans.PropertyChangeListener;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 @Component
@@ -25,6 +26,13 @@ public class PremiumStatusListener implements PropertyChangeListener {
 
     @Autowired
     private PaymentHistoryService paymentHistoryService;
+
+    @Autowired
+    private CreditCardService creditCardService;
+
+    @Autowired
+    private UserUpdater userUpdater;
+
 
     /**
      * Creates a new PremiumHistory entry when an event from the Observer is triggered.
@@ -156,7 +164,7 @@ public class PremiumStatusListener implements PropertyChangeListener {
      * @return
      */
     public double priceForChargedDays(int chargedDays, Userx user) {
-        double pricePerTimeUnit = 0.5; //Time unit is currently a Second
+        double pricePerTimeUnit = 0.005; //Time unit is currently a Second
         //paymentHistoryService.createPaymentHistory(user);
         return chargedDays * pricePerTimeUnit;
     }
@@ -172,13 +180,9 @@ public class PremiumStatusListener implements PropertyChangeListener {
 
         int chargedDays = chargedDaysFromStartToEndCurrentMonth(filterDatesByMonthAndYear(user, LocalDate.now().getYear(), LocalDate.now().getMonth()));
         double payment = priceForChargedDays(chargedDays, user);
+        double currentBalance = creditCardService.findByUser(user).getBalance();
 
-        //For test purposes:
-        Random random = new Random();
-
-        //check balance if there is balance >= payment
-        if (random.nextInt(2) == 1) {
-            //balance = balance - payment;
+        if(currentBalance >= payment){
             paymentHistoryService.updatePaymentStatus(user, PaymentStatus.PAYED, chargedDays);
             if (user.isPremium()) {
                 LocalDateTime currentDateTime = LocalDateTime.now();
@@ -189,10 +193,10 @@ public class PremiumStatusListener implements PropertyChangeListener {
                         .withSecond(1);
                 paymentHistoryService.createPaymentHistory(user, nextMonth);
             }
-        } else {
-            paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
-            user.setPremium(false);
-            //send email
+        }else {
+                paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
+                user.setPremium(false);
+                userUpdater.updateUser(user);
         }
     }
 }

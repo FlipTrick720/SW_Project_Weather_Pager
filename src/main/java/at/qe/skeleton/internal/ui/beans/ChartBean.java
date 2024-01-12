@@ -77,7 +77,7 @@ public class ChartBean implements Serializable {
         return stackedBarModel;
     }
 
-    public BarChartModel createMixedModel(List<HourlyWeatherDTO> hourlyWeatherDTO) {
+    public BarChartModel createMixedModel(List<HourlyWeatherDTO> hourlyWeatherDTO, int offset) {
         BarChartModel mixedModel = new BarChartModel();
         ChartData data = new ChartData();
 
@@ -109,7 +109,7 @@ public class ChartBean implements Serializable {
         // Labels for the next 24 hours
         List<String> labels = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            labels.add(getTimeFormattedFromTimestamp(hourlyWeatherDTO.get(i).timestamp()));
+            labels.add(ApiFormatter.getTimeFormattedFromTimestamp(hourlyWeatherDTO.get(i).timestamp(), offset));
         }
         data.setLabels(labels);
 

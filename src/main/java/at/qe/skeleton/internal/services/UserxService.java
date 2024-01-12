@@ -25,7 +25,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService {
+public class UserxService{
 
     @Autowired
     private UserxRepository userRepository;
@@ -41,6 +41,8 @@ public class UserxService {
 
     @Autowired
     private PremiumStatusListener premiumStatusListener;
+    @Autowired
+    private UserUpdater userUpdater;
 
 
     /**
@@ -95,12 +97,6 @@ public class UserxService {
         return user;
     }
 
-
-    public void createVerificationToken (Userx user, String token){
-        Token myToken = new Token(token, user);
-        tokenRepository.save(myToken);
-    }
-
     public Userx getUserByConfirmationToken(String token) {
         Token tokenEntity =  tokenRepository.findByToken(token);
         if(tokenEntity != null){
@@ -110,12 +106,17 @@ public class UserxService {
         }
     }
 
+    public Userx getUserByEmail(String email){
+        return userRepository.findFirstByEmail(email);
+    }
+
     /**
      * Deletes the user.
      *
      * @param user the user to delete
      */
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username == #user.id")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
     }

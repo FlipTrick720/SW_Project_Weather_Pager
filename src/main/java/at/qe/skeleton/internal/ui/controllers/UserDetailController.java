@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
@@ -26,7 +27,10 @@ public class UserDetailController implements Serializable {
     private UserxService userService;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * Attribute to cache the currently displayed user
@@ -119,14 +123,21 @@ public class UserDetailController implements Serializable {
         user = this.userService.saveUser(newUser);
 
         //logic for verification process
-        String token = UUID.randomUUID().toString();
-        userService.createVerificationToken(newUser, token);
+        String token = tokenService.generateTokenString();
+        tokenService.createVerificationToken(newUser, token);
 
         //send confirmation mail
         emailService.setEmailStrategy(new ConfirmationMailStrategy());
         emailService.sendMail(newUser.getEmail(), token);
 
         return "/login.xhtml?faces-redirect=true";
+    }
+
+    public void togglePremium(){
+        if(user != null){
+            user.setPremium(!user.isPremium());
+            userService.saveUser(user);
+        }
     }
 
 }

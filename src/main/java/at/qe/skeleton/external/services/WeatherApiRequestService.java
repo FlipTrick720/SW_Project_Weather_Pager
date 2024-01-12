@@ -1,5 +1,6 @@
 package at.qe.skeleton.external.services;
 
+import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -49,7 +50,12 @@ public class WeatherApiRequestService {
                 .retrieve()
                 .toEntity(CurrentAndForecastAnswerDTO.class);
 
-        // todo introduce error handling using responseEntity.getStatusCode.isXXXError
+        // error handling
+        if (responseEntity.getStatusCode().isError()) {
+            throw new WeatherApiException("Error while retrieving current and forecast weather. Status code: "
+                + responseEntity.getStatusCode());
+        }
+
         return responseEntity.getBody();
     }
 

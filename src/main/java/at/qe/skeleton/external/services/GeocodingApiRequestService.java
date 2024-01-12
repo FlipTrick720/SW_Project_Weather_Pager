@@ -1,5 +1,6 @@
 package at.qe.skeleton.external.services;
 
+import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -12,7 +13,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Service class for making requests to the geocoding API from "openweathermap" to retrieve information about locations.
@@ -41,24 +45,21 @@ public class GeocodingApiRequestService {
         ResponseEntity<List<GeocodingDTO>> responseEntity = this.restClient.get()
                 .uri(UriComponentsBuilder.fromPath(GEOCODING_URI)
                         .queryParam(CITY_PARAMETER, encodedCity)
-                        .queryParam(LIMIT_PARAMETER, 1)
+                        .queryParam(LIMIT_PARAMETER, 5)
                         .build().toUriString())
                 .retrieve()
                 .toEntity(new ParameterizedTypeReference<List<GeocodingDTO>>() {});
 
-        // todo: introduce error handling using responseEntity.getStatusCode.isXXXError
+        // error handling
+        if (responseEntity.getStatusCode().isError()) {
+            throw new WeatherApiException("Error while retrieving geocoding data. Status code: "
+                    + responseEntity.getStatusCode());
+        }
+
         return responseEntity.getBody();
     }
-
-    /**
-     * Encodes the city part of a given string by trimming after the first comma and URL encoding it.
-     *
-     * @param city The original city string (and optional additional information separated by commas).
-     * @return The trimmed and URL-encoded city string.
-     */
     private String encodeCity(String city){
-        String[] parts = city.split(",");
-        String trimmedCity = parts[0];
-        return URLEncoder.encode(trimmedCity, StandardCharsets.UTF_8);
+        return URLEncoder.encode(city, StandardCharsets.UTF_8);
     }
+
 }
