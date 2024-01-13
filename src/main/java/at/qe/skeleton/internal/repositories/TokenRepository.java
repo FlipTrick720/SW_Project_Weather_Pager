@@ -7,5 +7,5 @@ import at.qe.skeleton.internal.model.Token;
 public interface TokenRepository extends AbstractRepository<Token, Long>{
 
     Token findByToken(String token);
-    Token findByUser_Username(String username);
+    Token findByUserUsername(String username);
 }
