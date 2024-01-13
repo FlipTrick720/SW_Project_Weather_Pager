@@ -15,10 +15,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 
-
 /**
+ * Service class for making requests to a weather API.
  * This class is part of the skeleton project provided for students of the
- * course "Software Architecture" offered by Innsbruck University.
+ * course "Software Architecture" offered by Innsbruck University. It handles the communication
+ * with the weather API to retrieve current and forecasted weather data, as well as daily weather aggregation.
  */
 @Scope("application")
 @Component
@@ -29,23 +30,22 @@ public class WeatherApiRequestService {
     private static final String DAILY_AGGREGATION_URI = "/data/3.0/onecall/day_summary";
 
     private static final String LONGITUDE_PARAMETER = "lon";
-
     private static final String LATITUDE_PARAMETER = "lat";
 
     @Autowired
     private RestClient restClient;
 
     /**
-     * Makes an API call to get the current and a weather forecast for a specified location
-     * <br><br>
-     * If you are unaware of lat/lon of the location use the geocoding api to determine those parameters
-     * @param latitude of the location
-     * @param longitude of the location
-     * @return the current and forecast weather
+     * Makes an API call to get the current weather and a forecast for a specified location.
+     * Use the geocoding API to determine latitude and longitude if they are unknown.
+     *
+     * @param latitude  Latitude of the location, must be between -90 and 90.
+     * @param longitude Longitude of the location, must be between -180 and 180.
+     * @return An instance of {@link CurrentAndForecastAnswerDTO} containing current and forecasted weather data.
+     * @throws WeatherApiException If there is an error in retrieving data from the API.
      */
     public CurrentAndForecastAnswerDTO retrieveCurrentAndForecastWeather(@Min(-90) @Max(90) double latitude,
                                                                          @Min(-180) @Max(180) double longitude) {
-
         ResponseEntity<CurrentAndForecastAnswerDTO> responseEntity = this.restClient.get()
                 .uri(UriComponentsBuilder.fromPath(CURRENT_AND_FORECAST_URI)
                         .queryParam(LATITUDE_PARAMETER, String.valueOf(latitude))
@@ -54,18 +54,25 @@ public class WeatherApiRequestService {
                 .retrieve()
                 .toEntity(CurrentAndForecastAnswerDTO.class);
 
-        // error handling
         if (responseEntity.getStatusCode().isError()) {
             throw new WeatherApiException("Error while retrieving current and forecast weather. Status code: "
-                + responseEntity.getStatusCode());
+                    + responseEntity.getStatusCode());
         }
 
         return responseEntity.getBody();
     }
 
-   public DailyAggregationDTO retrieveDailyAggregationWeather(@Min(-90) @Max(90) double latitude,
-                                                                      @Min(-180) @Max(180) double longitude,
-                                                                      LocalDate date) {
+    /**
+     * Retrieves daily aggregated weather data for a specific date and location.
+     *
+     * @param latitude  Latitude of the location, must be between -90 and 90.
+     * @param longitude Longitude of the location, must be between -180 and 180.
+     * @param date      The date for which to retrieve weather data.
+     * @return An instance of {@link DailyAggregationDTO} containing aggregated weather data for the specified date.
+     */
+    public DailyAggregationDTO retrieveDailyAggregationWeather(@Min(-90) @Max(90) double latitude,
+                                                               @Min(-180) @Max(180) double longitude,
+                                                               LocalDate date) {
         ResponseEntity<DailyAggregationDTO> responseEntity = this.restClient.get()
                 .uri(UriComponentsBuilder.fromPath(DAILY_AGGREGATION_URI)
                         .queryParam(LATITUDE_PARAMETER, String.valueOf(latitude))
@@ -74,7 +81,11 @@ public class WeatherApiRequestService {
                         .build().toUriString())
                 .retrieve()
                 .toEntity(DailyAggregationDTO.class);
+        if (responseEntity.getStatusCode().isError()) {
+            throw new WeatherApiException("Error while retrieving the weather. Status code: "
+                    + responseEntity.getStatusCode());
+        }
 
-       return responseEntity.getBody();
-}
+        return responseEntity.getBody();
+    }
 }
