@@ -21,9 +21,6 @@
                 <p:column headerText="Email">
                     <h:outputText value="#{user.email}"/>
                 </p:column>
-                <p:column headerText="Bank Information">
-                    <h:outputText value="#{user.bankAccountNumber}"/>
-                </p:column>
                 <p:column style="width:100px;text-align: center">
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-cog" title="Edit My information">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
@@ -51,7 +48,7 @@
                         <p:outputLabel for="email" value="E-Mail: " />
                         <p:inputText id="email" value="#{userDetailController.user.email}"/>
                         <p:outputLabel for="bankaccountnumber" value="Bank Account Number: " />
-                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.bankAccountNumber}"/>
+                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.creditCard.number}"/>
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3">

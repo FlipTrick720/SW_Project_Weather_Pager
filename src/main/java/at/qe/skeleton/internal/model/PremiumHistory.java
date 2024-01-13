@@ -3,7 +3,6 @@ package at.qe.skeleton.internal.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**

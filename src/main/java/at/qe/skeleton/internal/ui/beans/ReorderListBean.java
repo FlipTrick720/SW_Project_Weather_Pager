@@ -1,7 +1,6 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.internal.model.FavLocation;
-import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.FavLocationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
@@ -11,9 +10,6 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.ui.context.Theme;
-
 import java.io.Serializable;
 import java.util.List;
 

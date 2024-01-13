@@ -10,6 +10,9 @@ import java.util.Locale;
 @Component
 public class ApiFormatter {
 
+    private ApiFormatter() {
+    }
+
     public static String getDateFormattedFromTimestamp(Instant timestamp){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d", Locale.ENGLISH);
         return timestamp.atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);

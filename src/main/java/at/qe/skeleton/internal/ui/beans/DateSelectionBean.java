@@ -80,10 +80,6 @@ public class DateSelectionBean implements Serializable {
     }
 
     public String printDates() {
-        /* for debugging  reasons.
-       System.out.println("Selected Year: " + selectedYear);
-       System.out.println("Selected Month: " + selectedMonthInt); */
-
         return "/manager/user_list.xhtml";
     }
 
