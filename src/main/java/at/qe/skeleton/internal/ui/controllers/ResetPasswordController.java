@@ -10,6 +10,9 @@ import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Controller handling the password reset functionality.
+ */
 @Controller
 public class ResetPasswordController {
     @Autowired
@@ -22,6 +25,9 @@ public class ResetPasswordController {
     private TokenService tokenService;
     private String email;
 
+    /**
+     * Initiates the password change process by sending a reset email to the user.
+     */
     public void requestPasswordChange(){
         Userx user = userxService.getUserByEmail(this.email);
 
