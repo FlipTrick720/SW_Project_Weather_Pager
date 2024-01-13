@@ -10,6 +10,26 @@
 
     <ui:define name="content">
         <h:form id="mainForm">
+            <p:commandButton value="Show Average Weather"
+                             action="#{dateBean.fetchAndDisplayAverageWeatherData}"
+                             update="averageWeatherPanel" />
+
+            <!-- Panel to Display Average Weather Data -->
+            <p:outputPanel id="averageWeatherPanel" rendered="#{not empty dateBean.averageWeatherData}">
+                <p:panel header="Average Weather Data">
+                    <h:outputText value="Average Temperature  in the morning: #{dateBean.averageWeatherData.temperature().morning()} °C" /><br/>
+                    <h:outputText value="Average Temperature in the afternoon: #{dateBean.averageWeatherData.temperature().afternoon()} °C" /><br/>
+                    <h:outputText value="Average Temperature in evening: #{dateBean.averageWeatherData.temperature().evening()} °C" /><br/>
+                    <h:outputText value="Average Temperature: #{dateBean.averageWeatherData.temperature().night()} °C" /><br/>
+                    <h:outputText value="Average Humidity: #{dateBean.averageWeatherData.humidity()} %" /><br/>
+                    <h:outputText value="Average Pressure: #{dateBean.averageWeatherData.pressure()} hPa" /><br/>
+                    <h:outputText value="Average Cloud Cover: #{dateBean.averageWeatherData.cloudCover()} %" /><br/>
+                    <h:outputText value="Average Precipation: #{dateBean.averageWeatherData.precipitation()} " /><br/>
+                    <h:outputText value="Average Wind Speed: #{dateBean.averageWeatherData.wind().max()} km/h" /><br/>
+
+                    <!-- Display other average weather data here -->
+                </p:panel>
+            </p:outputPanel>
             <p:panelGrid id="bottomPanel" columns="1" styleClass="borderless">
                 <p:panel rendered="#{dateBean.buttonPressed}">
                     <p:panel header="Daily aggregation from #{dateBean.startDate} To #{dateBean.endDate}">
