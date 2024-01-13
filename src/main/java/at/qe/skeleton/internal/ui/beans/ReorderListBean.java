@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Bean for managing and interacting with the favorite location list on the homepage.
  */
 @Named
-@Scope("request")
+@Scope("view")
 public class ReorderListBean implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
@@ -93,7 +93,6 @@ public class ReorderListBean implements Serializable {
     public void onReorder() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-        favLocationService.updateIndexLocations(favLocations);
         favLocationService.updateIndexLocations(filteredFavLocations);
     }
 
@@ -108,7 +107,6 @@ public class ReorderListBean implements Serializable {
         for (FavLocation favLocation : favLocations) {
             if (favLocation.getId() == id) {
                 favLocationService.deleteLocation(favLocation);
-                this.favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
                 break;
             }
         }

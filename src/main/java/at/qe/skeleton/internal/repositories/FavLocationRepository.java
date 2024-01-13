@@ -8,4 +8,5 @@ import java.util.List;
 public interface FavLocationRepository extends AbstractRepository<FavLocation,String> {
     public List<FavLocation> findAllByUser(Userx user);
     public FavLocation findFirstById(Long id);
+    public FavLocation findFirstByNameAndUser(String name, Userx userx);
 }

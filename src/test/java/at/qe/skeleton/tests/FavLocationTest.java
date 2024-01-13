@@ -38,6 +38,7 @@ public class FavLocationTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testDeleteLocation(){
         //create user
         Userx testUser = new Userx();
@@ -55,17 +56,17 @@ public class FavLocationTest {
         testLocation1.setName("TestLocation1");
         favLocationService.saveLocation(testLocation1);
 
-        //check if it is saved
+        //verify if the Location is correctly saved
         assertEquals(testLocation1, favLocationService.loadLocation(testId));
 
         //delete Location
         favLocationService.deleteLocation(testLocation1);
 
-        //check if it is still saved
+        //verify if the Location is really deleted
         assertThrows(EntityNotFoundException.class, () -> favLocationService.loadLocation(testId));
     }
 
-    /* Funktioniert in der Anwendung jedoch wegen unbekanntem Fehler nicht beim Test
+    /* The Cascade Delete works in the Application but due to unknown error not in the Test
     @Test
     @WithMockUser(username = "admin", authorities = {"USER", "ADMIN"})
     public void testCascadeDelete(){
@@ -94,6 +95,7 @@ public class FavLocationTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testUpdateIndexLocation(){
         //create user
         Userx testUser = new Userx();
@@ -102,27 +104,28 @@ public class FavLocationTest {
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
 
+        //create multiple Locations and save them in order [testLocation2,testLocation1]
         FavLocation testLocation1 = new FavLocation();
         testLocation1.setId(1L);
-        testLocation1.setIndex(1);
+        testLocation1.setIndex(500);
         testLocation1.setUser(testUser);
         testLocation1.setName("TestLocation1");
         favLocationService.saveLocation(testLocation1);
 
         FavLocation testLocation2 = new FavLocation();
         testLocation2.setId(2L);
-        testLocation2.setIndex(2);
+        testLocation2.setIndex(9);
         testLocation2.setUser(testUser);
         testLocation2.setName("TestLocation2");
         favLocationService.saveLocation(testLocation2);
 
-        //List of Locations where the index of testLocation1 = 0 and of testLocation2 = 1
+        //Create a new List with a different order [testLocation1, testLocation2]
         List<FavLocation> favLocationList = Arrays.asList(testLocation1, testLocation2);
 
-        //update the Locations in the database
+        //test updating the indexes of the saved List to the new List
         favLocationService.updateIndexLocations(favLocationList);
 
-        //check if the locations have been updated
+        //verify if the locations have been updated
         assertEquals(0, favLocationService.loadLocation(1L).getIndex());
         assertEquals(1, favLocationService.loadLocation(2L).getIndex());
     }
@@ -130,13 +133,16 @@ public class FavLocationTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testLoadLocation(){
+        //create User
         Userx testUser = new Userx();
         testUser.setUsername("testUser");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
 
+        //create Location
         FavLocation testLocation1 = new FavLocation();
         Long testId = 1L;
         testLocation1.setId(testId);
@@ -150,13 +156,16 @@ public class FavLocationTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testGetUserLocation(){
+        //create User
         Userx testUser = new Userx();
         testUser.setUsername("testUser");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
 
+        //create multiple Locations and save them
         FavLocation testLocation1 = new FavLocation();
         testLocation1.setId(1L);
         testLocation1.setIndex(1);
@@ -171,60 +180,40 @@ public class FavLocationTest {
         testLocation2.setName("TestLocation2");
         favLocationService.saveLocation(testLocation2);
 
+        //create a new arrangement of the List
         List<FavLocation> favLocationList = Arrays.asList(testLocation1, testLocation2);
 
         assertEquals(favLocationList, favLocationService.getUserLocations(testUser));
     }
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
-    public void testStringToFavLocation_Succesbas() throws EntityNotFoundException {
+    @DirtiesContext
+    public void testStringToFavLocation_Success() throws EntityNotFoundException {
         //create User
         Userx testUser = new Userx();
         testUser.setUsername("testUser");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
+
+        //create City and make sure that it is simulated correct in the Application
         String city = "Innsbruck";
         Map<String, String> localNames = new HashMap<String, String>();
         localNames.put("de", "Innsbruck");
-
-        GeocodingDTO geocodingDTO = new GeocodingDTO("Innsbruck", localNames, 47.2654296, 11.3927685, "AT", "Tyrol");
-
+        GeocodingDTO geocodingDTO = new GeocodingDTO(city, localNames, 47.2654296, 11.3927685, "AT", "Tyrol");
         autocompleteBean.setSelectedGeocodingDTO(geocodingDTO);
 
         // Test
         FavLocation result = favLocationService.StringToFavLocation("Innsbruck", testUser);
 
         // Verify
-        assertEquals("Innsbruck" ,result.getName());
+        assertEquals(city ,result.getName());
+        assertEquals(result, favLocationService.getUserLocations(testUser).get(0));
     }
 
-    /*@Test
+    @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
-    public void testStringToFavLocation_Success() throws EntityNotFoundException {
-        // Arrange
-        String cityName = "TestCity";
-        Userx user = new Userx(); // Create a user object as needed
-        Map<String, String> localNames = new HashMap<String, String>();
-        localNames.put("de", "Innsbruck");
-        GeocodingDTO geocodingDTO = new GeocodingDTO("Innsbruck", localNames, 47.2654296, 11.3927685, "AT", "Tyrol");
-        when(geocodingApiRequestService.retrieveGeocodingData(cityName)).thenReturn(Collections.singletonList(geocodingDTO));
-
-        // Act
-        FavLocation favLocation = favLocationService.StringToFavLocation(cityName, user);
-
-        // Assert
-        assertNotNull(favLocation);
-        assertEquals(cityName, favLocation.getName());
-        assertEquals(user, favLocation.getUser());
-        assertEquals(0, favLocation.getIndex());
-        assertEquals(10.0, favLocation.getLatitude());
-        assertEquals(20.0, favLocation.getLongitude());
-
-    }*/
-
-    /*@Test
-    @WithMockUser(username = "admin", authorities = {"USER"})
+    @DirtiesContext
     public void testStringToFavLocation_Failure() throws EntityNotFoundException {
         //create User
         Userx testUser = new Userx();
@@ -232,16 +221,16 @@ public class FavLocationTest {
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
-        String city = "Innsbruck";
 
-        //GeocodingDTO geocodingDTO = new GeocodingDTO();
-        //autocompleteBean.setSelectedGeocodingDTO("Inns");
+        //create City and make sure that it is simulated correct in the Application
+        String city = "NoCityName";
+        Map<String, String> localNames = new HashMap<String, String>();
+        localNames.put("de", "Innsbruck");
+        GeocodingDTO geocodingDTO = new GeocodingDTO(city, localNames, 47.2654296, 11.3927685, "AT", "Tyrol");
+        autocompleteBean.setSelectedGeocodingDTO(geocodingDTO);
 
-
-        // Test
-        FavLocation result = favLocationService.StringToFavLocation(city, testUser);
-
-        // Verify
-        assertEquals("Innsbruck" ,result.getName());
-    }*/
+        // Test and verify that the Exception is thrown and no data is saved
+        assertThrows(EntityNotFoundException.class, () -> favLocationService.StringToFavLocation(city, testUser));
+        assertTrue(favLocationService.getUserLocations(testUser).isEmpty());
+    }
 }

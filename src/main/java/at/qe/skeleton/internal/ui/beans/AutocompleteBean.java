@@ -59,4 +59,10 @@ public class AutocompleteBean {
     public GeocodingDTO getSelectedGeocodingDTO() {
         return selectedGeocodingDTO;
     }
+
+    /**
+     * This function is only for testing purpose
+     * @param geocodingDTO
+     */
+    public void setSelectedGeocodingDTO(GeocodingDTO geocodingDTO) {selectedGeocodingDTO = geocodingDTO;}
 }

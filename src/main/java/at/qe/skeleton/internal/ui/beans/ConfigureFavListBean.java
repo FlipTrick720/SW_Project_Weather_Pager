@@ -52,11 +52,11 @@ public class ConfigureFavListBean implements Serializable {
 
     public String getCurrentSunriseTime(FavLocation favLocation){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return "Sunrise time: " + getCurrentWeather(favLocation).sunrise().toString().subSequence(11,16) + "o'clock";
+        return "Sunrise time: " + getCurrentWeather(favLocation).sunrise().toString().subSequence(11,16) + " o'clock";
     }
 
     public String getCurrentSunsetTime(FavLocation favLocation){
-        return "Sunset time: " + getCurrentWeather(favLocation).sunset().toString().subSequence(11,16) + "o'clock";
+        return "Sunset time: " + getCurrentWeather(favLocation).sunset().toString().subSequence(11,16) + " o'clock";
     }
 
     public String getCurrentTemperature(FavLocation favLocation){

@@ -26,18 +26,20 @@ public class FavLocationService {
 
     private Long LastGivenId = 1L;
 
-
+    /**
+     * Saves the given location
+     * @param location
+     * @return
+     */
     public FavLocation saveLocation(FavLocation location) {
-        return locationRepository.save(location);
+
+            return locationRepository.save(location);
+
     }
 
     public void deleteLocation(FavLocation location){
         locationRepository.delete(location);
     }
-    public void updateIndexLocations(List<FavLocation> favLocations) {
-        favLocations.stream().forEach(l -> updateIndexLocation(l.getId(), favLocations.indexOf(l)));
-    }
-
     public FavLocation loadLocation(Long id) {
         FavLocation location = locationRepository.findFirstById(id);
         if (location == null) {
@@ -45,10 +47,16 @@ public class FavLocationService {
         }
         return location;
     }
+    public FavLocation loadLocation(String name, Userx userx){
+        return locationRepository.findFirstByNameAndUser(name, userx);
+    }
     public List<FavLocation> getUserLocations(Userx user){
         List<FavLocation> favLocations = locationRepository.findAllByUser(user);
         favLocations.sort((l1, l2) -> l1.getIndex().compareTo(l2.getIndex()));
         return favLocations;
+    }
+    public void updateIndexLocations(List<FavLocation> favLocations) {
+        favLocations.stream().forEach(l -> updateIndexLocation(l.getId(), favLocations.indexOf(l)));
     }
 
     /**public FavLocation getFavLocationById(Long id){
@@ -79,7 +87,6 @@ public class FavLocationService {
 
             // Retrieve geocoding data
             List<GeocodingDTO> geocodingData = geocodingApiRequestService.retrieveGeocodingData(city);
-            System.out.println(geocodingData);
 
             if (geocodingData != null && !geocodingData.isEmpty()) {
                 favLocation.setLatitude(geocodingData.get(0).lat());

@@ -21,8 +21,15 @@ import java.time.format.DateTimeFormatter;
 public class FavLocationController implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
-    public void doSafeLocationByName(String city, Userx user){
-        favLocationService.StringToFavLocation(city, user);
-    }
 
+    /**
+     * Filters out dublicates and saves by cityname and user
+     * @param city cityname to the according city which is to be saved
+     * @param user that saves the city
+     */
+    public void doSafeLocationByName(String city, Userx user){
+        if (favLocationService.loadLocation(city,user) == null) {
+            favLocationService.StringToFavLocation(city, user);
+        }
+    }
 }
