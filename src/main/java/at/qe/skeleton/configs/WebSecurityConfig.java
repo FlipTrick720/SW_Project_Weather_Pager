@@ -63,7 +63,6 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/user/reset_password.xhtml")).permitAll()
                 .anyRequest().authenticated()
             )
-            // :TODO: user failureUrl(/login.xhtml?error) and make sure that a corresponding message is displayed
             .formLogin(form -> form
                 .loginPage(LOGIN)
                 .permitAll()
@@ -93,7 +92,8 @@ public class WebSecurityConfig {
         //Configure roles and passwords via datasource
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("select username, password, enabled from userx where username=?")
-                .authoritiesByUsernameQuery("select userx_username, roles from userx_userx_role where userx_username=?");
+                .authoritiesByUsernameQuery("select userx_username, roles from userx_userx_role where userx_username=?")
+                .passwordEncoder(passwordEncoder());
     }
 
     /**

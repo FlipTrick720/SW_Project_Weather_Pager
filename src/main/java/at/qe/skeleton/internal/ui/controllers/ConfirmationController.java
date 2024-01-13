@@ -17,6 +17,12 @@ public class ConfirmationController {
     @Autowired
     UserxService userxService;
 
+    /**
+     * Handles the confirmation of a newly registered user.
+     *
+     * @param token The confirmation token.
+     * @return A redirection to the success or failure page based on the confirmation result.
+     */
     @GetMapping
     public String confirmRegistration(@RequestParam("token") String token) {
 

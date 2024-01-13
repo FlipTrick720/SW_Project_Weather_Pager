@@ -1,5 +1,6 @@
 package at.qe.skeleton.external.services;
 
+import at.qe.skeleton.external.exceptions.GeocodingApiException;
 import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class GeocodingApiRequestService {
 
         // error handling
         if (responseEntity.getStatusCode().isError()) {
-            throw new WeatherApiException("Error while retrieving geocoding data. Status code: "
+            throw new GeocodingApiException("Error while retrieving geocoding data. Status code: "
                     + responseEntity.getStatusCode());
         }
 
