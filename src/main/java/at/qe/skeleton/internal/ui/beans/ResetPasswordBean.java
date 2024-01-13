@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Managed bean for handling password reset functionality.
+ */
 @Named
 @ViewScoped
 public class ResetPasswordBean implements Serializable {
@@ -27,6 +30,9 @@ public class ResetPasswordBean implements Serializable {
     @Autowired
     TokenService tokenservice;
 
+    /**
+     * Initializes the bean by extracting the token from the URL and checking its validity.
+     */
     @PostConstruct
     public void init() {
         // Extract token from the URL
@@ -43,6 +49,9 @@ public class ResetPasswordBean implements Serializable {
         }
     }
 
+    /**
+     * Resets the password for the user associated with the token.
+     */
     public void resetPassword() {
         Userx user = tokenservice.getUserByConfirmationToken(token);
         user.setPassword(newPassword);

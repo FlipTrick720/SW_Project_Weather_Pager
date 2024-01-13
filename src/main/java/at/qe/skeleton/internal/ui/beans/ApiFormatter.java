@@ -7,6 +7,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Utility class for formatting timestamps and temperature.
+ */
 @Component
 public class ApiFormatter {
 

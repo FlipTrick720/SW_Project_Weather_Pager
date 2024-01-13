@@ -5,9 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.client.RestClient;
 
 import java.util.Properties;
 
+/**
+ * Configuration for the Mail Service
+ * <p>
+ * This allows the injection of JavaMailSender
+ */
 @Configuration
 public class MailConfig {
 

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Managed bean for handling hourly weather information on the weather page.
+ */
 @Component
 @Scope("view")
 public class HourlyWeatherBean {
@@ -16,10 +19,20 @@ public class HourlyWeatherBean {
     @Autowired
     WeatherBean weatherBean;
 
+    /**
+     * Returns the title for the hourly weather section based on user's premium status.
+     *
+     * @return The title for the hourly weather section.
+     */
     public String getTitle() {
         return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "Next 48h Details" : "Next 24h Details";
     }
 
+    /**
+     * Retrieves the hourly weather details based on a user's premium status.
+     *
+     * @return The list of HourlyWeatherDTO representing the hourly weather details.
+     */
     public List<HourlyWeatherDTO> getHourlyWeather() {
         if (sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium()){
             return weatherBean.getWeather().hourlyWeather().subList(0, 48);

@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * Main bean for handling all functionality with the weather page.
+ * Primary function is to retrieve the weather information from the API.
+ */
 @Component
 @Scope("view")
 public class WeatherBean {
@@ -26,10 +29,18 @@ public class WeatherBean {
 
     private CurrentAndForecastAnswerDTO weather;
 
+    /**
+     * Gets the image URL for the current weather icon.
+     *
+     * @return The image URL.
+     */
     public String imageUrl() {
         return "https://openweathermap.org/img/wn/" + weather.currentWeather().weather().icon() + "@2x.png";
     }
 
+    /**
+     * Searches for weather based on the selected location.
+     */
     public void searchWeather() {
         buttonPressed = true;
         latitude = autocompleteBean.getSelectedGeocodingDTO().lat();

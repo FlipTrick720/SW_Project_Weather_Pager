@@ -2,6 +2,9 @@ package at.qe.skeleton.internal.services.email;
 
 import org.springframework.mail.SimpleMailMessage;
 
+/**
+ * Implementation of {@link EmailStrategy} for configuring password reset email messages.
+ */
 public class PasswordChangeMailStrategy implements EmailStrategy {
     @Override
     public void configureMail(SimpleMailMessage message, String token) {
