@@ -14,6 +14,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Managed bean for handling date-related operations within a user session.
+ * This bean is responsible for managing start and end dates for weather data retrieval,
+ * invoking weather and geocoding service calls, and maintaining the state of these operations.
+ */
 @Component
 @Scope("session")
 public class DateBean {
@@ -37,7 +42,12 @@ public class DateBean {
     private WeatherBean weatherBean;
     private Boolean buttonPressed = false;
 
-
+    /**
+     * Checks if the selected date range is valid.
+     * The start date must be before the end date, and the range should not exceed 14 days.
+     *
+     * @return true if the date range is valid, false otherwise.
+     */
     private boolean isDateRangeValid() {
         System.out.println("submit button pressed yes");
         if (startDate == null || endDate == null) {
@@ -49,6 +59,12 @@ public class DateBean {
         return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
     }
 
+    /**
+     * Handles the submission of selected dates.
+     * Validates the date range and retrieves weather data for the specified period and location.
+     *
+     * @return A string indicating the outcome of the operation, such as "success" or "error".
+     */
     public String submitDates() {
         buttonPressed = true;
         if (!isDateRangeValid()) {
@@ -83,7 +99,9 @@ public class DateBean {
         return "success"; // Return the appropriate outcome for success
     }
 
-
+/**
+*Getters and setters for all the variables in this class.
+*/
     public Boolean getButtonPressed() {
         return buttonPressed;
     }
