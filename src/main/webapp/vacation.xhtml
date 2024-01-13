@@ -8,61 +8,40 @@
                 xmlns:row-height="http://java.sun.com/jsp/jstl/functions"
                 template="/WEB-INF/templates/main.xhtml">
 
-    <ui:define name="Vacation">
+    <ui:define name="content">
         <h:form id="mainForm">
             <p:panelGrid id="bottomPanel" columns="1" styleClass="borderless">
                 <p:panel rendered="#{dateBean.buttonPressed}">
-                    <p:panel header="#{foreCastBean.title}">
+                    <p:panel header="Daily aggregation from #{dateBean.startDate} To #{dateBean.endDate}">
                         <h:form>
-                            <p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
-                                <p:column style="width:5rem">
-                                    <p:rowToggler/>
+                            <p:dataTable var="day" value="#{dateBean.weatherDataList}" >
+                                <p:column headerText="Date">
+                                    <h:outputText value="#{day.date()}"/>
                                 </p:column>
-
-                                <p:column styleClass="smaller-rows">
-                                    <h:outputText value="#{apiFormatter.getDateFormattedFromTimestamp(day.timestamp())}"/>
+                                <p:column headerText="Morning temperature">
+                                    <h:outputText value="#{day.temperature().morning()} °C"/>
                                 </p:column>
-
-                                <p:column>
-                                    <p:graphicImage value="#{foreCastBean.getImageUrl(day.weather().icon())}" styleClass="weather-icon"/>
+                                <p:column headerText="Evening temperature">
+                                    <h:outputText value="#{day.temperature().evening()} °C"/>
                                 </p:column>
-
-                                <p:column>
-                                    <h:outputText value="#{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().maximumDailyTemperature())} / #{apiFormatter.roundTemperature(day.dailyTemperatureAggregation().minimumDailyTemperature())} °C"/>
+                                <p:column headerText="night temperature">
+                                    <h:outputText value="#{day.temperature().night()} °C"/>
                                 </p:column>
-
-                                <p:column>
-                                    <h:outputText value="#{day.weather().description()}"/>
+                                <p:column headerText="Humidity">
+                                    <h:outputText value="#{day.humidity().afternoon()} %"/>
                                 </p:column>
-                                <!-- Begin of the details section when the user clicks the ">" -->
-                                <p:rowExpansion>
-                                    <p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
-                                        <p:panel>
-                                            <h:outputText value="#{day.summary()}."/>
-                                            <br/>
-                                            <br/>
-                                            <h:outputText value="Sunrise: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunrise(), weatherBean.weather.timezoneOffset())}."/>
-                                            <br/>
-                                            <h:outputText value="Sunset: #{apiFormatter.getTimeFormattedFromTimestamp(day.sunset(), weatherBean.weather.timezoneOffset())}."/>
-                                        </p:panel>
-
-                                        <h:form>
-                                            <p:barChart model="#{chartBean.createStackedBarModel(day)}" />
-                                        </h:form>
-
-                                        <p:panel>
-                                            <h:outputText value="&#x1F343; #{day.windSpeed()} m/s (#{day.windDirection()}°)"/>
-                                            <br/>
-                                            <h:outputText value="&#x1F327; #{day.rain() ne null ? day.rain() : 0} mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
-                                            <br/>
-                                            <h:outputText value="&#x2744; #{day.snow() ne null ? day.snow() : 0} mm/h"/>
-                                            <br/>
-                                            <h:outputText value="Humidity: #{day.humidity()}%"/>
-                                            <br/>
-                                            <h:outputText value="UVI: #{day.uvi()}"/>
-                                        </p:panel>
-                                    </p:panelGrid>
-                                </p:rowExpansion>
+                                <p:column headerText="Wind speed">
+                                    <h:outputText value="#{day.wind().max().speed()} m/s"/>
+                                </p:column>
+                                <p:column headerText="Wind Degree">
+                                    <h:outputText value="#{day.wind().max().direction()}°"/>
+                                </p:column>
+                                <p:column headerText="Time Zone">
+                                    <h:outputText value="#{day.timezone()} UTC"/>
+                                </p:column>
+                                <p:column headerText="forms of water falling">
+                                    <h:outputText value="#{day.precipitation().total()*100} %"/>
+                                </p:column>
                             </p:dataTable>
                         </h:form>
                     </p:panel>
