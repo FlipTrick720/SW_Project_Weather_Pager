@@ -15,13 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Scope("view")
+@Scope("session")
 public class DateBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DateBean.class);
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
+
+    @Autowired
+    SessionInfoBean sessionInfoBean;
+
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
     @Autowired
@@ -35,7 +39,6 @@ public class DateBean {
 
 
     private boolean isDateRangeValid() {
-        buttonPressed = true;
         System.out.println("submit button pressed yes");
         if (startDate == null || endDate == null) {
             return false;
@@ -47,6 +50,7 @@ public class DateBean {
     }
 
     public String submitDates() {
+        buttonPressed = true;
         if (!isDateRangeValid()) {
             LOGGER.error("Invalid date range.");
             return "error"; // Return an appropriate outcome for invalid date range
@@ -64,13 +68,18 @@ public class DateBean {
         weatherDataList.clear();
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             try {
-                DailyAggregationDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
+                DailyAggregationDTO dailyWeather = this.weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
                 weatherDataList.add(dailyWeather);
             } catch (Exception e) {
                 LOGGER.error("Error retrieving weather data for date: " + date, e);
             }
         }
 
+        for(DailyAggregationDTO d : weatherDataList) {
+            System.out.println(d.date());
+        }
+
+        System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
     }
 
@@ -140,4 +149,8 @@ public class DateBean {
     public void setWeatherBean(WeatherBean weatherBean) {
         this.weatherBean = weatherBean;
     }
+
+//    public String getTitle() {
+//        return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "8-Day-Forecast" : "3-Day-Forecast";
+//    }
 }
