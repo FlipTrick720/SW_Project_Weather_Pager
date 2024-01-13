@@ -82,8 +82,4 @@ public class AutocompleteBean {
     public Map<String, GeocodingDTO> getCurrentFiveSuggestedDTOs() {
         return currentFiveSuggestedDTOs;
     }
-
-    public void setCurrentFiveSuggestedDTOs(Map<String, GeocodingDTO> currentFiveSuggestedDTOs) {
-        this.currentFiveSuggestedDTOs = currentFiveSuggestedDTOs;
-    }
 }
