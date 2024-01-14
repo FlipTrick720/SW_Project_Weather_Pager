@@ -128,23 +128,31 @@ public class DateBean {
 
             DailyAggregationDTO.Temperature temp = weather.temperature();
             avgTempMin += temp.min();
+            avgTempMin = Math.round(avgTempMin);
             avgTempMax += temp.max();
-            Math.round(avgTempAfternoon += temp.afternoon());
-            Math.round(avgTempNight += temp.night());
-            Math.round(avgTempEvening += temp.evening());
-            Math.round(avgTempMorning += temp.morning());
+            avgTempMax = Math.round(avgTempMax);
+            avgTempAfternoon += temp.afternoon();
+            avgTempAfternoon = Math.round(avgTempAfternoon);
+            avgTempNight += temp.night();
+            avgTempNight = Math.round(avgTempNight);
+            avgTempEvening += temp.evening();
+            avgTempEvening = Math.round(avgTempEvening);
+            avgTempMorning += temp.morning();
+            avgTempMorning = Math.round(avgTempMorning);
 
             DailyAggregationDTO.Wind.Max windMax = weather.wind().max();
             avgWindSpeed += windMax.speed();
+            avgWindSpeed = Math.round(avgWindSpeed);
             avgWindDirection += windMax.direction();
+            avgWindDirection = Math.round(avgWindDirection);
         }
 
         int count = weatherDataList.size();
         return new DailyAggregationDTO(
                 avgLat / count, avgLon / count, "Average", LocalDate.now(), "Average",
-                new DailyAggregationDTO.CloudCover((int) Math.round((avgHumidityAfternoon / count))),
-                new DailyAggregationDTO.Humidity((int) Math.round((avgHumidityAfternoon / count))),
-                new DailyAggregationDTO.Precipitation((int) Math.round((avgPrecipitationTotal / count))),
+                new DailyAggregationDTO.CloudCover((int) (avgHumidityAfternoon / count)),
+                new DailyAggregationDTO.Humidity((int) (avgHumidityAfternoon / count)),
+                new DailyAggregationDTO.Precipitation((int) (avgPrecipitationTotal / count)),
                 new DailyAggregationDTO.Pressure(avgPressureAfternoon / count),
                 new DailyAggregationDTO.Temperature(
                         avgTempMin / count, avgTempMax / count, avgTempAfternoon / count, avgTempNight / count, avgTempEvening / count, avgTempMorning / count),
