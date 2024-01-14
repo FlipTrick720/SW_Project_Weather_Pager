@@ -34,34 +34,41 @@
                 <p:panel rendered="#{dateBean.buttonPressed}">
                     <p:panel header="Daily aggregation from #{dateBean.startDate} To #{dateBean.endDate}">
                         <h:form>
-                            <p:dataTable var="day" value="#{dateBean.weatherDataList}" >
+                            <p:dataTable var="day" value="#{dateBean.weatherDataList}" rowKey="#{day.date()}">
+                                <p:column style="width:5rem">
+                                    <p:rowToggler/> <!-- This will be the toggle button for each row -->
+                                </p:column>
+
                                 <p:column headerText="Date">
                                     <h:outputText value="#{day.date()}"/>
                                 </p:column>
-                                <p:column headerText="Morning temperature">
-                                    <h:outputText value="#{day.temperature().morning()} °C"/>
-                                </p:column>
-                                <p:column headerText="Evening temperature">
-                                    <h:outputText value="#{day.temperature().evening()} °C"/>
-                                </p:column>
-                                <p:column headerText="night temperature">
-                                    <h:outputText value="#{day.temperature().night()} °C"/>
-                                </p:column>
-                                <p:column headerText="Humidity">
-                                    <h:outputText value="#{day.humidity().afternoon()} %"/>
-                                </p:column>
-                                <p:column headerText="Wind speed">
-                                    <h:outputText value="#{day.wind().max().speed()} m/s"/>
-                                </p:column>
-                                <p:column headerText="Wind Degree">
-                                    <h:outputText value="#{day.wind().max().direction()}°"/>
-                                </p:column>
-                                <p:column headerText="Time Zone">
-                                    <h:outputText value="#{day.timezone()} UTC"/>
-                                </p:column>
-                                <p:column headerText="forms of water falling">
-                                    <h:outputText value="#{day.precipitation().total()*100} %"/>
-                                </p:column>
+                                <!-- Additional columns for other data -->
+                                <!-- ... -->
+
+                                <!-- Row Expansion Section -->
+                                <p:rowExpansion>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="showcase-text-align-center">
+                                        <p:panel>
+                                            <!-- Detailed data to be shown on row click -->
+                                            <h:outputText value="Morning Temp: #{day.temperature().morning()} °C"/>
+                                            <br/>
+                                            <h:outputText value="Evening Temp: #{day.temperature().evening()} °C"/>
+                                            <br/>
+                                            <h:outputText value="Night Temp: #{day.temperature().night()} °C"/>
+                                            <br/>
+                                            <h:outputText value="Humidity: #{day.humidity().afternoon()} %"/>
+                                            <br/>
+                                            <h:outputText value="Wind Speed: #{day.wind().max().speed()} m/s"/>
+                                            <br/>
+                                            <h:outputText value="Wind Degree: #{day.wind().max().direction()}°"/>
+                                            <br/>
+                                            <h:outputText value="Time Zone: #{day.timezone()} UTC"/>
+                                            <br/>
+                                            <h:outputText value="Precipitation: #{day.precipitation().total()*100} %"/>
+                                            <!-- Add more details as needed -->
+                                        </p:panel>
+                                    </p:panelGrid>
+                                </p:rowExpansion>
                             </p:dataTable>
                         </h:form>
                     </p:panel>
