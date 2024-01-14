@@ -58,6 +58,12 @@ public class DateBean {
         }
         return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
     }
+    /**
+     * Calculates the midpoint date of the selected date range.
+     * If either the start date or the end date is null, this method returns null.
+     *
+     * @return The midpoint date of the date range, or null if start or end dates are not set.
+     */
     private LocalDate calculateMidpointDate() {
         if (startDate == null || endDate == null) {
             return null;
@@ -65,7 +71,13 @@ public class DateBean {
         int daysBetween = (int) java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
         return startDate.plusDays(daysBetween / 2);
     }
-
+    /**
+     * Fetches the average weather data based on the midpoint of the selected date range.
+     * This method aggregates historical weather data for the past five years from the midpoint date.
+     * If the midpoint date calculation fails, logs an error and returns null.
+     *
+     * @return A {@link DailyAggregationDTO} containing average weather data, or null in case of errors.
+     */
     public DailyAggregationDTO fetchAverageWeatherData() {
         LocalDate midpointDate = calculateMidpointDate();
         if (midpointDate == null) {
@@ -90,6 +102,14 @@ public class DateBean {
 
         return calculateAverageWeather(pastWeatherData);
     }
+    /**
+     * Calculates the average weather data from a list of daily weather data.
+     * This method averages various weather parameters like temperature, humidity, precipitation, etc.
+     * If the provided list is null or empty, the method returns null.
+     *
+     * @param weatherDataList List of {@link DailyAggregationDTO} objects to average.
+     * @return A {@link DailyAggregationDTO} representing the average weather data, or null if the input list is null or empty.
+     */
 
     private DailyAggregationDTO calculateAverageWeather(List<DailyAggregationDTO> weatherDataList) {
         if (weatherDataList == null || weatherDataList.isEmpty()) {
@@ -132,6 +152,12 @@ public class DateBean {
                 new DailyAggregationDTO.Wind(new DailyAggregationDTO.Wind.Max(avgWindSpeed / count, avgWindDirection / count))
         );
     }
+    /**
+     * Fetches and displays the average weather data.
+     * This method is intended for UI interaction, and the result can be used for display purposes.
+     *
+     * @return A navigation outcome as a String, can be null. It indicates the result of the operation for UI purposes.
+     */
 
     public String fetchAndDisplayAverageWeatherData() {
         averageWeatherData = fetchAverageWeatherData();
