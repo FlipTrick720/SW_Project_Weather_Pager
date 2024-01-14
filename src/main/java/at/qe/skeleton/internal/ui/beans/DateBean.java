@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
@@ -288,7 +287,4 @@ public class DateBean {
         this.weatherBean = weatherBean;
     }
 
-//    public String getTitle() {
-//        return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "8-Day-Forecast" : "3-Day-Forecast";
-//    }
 }

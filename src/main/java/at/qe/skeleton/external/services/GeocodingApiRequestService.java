@@ -1,7 +1,6 @@
 package at.qe.skeleton.external.services;
 
 import at.qe.skeleton.external.exceptions.GeocodingApiException;
-import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
