@@ -1,13 +1,9 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
-
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Set;
-
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import at.qe.skeleton.internal.repositories.FavLocationRepository;
@@ -29,7 +25,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService {
+public class UserxService{
 
     @Autowired
     private UserxRepository userRepository;
@@ -46,6 +42,8 @@ public class UserxService {
     @Autowired
     private PremiumStatusListener premiumStatusListener;
 
+    @Autowired
+    private UserUpdater userUpdater;
 
     /**
      * Returns a collection of all users.
@@ -82,7 +80,6 @@ public class UserxService {
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
     // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
-        Userx oldUser = getAuthenticatedUser();
         if (user.isNew()) {
             user.setCreateUser(getAuthenticatedUser());
         } else {
@@ -99,12 +96,6 @@ public class UserxService {
         return user;
     }
 
-
-    public void createVerificationToken (Userx user, String token){
-        Token myToken = new Token(token, user);
-        tokenRepository.save(myToken);
-    }
-
     public Userx getUserByConfirmationToken(String token) {
         Token tokenEntity =  tokenRepository.findByToken(token);
         if(tokenEntity != null){
@@ -114,12 +105,17 @@ public class UserxService {
         }
     }
 
+    public Userx getUserByEmail(String email){
+        return userRepository.findFirstByEmail(email);
+    }
+
     /**
      * Deletes the user.
      *
      * @param user the user to delete
      */
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username == #user.id")
     public void deleteUser(Userx user) {
         userRepository.delete(user);
     }
@@ -152,8 +148,11 @@ public class UserxService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    private void setAuthenticatedUser() {
-        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+    /**
+     * for test purposes
+     */
+    public void setUnauthenticatedUser() {
+        SecurityContextHolder.clearContext();
     }
 
     /**

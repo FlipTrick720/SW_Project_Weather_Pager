@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.CreditCard;
+import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.repositories.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,4 +26,6 @@ public class CreditCardService {
     public void deleteCreditCard(CreditCard creditCard) {
         creditCardRepository.delete(creditCard);
     }
+
+    public CreditCard findByUser(Userx user) {return creditCardRepository.findByUser(user);}
 }

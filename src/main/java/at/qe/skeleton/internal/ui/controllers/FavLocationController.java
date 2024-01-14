@@ -8,7 +8,6 @@ import at.qe.skeleton.internal.services.FavLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 
 @Component
@@ -35,7 +34,7 @@ public class FavLocationController implements Serializable {
     }
 
     public void doSafeLocationByName(String city, Userx user){
-        favLocationService.StringToFavLocation(city, user);
+        favLocationService.stringToFavLocation(city, user);
     }
     // TODO: implement delete Button in dataList
     public void doDeleteLocation(FavLocation favLocation) {favLocationService.deleteLocation(favLocation);}

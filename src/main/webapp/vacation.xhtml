@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:pt="http://java.sun.com/jsp/jstl/core"
+                xmlns:row-height="http://java.sun.com/jsp/jstl/functions"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="content">
+        <h:form id="mainForm">
+            <p:panelGrid id="bottomPanel" columns="1" styleClass="borderless">
+                <p:panel rendered="#{dateBean.buttonPressed}">
+                    <p:panel header="Daily aggregation from #{dateBean.startDate} To #{dateBean.endDate}">
+                        <h:form>
+                            <p:dataTable var="day" value="#{dateBean.weatherDataList}" >
+                                <p:column headerText="Date">
+                                    <h:outputText value="#{day.date()}"/>
+                                </p:column>
+                                <p:column headerText="Morning temperature">
+                                    <h:outputText value="#{day.temperature().morning()} °C"/>
+                                </p:column>
+                                <p:column headerText="Evening temperature">
+                                    <h:outputText value="#{day.temperature().evening()} °C"/>
+                                </p:column>
+                                <p:column headerText="night temperature">
+                                    <h:outputText value="#{day.temperature().night()} °C"/>
+                                </p:column>
+                                <p:column headerText="Humidity">
+                                    <h:outputText value="#{day.humidity().afternoon()} %"/>
+                                </p:column>
+                                <p:column headerText="Wind speed">
+                                    <h:outputText value="#{day.wind().max().speed()} m/s"/>
+                                </p:column>
+                                <p:column headerText="Wind Degree">
+                                    <h:outputText value="#{day.wind().max().direction()}°"/>
+                                </p:column>
+                                <p:column headerText="Time Zone">
+                                    <h:outputText value="#{day.timezone()} UTC"/>
+                                </p:column>
+                                <p:column headerText="forms of water falling">
+                                    <h:outputText value="#{day.precipitation().total()*100} %"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </p:panel>
+                </p:panel>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

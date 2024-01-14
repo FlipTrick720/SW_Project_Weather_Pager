@@ -1,16 +1,12 @@
 package at.qe.skeleton.internal.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import  java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import at.qe.skeleton.configs.WebSecurityConfig;
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -50,21 +46,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String email;
     private String phone;
 
-    private String bankAccountNumber;
-
-    private Integer BALANCE;
-
     boolean premium;
 
     boolean enabled;
-
-    public Integer getBALANCE() {
-        return BALANCE;
-    }
-
-    public void setBALANCE(Integer BALANCE) {
-        this.BALANCE = BALANCE;
-    }
 
     @ElementCollection(targetClass = UserxRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "Userx_UserxRole")
@@ -73,7 +57,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
     private List<FavLocation> favoriteLocations = new ArrayList<>();
-    @OneToOne(cascade = CascadeType.REMOVE) //user deletion results in deletion of credit card
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true) //user deletion results in deletion of credit card
     @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
 
@@ -218,18 +202,9 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         return hash;
     }
 
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
-    }
-
-    public void setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
-    }
-
     public boolean isPremium() {
         return premium;
     }
-
 
     public void setPremium(boolean premium) {
         this.premium = premium;

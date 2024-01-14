@@ -27,7 +27,6 @@ public class EmailService{
         }
 
         javaMailSender.send(message);
-        System.out.println("mail sent");
     }
 
     public void setEmailStrategy(EmailStrategy emailStrategy) {

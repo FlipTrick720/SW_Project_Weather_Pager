@@ -1,19 +1,17 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-
+/**
+ * Main bean for handling all functionality with the weather page.
+ * Primary function is to retrieve the weather information from the API.
+ */
 @Component
 @Scope("view")
 public class WeatherBean {
@@ -21,27 +19,33 @@ public class WeatherBean {
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
     @Autowired
-    private GeocodingApiRequestService geocodingApiRequestService;
+    private AutocompleteBean autocompleteBean;
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherBean.class);
     private double latitude;
     private double longitude;
-    private String location;
+    private String location; //same as displayName shown in autocomplete dropdown
 
     private Boolean buttonPressed = false;
 
     private CurrentAndForecastAnswerDTO weather;
 
+    /**
+     * Gets the image URL for the current weather icon.
+     *
+     * @return The image URL.
+     */
     public String imageUrl() {
         return "https://openweathermap.org/img/wn/" + weather.currentWeather().weather().icon() + "@2x.png";
     }
 
+    /**
+     * Searches for weather based on the selected location.
+     */
     public void searchWeather() {
         buttonPressed = true;
-        System.out.println("button pressed yes");
-        List<GeocodingDTO> geocode = geocodingApiRequestService.retrieveGeocodingData(location);
-        latitude = geocode.get(0).lat();
-        longitude = geocode.get(0).lon();
-
+        latitude = autocompleteBean.getSelectedGeocodingDTO().lat();
+        longitude = autocompleteBean.getSelectedGeocodingDTO().lon();
+        location = autocompleteBean.getDisplayName(autocompleteBean.getSelectedGeocodingDTO());
 
 
         try {
@@ -56,16 +60,8 @@ public class WeatherBean {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getLocation() {
@@ -74,7 +70,6 @@ public class WeatherBean {
 
     public void setLocation(String location) {
         this.location = location;
-        System.out.println("location set");
     }
 
     public CurrentAndForecastAnswerDTO getWeather() {

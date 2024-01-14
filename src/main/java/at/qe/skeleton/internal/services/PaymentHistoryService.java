@@ -8,9 +8,7 @@ import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.List;
 
 

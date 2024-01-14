@@ -1,7 +1,6 @@
 package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
-import at.qe.skeleton.internal.repositories.UserxRepository;
 import at.qe.skeleton.internal.services.UserxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +17,12 @@ public class ConfirmationController {
     @Autowired
     UserxService userxService;
 
+    /**
+     * Handles the confirmation of a newly registered user.
+     *
+     * @param token The confirmation token.
+     * @return A redirection to the success or failure page based on the confirmation result.
+     */
     @GetMapping
     public String confirmRegistration(@RequestParam("token") String token) {
 
