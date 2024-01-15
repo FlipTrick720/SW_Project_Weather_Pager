@@ -4,6 +4,8 @@ import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,7 @@ public class DateBean {
     private Boolean buttonPressed = false;
     private DailyAggregationDTO averageWeatherData;
 
+
     /**
      * Checks if the selected date range is valid.
      * The start date must be before the end date, and the range should not exceed 14 days.
@@ -48,7 +51,6 @@ public class DateBean {
      * @return true if the date range is valid, false otherwise.
      */
     private boolean isDateRangeValid() {
-        System.out.println("submit button pressed yes");
         if (startDate == null || endDate == null) {
             return false;
         }
@@ -171,6 +173,8 @@ public class DateBean {
         averageWeatherData = fetchAverageWeatherData();
         return null; // You can return a navigation outcome if needed
     }
+
+
     /**
      * Handles the submission of selected dates.
      * Validates the date range and retrieves weather data for the specified period and location.
@@ -180,8 +184,9 @@ public class DateBean {
     public String submitDates() {
         buttonPressed = true;
         if (!isDateRangeValid()) {
-            LOGGER.error("Invalid date range.");
-            return "error"; // Return an appropriate outcome for invalid date range
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid date range.\nThe range should not exceed 14 days.", "Invalid date range. Start date must be before end date, and the range should not exceed 14 days."));
+            return "error";
         }
 
         GeocodingDTO geocodingData = autocompleteBean.getSelectedGeocodingDTO();
@@ -210,6 +215,7 @@ public class DateBean {
         System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
     }
+
 
     public SessionInfoBean getSessionInfoBean() {
         return sessionInfoBean;
