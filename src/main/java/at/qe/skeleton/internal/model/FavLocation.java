@@ -18,34 +18,27 @@ public class FavLocation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Userx user;
-
     private double longitude;
     private double latitude;
     /**
      * index = describes the value of the current position in the List
      */
     private Integer index;
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public Userx getUser() {
         return user;
     }
-
     public void setUser(Userx user) {
         this.user = user;
     }
-
     public Integer getIndex() {
         return index;
     }
-
     public void setIndex(Integer index) {
         this.index = index;
     }

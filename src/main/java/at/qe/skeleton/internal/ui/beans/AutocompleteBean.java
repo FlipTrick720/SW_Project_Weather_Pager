@@ -82,4 +82,10 @@ public class AutocompleteBean {
     public Map<String, GeocodingDTO> getCurrentFiveSuggestedDTOs() {
         return currentFiveSuggestedDTOs;
     }
+
+    /**
+     * This function is only for testing purpose
+     * @param geocodingDTO
+     */
+    public void setSelectedGeocodingDTO(GeocodingDTO geocodingDTO) {selectedGeocodingDTO = geocodingDTO;}
 }
