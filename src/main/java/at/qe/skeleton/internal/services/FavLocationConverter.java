@@ -21,8 +21,6 @@ public class FavLocationConverter implements Converter {
 
     @Autowired
     private FavLocationService favLocationService; // Inject your FavLocationService here
-    @Autowired
-    private GeocodingApiRequestService geocodingApiRequestService;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
