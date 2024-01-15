@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Bean for managing and interacting with the favorite location list on the homepage.
  */
 @Named
-@Scope("view")
+@Scope("request")
 public class ReorderListBean implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
