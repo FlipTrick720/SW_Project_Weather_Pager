@@ -47,7 +47,7 @@ public class DateBean {
      *
      * @return true if the date range is valid, false otherwise.
      */
-    public boolean isDateRangeValid() {
+    private boolean isDateRangeValid() {
         System.out.println("submit button pressed yes");
         if (startDate == null || endDate == null) {
             return false;
@@ -63,7 +63,7 @@ public class DateBean {
      *
      * @return The midpoint date of the date range, or null if start or end dates are not set.
      */
-    public LocalDate calculateMidpointDate() {
+    private LocalDate calculateMidpointDate() {
         if (startDate == null || endDate == null) {
             return null;
         }
@@ -77,6 +77,7 @@ public class DateBean {
      *
      * @return A {@link DailyAggregationDTO} containing average weather data, or null in case of errors.
      */
+
     public DailyAggregationDTO fetchAverageWeatherData() {
         LocalDate midpointDate = calculateMidpointDate();
         if (midpointDate == null) {
@@ -110,7 +111,7 @@ public class DateBean {
      * @return A {@link DailyAggregationDTO} representing the average weather data, or null if the input list is null or empty.
      */
 
-    public DailyAggregationDTO calculateAverageWeather(List<DailyAggregationDTO> weatherDataList) {
+    private DailyAggregationDTO calculateAverageWeather(List<DailyAggregationDTO> weatherDataList) {
         if (weatherDataList == null || weatherDataList.isEmpty()) {
             return null;
         }
