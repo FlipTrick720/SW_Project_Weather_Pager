@@ -38,7 +38,6 @@ public class ResetPasswordBean implements Serializable {
         // Check if token is valid
         if(tokenservice.getUserByConfirmationToken(token) == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Invalid token"));
-            System.out.println("message added");
             setValidToken(false);
         } else {
             setValidToken(true);
