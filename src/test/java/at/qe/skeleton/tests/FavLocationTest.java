@@ -204,7 +204,7 @@ public class FavLocationTest {
         autocompleteBean.setSelectedGeocodingDTO(geocodingDTO);
 
         // Test
-        FavLocation result = favLocationService.StringToFavLocation("Innsbruck", testUser);
+        FavLocation result = favLocationService.stringToFavLocation("Innsbruck", testUser);
 
         // Verify
         assertEquals(city ,result.getName());
@@ -230,7 +230,7 @@ public class FavLocationTest {
         autocompleteBean.setSelectedGeocodingDTO(geocodingDTO);
 
         // Test and verify that the Exception is thrown and no data is saved
-        assertThrows(EntityNotFoundException.class, () -> favLocationService.StringToFavLocation(city, testUser));
+        assertThrows(EntityNotFoundException.class, () -> favLocationService.stringToFavLocation(city, testUser));
         assertTrue(favLocationService.getUserLocations(testUser).isEmpty());
     }
 }
