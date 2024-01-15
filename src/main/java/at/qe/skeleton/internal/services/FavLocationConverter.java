@@ -34,10 +34,10 @@ public class FavLocationConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value instanceof FavLocation) {
+        if (value instanceof FavLocation favLocation) {
             // Convert FavLocation object to its String representation (for displaying purposes)
             // Assuming FavLocation's ID is of type long and you want to display the ID
-            return String.valueOf(((FavLocation) value).getId());
+            return String.valueOf(favLocation.getId());
         }
         return null;
     }

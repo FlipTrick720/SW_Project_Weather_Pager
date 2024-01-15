@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 /**
  * Entity representing favorit Location of a user.
@@ -9,7 +10,7 @@ import java.util.Objects;
  */
 
 @Entity
-public class FavLocation {
+public class FavLocation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Use GenerationType.AUTO for some databases
     private Long id;
