@@ -20,9 +20,8 @@ public class FavLocationService {
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
 
-    private FavLocation selectedLocation;
 
-    private Long LastGivenId = 1L;
+    private Long lastGivenId = 1L;
 
     /**
      * Saves the given location
@@ -77,8 +76,8 @@ public class FavLocationService {
 
         try {
             // Set basic attributes
-            favLocation.setId(LastGivenId + 1L);
-            LastGivenId = favLocation.getId();
+            favLocation.setId(lastGivenId + 1L);
+            lastGivenId = favLocation.getId();
             favLocation.setName(city);
             favLocation.setUser(user);
             favLocation.setIndex(0);
