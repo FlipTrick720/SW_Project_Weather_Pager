@@ -8,7 +8,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
