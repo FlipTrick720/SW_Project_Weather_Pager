@@ -9,6 +9,8 @@
         <ui:composition>
             <h:form>
                 <p:menubar>
+                    <p:menuitem title="Premium Account" icon="pi pi-star-fill" rendered="#{sessionInfoBean.loggedInAndPremium}"/>
+                    <p:menuitem title="No Premium Account" icon="pi pi-star" rendered="#{sessionInfoBean.loggedInAndNotPremium}"/>
                     <p:menuitem value="Weather" url="/"/>
                     <p:menuitem value="Home" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
                     <p:submenu label="Manager Submenu" rendered="#{sessionInfoBean.hasRole('MANAGER')}">
