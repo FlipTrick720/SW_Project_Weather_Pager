@@ -14,7 +14,7 @@
                     <p:menuitem value="Home" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Weather" url="/"/>
                     <p:menuitem value="Manage Users" url="/manager/select.xhtml" rendered="#{sessionInfoBean.hasRole('MANAGER')}"/>
-                    <p:menuitem value="Manage Users" url="/admin/users.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:menuitem value="Change Users" url="/admin/users.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
                     <p:menuitem value="My Profil" url="/user/user.xhtml" rendered="#{sessionInfoBean.hasRole('USER')}"/>
                     <p:menuitem value="Security Test" url="/secured/test.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>

@@ -43,7 +43,8 @@
                 </p:column>
             </p:dataTable>
 
-            <p:dialog header="#{sessionInfoBean.currentUser.username}" id="userEditDialog" widgetVar="userEditDialog"
+            <p:dialog header=" User: #{sessionInfoBean.currentUser.username}" id="userEditDialog"
+                      widgetVar="userEditDialog"
                       modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="2">
@@ -57,8 +58,10 @@
                         </p:selectManyCheckbox>
                         <p:outputLabel for="email" value="E-Mail: "/>
                         <p:inputText id="email" value="#{userDetailController.user.email}"/>
-                        <p:outputLabel for="bankaccountnumber" value="Bank Account Number: " rendered="#{userDetailController.user.creditCard.number ne null}"/>
-                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.creditCard.number}" rendered="#{userDetailController.user.creditCard.number ne null}"/>
+                        <p:outputLabel for="bankaccountnumber" value="Bank Account Number: "
+                                       rendered="#{userDetailController.user.creditCard.number ne null}"/>
+                        <p:inputText id="bankaccountnumber" value="#{userDetailController.user.creditCard.number}"
+                                     rendered="#{userDetailController.user.creditCard.number ne null}"/>
                     </h:panelGrid>
                     <p:separator/>
                     <h:panelGrid columns="3">
@@ -90,6 +93,8 @@
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
             </p:confirmDialog>
+
+            <p:button value="Register a new User" outcome="/register_page.xhtml" rendered="#{sessionInfoBean.loggedIn}" />
 
         </h:form>
     </ui:define>
