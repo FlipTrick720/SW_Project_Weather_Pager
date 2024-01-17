@@ -41,9 +41,15 @@
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column>
+                <p:column style="width:100px;text-align: center">
+                    <p:commandButton update=":oneUserForm:resetPasswordDialog" oncomplete="PF('resetPasswordDialog').show()"
+                                     icon="pi pi-star" title="Reset Password">
+                        <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
+                    </p:commandButton>
+                </p:column>
             </p:dataTable>
 
-            <p:dialog header=" User: #{sessionInfoBean.currentUser.username}" id="userEditDialog"
+            <p:dialog header=" User: #{userDetailController.user.username}" id="userEditDialog"
                       widgetVar="userEditDialog"
                       modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                 <p:outputPanel id="userData" rendered="#{not empty userDetailController.user}">
@@ -85,6 +91,18 @@
                                          oncomplete="PF('passwordEditDialog').hide();"
                                          update=":oneUserForm:userInformation"/>
                         <p:commandButton value="Abort" onclick="PF('passwordEditDialog').hide()"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+
+            <p:dialog header="Reset Password" id="resetPasswordDialog" widgetVar="resetPasswordDialog" modal="true"
+                      showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="resetPassword" rendered="#{not empty userDetailController.user}">
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Save" action="#{userDetailController.resetPasswordEmail()}"
+                                         oncomplete="PF('resetPasswordDialog').hide();"
+                                         update=":oneUserForm:userInformation"/>
+                        <p:commandButton value="Abort" onclick="PF('resetPasswordDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>

@@ -9,6 +9,7 @@ import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
 import java.util.*;
 
+import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -158,6 +159,13 @@ public class UserDetailController implements Serializable {
     public void saveUserPlusSaveRoles() {
         setRolesForUser();
         doSaveUser();
+    }
+
+    public void resetPasswordEmail() {
+        String token = tokenService.generateTokenString();
+        tokenService.createVerificationToken(user, token);
+        emailService.setEmailStrategy(new PasswordChangeMailStrategy());
+        emailService.sendMail(user.getEmail(), token);
     }
 }
 
