@@ -23,6 +23,8 @@ public class DateSelectionBean implements Serializable {
     private Integer selectedYear;
     private Month selectedMonth;
     private Integer selectedMonthInt;
+    static final String PRINTDATES = "/manager/user_list.xhtml";
+
 
     /**
      * This class represents a DateSelectionBean, which provides a list of years
@@ -64,8 +66,8 @@ public class DateSelectionBean implements Serializable {
     public Month getSelectedMonth() {
         return selectedMonth;
     }
-
     //updates the Int value of the month on the go
+
     public void setSelectedMonth(Month selectedMonth) {
         this.selectedMonth = selectedMonth;
         this.selectedMonthInt = selectedMonth.getValue();
@@ -80,7 +82,7 @@ public class DateSelectionBean implements Serializable {
     }
 
     public String printDates() {
-        return "/manager/user_list.xhtml";
+        return PRINTDATES;
     }
 
     /**

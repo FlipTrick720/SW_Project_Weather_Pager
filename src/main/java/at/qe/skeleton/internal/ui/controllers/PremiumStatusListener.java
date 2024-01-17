@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 @Component
-public class PremiumStatusListener implements PropertyChangeListener {
+public class PremiumStatusListener implements PropertyChangeListener, Serializable {
 
     @Autowired
     private PremiumHistoryService premiumHistoryService;

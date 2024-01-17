@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @Scope("application")
 @Component
 @Validated
-public class GeocodingApiRequestService {
+public class GeocodingApiRequestService implements Serializable {
 
     private static final String GEOCODING_URI = "/geo/1.0/direct";
     private static final String CITY_PARAMETER = "q";

@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.services;
 
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;

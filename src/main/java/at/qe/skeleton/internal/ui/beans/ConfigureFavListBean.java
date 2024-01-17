@@ -1,7 +1,6 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.misc.CurrentWeatherDTO;
-import at.qe.skeleton.external.model.shared.WeatherDTO;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.services.FavLocationService;
@@ -51,7 +50,6 @@ public class ConfigureFavListBean implements Serializable {
     }
 
     public String getCurrentSunriseTime(FavLocation favLocation){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return "Sunrise time: " + getCurrentWeather(favLocation).sunrise().toString().subSequence(11,16) + " o'clock";
     }
 
