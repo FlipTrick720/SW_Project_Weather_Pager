@@ -6,11 +6,13 @@ import at.qe.skeleton.internal.repositories.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 /**
  * Service for accessing and manipulating credit card data.
  */
 @Service
-public class CreditCardService {
+public class CreditCardService implements Serializable {
 
     @Autowired
     private CreditCardRepository creditCardRepository;
