@@ -35,15 +35,16 @@
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
+                <!-- <p:column style="width:100px;text-align: center">
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()"
                                      icon="pi pi-star" title="Go Premium">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
-                </p:column>
+                </p:column> -->
                 <p:column style="width:100px;text-align: center">
-                    <p:commandButton update=":oneUserForm:resetPasswordDialog" oncomplete="PF('resetPasswordDialog').show()"
-                                     icon="pi pi-star" title="Reset Password">
+                    <p:commandButton update=":oneUserForm:resetPasswordDialog"
+                                     oncomplete="PF('resetPasswordDialog').show()"
+                                     icon="pi pi-envelope" title="Reset Password">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column>
@@ -112,7 +113,8 @@
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
             </p:confirmDialog>
 
-            <p:button value="Register a new User" outcome="/register_page.xhtml" rendered="#{sessionInfoBean.loggedIn}" />
+            <p:button value="Register a new User" outcome="/register_page.xhtml"
+                      rendered="#{sessionInfoBean.loggedIn}"/>
 
         </h:form>
     </ui:define>
