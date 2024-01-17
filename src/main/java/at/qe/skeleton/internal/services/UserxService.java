@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 import at.qe.skeleton.internal.model.UserxRole;
@@ -25,7 +26,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService{
+public class UserxService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;

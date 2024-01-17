@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Component
 @Scope("application")
-public class FavLocationService {
+public class FavLocationService implements Serializable {
     @Autowired
     private FavLocationRepository locationRepository;
     @Autowired
