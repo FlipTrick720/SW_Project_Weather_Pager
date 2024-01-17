@@ -4,20 +4,19 @@ import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class WeatherApiRequestServiceTest {
 
-    @InjectMocks
-    private WeatherApiRequestService weatherApiRequestService;
+    @Autowired
+    WeatherApiRequestService weatherApiRequestService;
 
     @Test
     void buildApiUrl_CorrectParameters_ReturnsApiUrl() {

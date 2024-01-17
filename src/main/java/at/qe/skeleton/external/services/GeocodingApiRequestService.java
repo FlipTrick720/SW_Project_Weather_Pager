@@ -13,15 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
-/**
- * Service class for making requests to the geocoding API from "openweathermap" to retrieve information about locations.
- * We use the values of longitude and latitude for further API calls.
- */
 @Scope("application")
 @Component
 @Validated
@@ -34,32 +27,40 @@ public class GeocodingApiRequestService {
     @Autowired
     private RestClient restClient;
 
-    /**
-     * Retrieves geocoding information for a given city from the geocoding API.
-     *
-     * @param city The name of the city (and optional additional information separated by commas).
-     * @return A list of GeocodingDTO objects representing the geocoding information for the specified city.
-     */
     public List<GeocodingDTO> retrieveGeocodingData(String city) {
         String encodedCity = encodeCity(city);
-        ResponseEntity<List<GeocodingDTO>> responseEntity = this.restClient.get()
-                .uri(UriComponentsBuilder.fromPath(GEOCODING_URI)
-                        .queryParam(CITY_PARAMETER, encodedCity)
-                        .queryParam(LIMIT_PARAMETER, 5)
-                        .build().toUriString())
-                .retrieve()
-                .toEntity(new ParameterizedTypeReference<List<GeocodingDTO>>() {});
+        String apiUrl = buildApiUrl(encodedCity);
+
+        ResponseEntity<List<GeocodingDTO>> responseEntity = performApiCall(apiUrl);
 
         // error handling
+        handleApiResponse(responseEntity);
+
+        return responseEntity.getBody();
+    }
+
+    private String encodeCity(String city) {
+        return URLEncoder.encode(city, StandardCharsets.UTF_8);
+    }
+
+    public String buildApiUrl(String encodedCity) {
+        return UriComponentsBuilder.fromPath(GEOCODING_URI)
+                .queryParam(CITY_PARAMETER, encodedCity)
+                .queryParam(LIMIT_PARAMETER, 5)
+                .build().toUriString();
+    }
+
+    private ResponseEntity<List<GeocodingDTO>> performApiCall(String apiUrl) {
+        return restClient.get()
+                .uri(apiUrl)
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<List<GeocodingDTO>>() {});
+    }
+
+    public void handleApiResponse(ResponseEntity<List<GeocodingDTO>> responseEntity) {
         if (responseEntity.getStatusCode().isError()) {
             throw new WeatherApiException("Error while retrieving geocoding data. Status code: "
                     + responseEntity.getStatusCode());
         }
-
-        return responseEntity.getBody();
     }
-    private String encodeCity(String city){
-        return URLEncoder.encode(city, StandardCharsets.UTF_8);
-    }
-
 }
