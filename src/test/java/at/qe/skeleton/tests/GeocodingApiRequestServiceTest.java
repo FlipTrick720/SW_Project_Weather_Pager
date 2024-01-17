@@ -1,5 +1,6 @@
 package at.qe.skeleton.tests;
 
+import at.qe.skeleton.external.exceptions.GeocodingApiException;
 import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
@@ -51,8 +52,7 @@ class GeocodingApiRequestServiceTest {
         ResponseEntity<List<GeocodingDTO>> errorResponseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         // Act & Assert
-        WeatherApiException exception = assertThrows(WeatherApiException.class,
-                () -> geocodingApiRequestService.handleApiResponse(errorResponseEntity));
+        GeocodingApiException exception = assertThrows(GeocodingApiException.class, () -> geocodingApiRequestService.handleApiResponse(errorResponseEntity));
 
         assertEquals("Error while retrieving geocoding data. Status code: " + HttpStatus.BAD_REQUEST, exception.getMessage());
     }
