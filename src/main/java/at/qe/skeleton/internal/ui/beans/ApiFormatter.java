@@ -7,8 +7,14 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Utility class for formatting timestamps and temperature.
+ */
 @Component
 public class ApiFormatter {
+
+    private ApiFormatter() {
+    }
 
     public static String getDateFormattedFromTimestamp(Instant timestamp){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMM d", Locale.ENGLISH);

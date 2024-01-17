@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.ui.controllers;
 
-import at.qe.skeleton.internal.model.Token;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
@@ -9,14 +8,11 @@ import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.UUID;
-
+/**
+ * Controller handling the password reset functionality.
+ */
 @Controller
 public class ResetPasswordController {
     @Autowired
@@ -29,6 +25,9 @@ public class ResetPasswordController {
     private TokenService tokenService;
     private String email;
 
+    /**
+     * Initiates the password change process by sending a reset email to the user.
+     */
     public void requestPasswordChange(){
         Userx user = userxService.getUserByEmail(this.email);
 

@@ -1,13 +1,10 @@
 package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
-
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
-
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import at.qe.skeleton.internal.repositories.FavLocationRepository;
@@ -29,7 +26,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService {
+public class UserxService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;
@@ -46,6 +43,8 @@ public class UserxService {
     @Autowired
     private PremiumStatusListener premiumStatusListener;
 
+    @Autowired
+    private UserUpdater userUpdater;
 
     /**
      * Returns a collection of all users.
@@ -82,13 +81,6 @@ public class UserxService {
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
     // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
-        Userx oldUser = getAuthenticatedUser();
-        if (user.isNew()) {
-            user.setCreateUser(getAuthenticatedUser());
-        } else {
-            user.setUpdateUser(getAuthenticatedUser());
-        }
-
         boolean oldPremiumStatus = userRepository.findById(user.getUsername()).map(Userx::isPremium).orElse(false);
         user = userRepository.save(user);
         boolean newPremiumStatus = user.isPremium();
@@ -151,8 +143,11 @@ public class UserxService {
         return userRepository.findFirstByUsername(auth.getName());
     }
 
-    private void setAuthenticatedUser() {
-        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+    /**
+     * for test purposes
+     */
+    public void setUnauthenticatedUser() {
+        SecurityContextHolder.clearContext();
     }
 
     /**

@@ -176,6 +176,9 @@ public class PremiumHistoryTest {
             Duration duration2 = Duration.between(time3, time4);
 
             List<Integer> timeList = premiumStatusListener.getTimePremiumInterval(premiumStatusListener.getPremiumIntervalByName(user));
+            if (timeList.isEmpty()) {
+                Assertions.fail("Not enough in Data in user.");
+            }
             Assertions.assertEquals(duration1.toSeconds(), (long) timeList.get(0));
             Assertions.assertEquals(duration2.toSeconds(), (long) timeList.get(1));
 
@@ -257,6 +260,9 @@ public class PremiumHistoryTest {
         Integer chargedDays = premiumStatusListener.chargedDaysFromStartToEndCurrentMonth(newDates);
 
         List<Integer> timeIntervals = premiumStatusListener.getTimePremiumInterval(newDates);
+        if (timeIntervals.isEmpty()) {
+            Assertions.fail("Not enough in Data in newDates.");
+        }
         Assertions.assertEquals(timeIntervals.stream().mapToInt(Integer::intValue).sum(), chargedDays);
     }
 

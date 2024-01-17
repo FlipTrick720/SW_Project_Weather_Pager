@@ -79,5 +79,24 @@ class AutocompleteBeanTest {
         // Reset the mocks if needed
         reset(geocodingApiRequestService);
     }
+
+    @Test
+    void testGetDisplayName() {
+        // Prepare a sample GeocodingDTO
+        GeocodingDTO sampleDTO = new GeocodingDTO("Place1", null, 22.7, 77.0, "country", "state");
+
+        // Set up the AutocompleteBean with the sample DTO
+        autocompleteBean.getCurrentFiveSuggestedDTOs().put(sampleDTO.toString(), sampleDTO);
+
+        // Call the getDisplayName method
+        String displayName = autocompleteBean.getDisplayName(sampleDTO);
+
+        // Verify that the display name is returned correctly
+        assertNotNull(displayName);
+        assertEquals("Place1, country", displayName);
+
+        // Reset the mocks if needed
+        reset(geocodingApiRequestService);
+    }
 }
 

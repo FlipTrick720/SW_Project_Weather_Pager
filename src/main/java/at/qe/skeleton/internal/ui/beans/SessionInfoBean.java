@@ -4,7 +4,6 @@ import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
@@ -120,6 +119,13 @@ public class SessionInfoBean implements Serializable {
         return getCurrentUser().isPremium();
     }
 
+    public boolean isLoggedInAndPremium(){
+        return isLoggedIn() && isPremium();
+    }
+
+    public boolean isLoggedInAndNotPremium(){
+        return isLoggedIn() && !isPremium();
+    }
 
 
 }

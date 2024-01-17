@@ -1,6 +1,6 @@
 package at.qe.skeleton.external.services;
 
-import at.qe.skeleton.external.exceptions.WeatherApiException;
+import at.qe.skeleton.external.exceptions.GeocodingApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @Scope("application")
 @Component
 @Validated
-public class GeocodingApiRequestService {
+public class GeocodingApiRequestService implements Serializable {
 
     private static final String GEOCODING_URI = "/geo/1.0/direct";
     private static final String CITY_PARAMETER = "q";
@@ -59,7 +60,7 @@ public class GeocodingApiRequestService {
 
     public void handleApiResponse(ResponseEntity<List<GeocodingDTO>> responseEntity) {
         if (responseEntity.getStatusCode().isError()) {
-            throw new WeatherApiException("Error while retrieving geocoding data. Status code: "
+            throw new GeocodingApiException("Error while retrieving geocoding data. Status code: "
                     + responseEntity.getStatusCode());
         }
     }

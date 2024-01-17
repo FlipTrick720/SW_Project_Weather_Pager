@@ -5,8 +5,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 @Service
-public class EmailService{
+public class EmailService implements Serializable {
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -27,7 +29,6 @@ public class EmailService{
         }
 
         javaMailSender.send(message);
-        System.out.println("mail sent");
     }
 
     public void setEmailStrategy(EmailStrategy emailStrategy) {

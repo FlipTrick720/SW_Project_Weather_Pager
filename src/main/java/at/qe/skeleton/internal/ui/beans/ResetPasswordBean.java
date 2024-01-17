@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.ui.beans;
 
-
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
@@ -10,10 +9,12 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Managed bean for handling password reset functionality.
+ */
 @Named
 @ViewScoped
 public class ResetPasswordBean implements Serializable {
@@ -29,6 +30,9 @@ public class ResetPasswordBean implements Serializable {
     @Autowired
     TokenService tokenservice;
 
+    /**
+     * Initializes the bean by extracting the token from the URL and checking its validity.
+     */
     @PostConstruct
     public void init() {
         // Extract token from the URL
@@ -44,6 +48,9 @@ public class ResetPasswordBean implements Serializable {
         }
     }
 
+    /**
+     * Resets the password for the user associated with the token.
+     */
     public void resetPassword() {
         Userx user = tokenservice.getUserByConfirmationToken(token);
         user.setPassword(newPassword);

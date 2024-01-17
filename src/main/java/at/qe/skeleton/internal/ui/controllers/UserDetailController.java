@@ -1,18 +1,13 @@
 package at.qe.skeleton.internal.ui.controllers;
 
-import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
-import at.qe.skeleton.internal.services.FavLocationService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -122,7 +117,6 @@ public class UserDetailController implements Serializable {
      * Action to register the user by the inout data of the Html file.
      */
     public String doRegisterUser(){
-        newUser.setCreateUser(newUser);
         newUser.setEnabled(false); //set to false until confirmed via email
         user = this.userService.saveUser(newUser);
 
@@ -135,6 +129,13 @@ public class UserDetailController implements Serializable {
         emailService.sendMail(newUser.getEmail(), token);
 
         return "/login.xhtml?faces-redirect=true";
+    }
+
+    public void togglePremium(){
+        if(user != null){
+            user.setPremium(!user.isPremium());
+            userService.saveUser(user);
+        }
     }
 
 }

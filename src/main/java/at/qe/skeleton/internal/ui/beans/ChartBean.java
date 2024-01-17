@@ -2,7 +2,6 @@ package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.misc.DailyWeatherDTO;
 import at.qe.skeleton.external.model.currentandforecast.misc.HourlyWeatherDTO;
-import jakarta.annotation.PostConstruct;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
@@ -11,23 +10,28 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
 import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.line.LineChartDataSet;
-import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.util.*;
 
+/**
+ * Managed bean for creating charts used on the weather page.
+ */
 @Component
 @Scope("view")
 public class ChartBean implements Serializable {
 
+    /**
+     * Creates a stacked bar chart model for daily temperature and feels-like temperature.
+     *
+     * @param dailyWeatherDTO The DailyWeatherDTO containing temperature data.
+     * @return The BarChartModel for the stacked bar chart.
+     */
     public BarChartModel createStackedBarModel(DailyWeatherDTO dailyWeatherDTO) {
         BarChartModel stackedBarModel = new BarChartModel();
         ChartData data = new ChartData();
@@ -82,6 +86,13 @@ public class ChartBean implements Serializable {
         return stackedBarModel;
     }
 
+    /**
+     * Creates a mixed bar/line chart model for hourly rain and temperature.
+     *
+     * @param hourlyWeatherDTO List of HourlyWeatherDTO containing rain and temperature data.
+     * @param offset           The offset for timestamp conversion.
+     * @return The BarChartModel for the mixed bar/line chart.
+     */
     public BarChartModel createMixedModel(List<HourlyWeatherDTO> hourlyWeatherDTO, int offset) {
         BarChartModel mixedModel = new BarChartModel();
         ChartData data = new ChartData();

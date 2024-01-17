@@ -9,21 +9,14 @@
         <ui:composition>
             <h:form>
                 <p:menubar>
-                    <p:menuitem value="Weather" url="/"/>
+                    <p:menuitem title="Premium Account" icon="pi pi-star-fill" rendered="#{sessionInfoBean.loggedInAndPremium}"/>
+                    <p:menuitem title="No Premium Account" icon="pi pi-star" rendered="#{sessionInfoBean.loggedInAndNotPremium}"/>
                     <p:menuitem value="Home" url="/secured/welcome.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
-                    <p:submenu label="Manager Submenu" rendered="#{sessionInfoBean.hasRole('MANAGER')}">
-                        <p:menuitem value="Manage Users" url="/manager/select.xhtml"/>
-                    </p:submenu>
-                    <p:submenu label="Admin Submenu" rendered="#{sessionInfoBean.hasRole('ADMIN')}">
-                        <p:menuitem value="Manage Users" url="/admin/users.xhtml"/>
-                    </p:submenu>
-                    <p:submenu label="User Submenu" rendered="#{sessionInfoBean.hasRole('USER')}">
-                        <p:menuitem value="My Profil" url="/user/user.xhtml"/>
-                    </p:submenu>
-                    <p:submenu label="Test Submenu" rendered="#{sessionInfoBean.loggedIn}">
-                        <p:menuitem value="Security Test" url="/secured/test.xhtml"/>
-                        <p:menuitem value="Weather API Demo" url="/secured/weather_api_demo.xhtml"/>
-                    </p:submenu>
+                    <p:menuitem value="Weather" url="/"/>
+                    <p:menuitem value="Manage Users" url="/manager/select.xhtml" rendered="#{sessionInfoBean.hasRole('MANAGER')}"/>
+                    <p:menuitem value="Manage Users" url="/admin/users.xhtml" rendered="#{sessionInfoBean.hasRole('ADMIN')}"/>
+                    <p:menuitem value="My Profil" url="/user/user.xhtml" rendered="#{sessionInfoBean.hasRole('USER')}"/>
+                    <p:menuitem value="Security Test" url="/secured/test.xhtml" rendered="#{sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Login" url="/login.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Register" url="/register_page.xhtml" rendered="#{!sessionInfoBean.loggedIn}"/>
                     <p:menuitem value="Logout" url="/logout" rendered="#{sessionInfoBean.loggedIn}"/>

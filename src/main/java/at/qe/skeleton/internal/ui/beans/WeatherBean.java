@@ -1,19 +1,17 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
-import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-
+/**
+ * Main bean for handling all functionality with the weather page.
+ * Primary function is to retrieve the weather information from the API.
+ */
 @Component
 @Scope("view")
 public class WeatherBean {
@@ -31,13 +29,20 @@ public class WeatherBean {
 
     private CurrentAndForecastAnswerDTO weather;
 
+    /**
+     * Gets the image URL for the current weather icon.
+     *
+     * @return The image URL.
+     */
     public String imageUrl() {
         return "https://openweathermap.org/img/wn/" + weather.currentWeather().weather().icon() + "@2x.png";
     }
 
+    /**
+     * Searches for weather based on the selected location.
+     */
     public void searchWeather() {
         buttonPressed = true;
-        System.out.println("button pressed yes");
         latitude = autocompleteBean.getSelectedGeocodingDTO().lat();
         longitude = autocompleteBean.getSelectedGeocodingDTO().lon();
         location = autocompleteBean.getDisplayName(autocompleteBean.getSelectedGeocodingDTO());

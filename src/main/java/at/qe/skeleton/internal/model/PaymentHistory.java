@@ -1,6 +1,8 @@
 package at.qe.skeleton.internal.model;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -10,7 +12,7 @@ import java.util.Objects;
 */
 
 @Entity
-public class PaymentHistory {
+public class PaymentHistory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

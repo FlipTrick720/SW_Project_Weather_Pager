@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Component
 @Scope("application")
-public class PremiumHistoryService {
+public class PremiumHistoryService implements Serializable {
 
     @Autowired
     private PremiumHistoryRepository premiumHistoryRepository;
