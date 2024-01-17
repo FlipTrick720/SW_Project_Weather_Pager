@@ -117,7 +117,6 @@ public class UserDetailController implements Serializable {
      * Action to register the user by the inout data of the Html file.
      */
     public String doRegisterUser(){
-        newUser.setCreateUser(newUser);
         newUser.setEnabled(false); //set to false until confirmed via email
         user = this.userService.saveUser(newUser);
 

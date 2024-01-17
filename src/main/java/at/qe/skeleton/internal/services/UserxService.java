@@ -80,12 +80,6 @@ public class UserxService{
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
     // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
-        if (user.isNew()) {
-            user.setCreateUser(getAuthenticatedUser());
-        } else {
-            user.setUpdateUser(getAuthenticatedUser());
-        }
-
         boolean oldPremiumStatus = userRepository.findById(user.getUsername()).map(Userx::isPremium).orElse(false);
         user = userRepository.save(user);
         boolean newPremiumStatus = user.isPremium();
