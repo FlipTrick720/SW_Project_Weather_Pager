@@ -21,7 +21,7 @@ public class TokenService {
     }
 
     public Userx getUserByConfirmationToken(String token) {
-        Token tokenEntity =  tokenRepository.findByToken(token);
+        Token tokenEntity =  tokenRepository.findByTokenValue(token);
         if(tokenEntity != null){
             return tokenEntity.getUser();
         } else {
@@ -34,7 +34,7 @@ public class TokenService {
     }
 
     public Token findByTokenString(String token){
-        return tokenRepository.findByToken(token);
+        return tokenRepository.findByTokenValue(token);
     }
 
     public String generateTokenString() {

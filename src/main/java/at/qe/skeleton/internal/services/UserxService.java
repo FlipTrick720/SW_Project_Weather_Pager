@@ -100,7 +100,7 @@ public class UserxService {
     }
 
     public Userx getUserByConfirmationToken(String token) {
-        Token tokenEntity =  tokenRepository.findByToken(token);
+        Token tokenEntity =  tokenRepository.findByTokenValue(token);
         if(tokenEntity != null){
             return tokenEntity.getUser();
         } else {
