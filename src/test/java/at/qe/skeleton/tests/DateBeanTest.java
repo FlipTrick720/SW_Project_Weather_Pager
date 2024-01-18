@@ -12,38 +12,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import at.qe.skeleton.internal.ui.beans.DateBean;
-
-import javax.xml.stream.Location;
 
 @ExtendWith(MockitoExtension.class)
 public class DateBeanTest {
-
-    @Mock
-    private WeatherApiRequestService weatherApiRequestService;
-
-    @Mock
-    private GeocodingApiRequestService geocodingApiRequestService;
-
-    @Mock
-    private AutocompleteBean autocompleteBean;
-
-    @Mock
-    private DateRangeService dateRangeService;
-
-    @Mock
-    private WeatherService weatherService;
 
     @InjectMocks
     private DateBean dateBean;
