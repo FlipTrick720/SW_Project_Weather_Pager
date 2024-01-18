@@ -146,6 +146,21 @@ public class DateBean {
     /**
 *Getters and setters for all the variables in this class.
 */
+    public DateRangeService getDateRangeService() {
+        return dateRangeService;
+    }
+
+    public void setDateRangeService(DateRangeService dateRangeService) {
+        this.dateRangeService = dateRangeService;
+    }
+
+    public WeatherService getWeatherService() {
+        return weatherService;
+    }
+
+    public void setWeatherService(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
     public Boolean getButtonPressed() {
         return buttonPressed;
     }
