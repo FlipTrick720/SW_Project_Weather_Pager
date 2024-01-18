@@ -18,9 +18,10 @@ public class FavLocationController implements Serializable {
      * @param city cityname to the according city which is to be saved
      * @param user that saves the city
      */
-    public void doSafeLocationByName(String city, Userx user){
+    public FavLocation doSafeLocationByName(String city, Userx user){
         if (favLocationService.loadLocation(city,user) == null) {
-            favLocationService.stringToFavLocation(city, user);
+             return favLocationService.stringToFavLocation(city, user);
         }
+        return null;
     }
 }
