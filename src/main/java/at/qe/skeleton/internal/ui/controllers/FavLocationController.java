@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
+import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.services.FavLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
