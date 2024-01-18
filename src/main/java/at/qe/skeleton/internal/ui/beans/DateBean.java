@@ -4,6 +4,8 @@ import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import at.qe.skeleton.internal.services.DateRangeService;
+import at.qe.skeleton.internal.services.WeatherService;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import org.slf4j.Logger;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static at.qe.skeleton.internal.services.DateRangeService.calculateMidpointDate;
 
 /**
  * Managed bean for handling date-related operations within a user session.
@@ -42,57 +46,31 @@ public class DateBean {
     private WeatherBean weatherBean;
     private Boolean buttonPressed = false;
     private DailyAggregationDTO averageWeatherData;
-
-
+    @Autowired
+    private DateRangeService dateRangeService;
+    @Autowired
+    private WeatherService weatherService;
     /**
-     * Checks if the selected date range is valid.
-     * The start date must be before the end date, and the range should not exceed 14 days.
+     * Fetches and displays the average weather data.
+     * This method is intended for UI interaction, and the result can be used for display purposes.
      *
-     * @return true if the date range is valid, false otherwise.
-     */
-    private boolean isDateRangeValid() {
-        if (startDate == null || endDate == null) {
-            return false;
-        }
-        if (startDate.isAfter(endDate)) {
-            return false;
-        }
-        return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
-    }
-    /**
-     * Calculates the midpoint date of the selected date range.
-     * If either the start date or the end date is null, this method returns null.
-     *
-     * @return The midpoint date of the date range, or null if start or end dates are not set.
-     */
-    private LocalDate calculateMidpointDate() {
-        if (startDate == null || endDate == null) {
-            return null;
-        }
-        int daysBetween = (int) java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
-        return startDate.plusDays(daysBetween / 2);
-    }
-    /**
-     * Fetches the average weather data based on the midpoint of the selected date range.
-     * This method aggregates historical weather data for the past five years from the midpoint date.
-     * If the midpoint date calculation fails, logs an error and returns null.
-     *
-     * @return A {@link DailyAggregationDTO} containing average weather data, or null in case of errors.
+     * @return A navigation outcome as a String, can be null. It indicates the result of the operation for UI purposes.
      */
 
     public DailyAggregationDTO fetchAverageWeatherData() {
-        LocalDate midpointDate = calculateMidpointDate();
+        LocalDate midpointDate = DateRangeService.calculateMidpointDate(startDate, endDate);
         if (midpointDate == null) {
             LOGGER.error("Midpoint date calculation error.");
             return null;
         }
 
         List<DailyAggregationDTO> pastWeatherData = new ArrayList<>();
+        GeocodingDTO geocodingData1 = autocompleteBean.getSelectedGeocodingDTO();
+        double latitude = geocodingData1.lat();
+        double longitude = geocodingData1.lon();
+
         for (int i = 0; i < 5; i++) {
             LocalDate dateToCheck = midpointDate.minusYears(i);
-            GeocodingDTO geocodingData1 = autocompleteBean.getSelectedGeocodingDTO();
-            double latitude = geocodingData1.lat();
-            double longitude = geocodingData1.lon();
 
             try {
                 DailyAggregationDTO yearlyWeather = this.weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, dateToCheck);
@@ -102,75 +80,12 @@ public class DateBean {
             }
         }
 
-        return calculateAverageWeather(pastWeatherData);
+        averageWeatherData = WeatherService.calculateAverageWeather(pastWeatherData);
+        return averageWeatherData;
     }
-    /**
-     * Calculates the average weather data from a list of daily weather data.
-     * This method averages various weather parameters like temperature, humidity, precipitation, etc.
-     * If the provided list is null or empty, the method returns null.
-     *
-     * @param weatherDataList List of {@link DailyAggregationDTO} objects to average.
-     * @return A {@link DailyAggregationDTO} representing the average weather data, or null if the input list is null or empty.
-     */
-
-    private DailyAggregationDTO calculateAverageWeather(List<DailyAggregationDTO> weatherDataList) {
-        if (weatherDataList == null || weatherDataList.isEmpty()) {
-            return null;
-        }
-
-        double avgLat = 0, avgLon = 0, avgPrecipitationTotal = 0, avgPressureAfternoon = 0, avgHumidityAfternoon = 0;
-        double avgTempMin = 0, avgTempMax = 0, avgTempAfternoon = 0, avgTempNight = 0, avgTempEvening = 0, avgTempMorning = 0;
-        double avgWindSpeed = 0, avgWindDirection = 0;
-
-        for (DailyAggregationDTO weather : weatherDataList) {
-            avgLat += weather.latitude();
-            avgLon += weather.longitude();
-            avgPrecipitationTotal += weather.precipitation().total();
-            avgPressureAfternoon += weather.pressure().afternoon();
-            avgHumidityAfternoon += weather.humidity().afternoon();
-
-            DailyAggregationDTO.Temperature temp = weather.temperature();
-            avgTempMin += temp.min();
-            avgTempMin = Math.round(avgTempMin);
-            avgTempMax += temp.max();
-            avgTempMax = Math.round(avgTempMax);
-            avgTempAfternoon += temp.afternoon();
-            avgTempAfternoon = Math.round(avgTempAfternoon);
-            avgTempNight += temp.night();
-            avgTempNight = Math.round(avgTempNight);
-            avgTempEvening += temp.evening();
-            avgTempEvening = Math.round(avgTempEvening);
-            avgTempMorning += temp.morning();
-            avgTempMorning = Math.round(avgTempMorning);
-
-            DailyAggregationDTO.Wind.Max windMax = weather.wind().max();
-            avgWindSpeed += windMax.speed();
-            avgWindSpeed = Math.round(avgWindSpeed);
-            avgWindDirection += windMax.direction();
-            avgWindDirection = Math.round(avgWindDirection);
-        }
-
-        int count = weatherDataList.size();
-        return new DailyAggregationDTO(
-                avgLat / count, avgLon / count, "Average", LocalDate.now(), "Average",
-                new DailyAggregationDTO.CloudCover((int) (avgHumidityAfternoon / count)),
-                new DailyAggregationDTO.Humidity((int) (avgHumidityAfternoon / count)),
-                new DailyAggregationDTO.Precipitation((int) (avgPrecipitationTotal / count)),
-                new DailyAggregationDTO.Pressure(avgPressureAfternoon / count),
-                new DailyAggregationDTO.Temperature(
-                        avgTempMin / count, avgTempMax / count, avgTempAfternoon / count, avgTempNight / count, avgTempEvening / count, avgTempMorning / count),
-                new DailyAggregationDTO.Wind(new DailyAggregationDTO.Wind.Max(avgWindSpeed / count, avgWindDirection / count))
-        );
-    }
-    /**
-     * Fetches and displays the average weather data.
-     * This method is intended for UI interaction, and the result can be used for display purposes.
-     *
-     * @return A navigation outcome as a String, can be null. It indicates the result of the operation for UI purposes.
-     */
 
     public String fetchAndDisplayAverageWeatherData() {
-        averageWeatherData = fetchAverageWeatherData();
+        fetchAverageWeatherData();
         return null; // You can return a navigation outcome if needed
     }
 
@@ -183,7 +98,7 @@ public class DateBean {
      */
     public String submitDates() {
         buttonPressed = true;
-        if (!isDateRangeValid()) {
+        if (!dateRangeService.isDateRangeValid(startDate, endDate)) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid date range.\nThe range should not exceed 14 days.", "Invalid date range. Start date must be before end date, and the range should not exceed 14 days."));
             return "error";
@@ -198,19 +113,14 @@ public class DateBean {
         double latitude = geocodingData.lat();
         double longitude = geocodingData.lon();
 
-        weatherDataList.clear();
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            try {
-                DailyAggregationDTO dailyWeather = this.weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
-                weatherDataList.add(dailyWeather);
-            } catch (Exception e) {
-                LOGGER.error("Error retrieving weather data for date: " + date, e);
-            }
-        }
+        weatherDataList = weatherService.retrieveWeatherDataForRange(startDate, endDate, latitude, longitude);
 
-        for(DailyAggregationDTO d : weatherDataList) {
+        for (DailyAggregationDTO d : weatherDataList) {
             System.out.println(d.date());
         }
+
+        // Calculate average weather data
+        averageWeatherData = weatherService.calculateAverageWeatherData(calculateMidpointDate(startDate, endDate), latitude, longitude);
 
         System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
@@ -262,44 +172,12 @@ public class DateBean {
     }
 
 
-    public WeatherApiRequestService getWeatherApiRequestService() {
-        return weatherApiRequestService;
-    }
-
-    public void setWeatherApiRequestService(WeatherApiRequestService weatherApiRequestService) {
-        this.weatherApiRequestService = weatherApiRequestService;
-    }
-
-    public GeocodingApiRequestService getGeocodingApiRequestService() {
-        return geocodingApiRequestService;
-    }
-
-    public void setGeocodingApiRequestService(GeocodingApiRequestService geocodingApiRequestService) {
-        this.geocodingApiRequestService = geocodingApiRequestService;
-    }
-
-    public AutocompleteBean getAutocompleteBean() {
-        return autocompleteBean;
-    }
-
-    public void setAutocompleteBean(AutocompleteBean autocompleteBean) {
-        this.autocompleteBean = autocompleteBean;
-    }
-
     public List<DailyAggregationDTO> getWeatherDataList() {
         return weatherDataList;
     }
 
     public void setWeatherDataList(List<DailyAggregationDTO> weatherDataList) {
         this.weatherDataList = weatherDataList;
-    }
-
-    public WeatherBean getWeatherBean() {
-        return weatherBean;
-    }
-
-    public void setWeatherBean(WeatherBean weatherBean) {
-        this.weatherBean = weatherBean;
     }
 
 }
