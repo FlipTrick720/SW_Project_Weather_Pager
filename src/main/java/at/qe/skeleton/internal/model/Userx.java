@@ -29,8 +29,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     private String username;
     //changed optional to true because of the missing logged in user in the moment of
     //the registration, need to think of the importance of this column in our application
-    @ManyToOne(optional = true)
-    private Userx createUser;
+
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createDate;
@@ -145,14 +144,6 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     public void setRoles(Set<UserxRole> roles) {
         this.roles = roles;
-    }
-
-    public Userx getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(Userx createUser) {
-        this.createUser = createUser;
     }
 
     public LocalDateTime getCreateDate() {

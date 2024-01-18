@@ -9,10 +9,10 @@
         <h:form id="register_form">
             <h:panelGrid columns="2">
                 <p:outputLabel for="firstName" value="Firstname"/>
-                <p:inputText id="firstName"  value="#{userDetailController.newUser.firstName}" required="true"/>
+                <p:inputText id="firstName"  value="#{userDetailController.newUser.firstName}" required="false"/>
 
                 <p:outputLabel for="lastName" value="Lastname:"/>
-                <p:inputText id="lastName"  value="#{userDetailController.newUser.lastName}" required="true"/>
+                <p:inputText id="lastName"  value="#{userDetailController.newUser.lastName}" required="false"/>
 
                 <p:outputLabel for="username" value="Username:"/>
                 <p:inputText id="username"  value="#{userDetailController.newUser.username}" required="true"/>

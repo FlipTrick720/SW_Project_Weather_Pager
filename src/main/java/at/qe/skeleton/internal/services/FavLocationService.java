@@ -10,19 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Component
 @Scope("application")
-public class FavLocationService {
+public class FavLocationService implements Serializable {
     @Autowired
     private FavLocationRepository locationRepository;
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
 
-    private FavLocation selectedLocation;
 
-    private Long LastGivenId = 1L;
+    private Long lastGivenId = 1L;
 
     /**
      * Saves the given location
@@ -77,8 +77,8 @@ public class FavLocationService {
 
         try {
             // Set basic attributes
-            favLocation.setId(LastGivenId + 1L);
-            LastGivenId = favLocation.getId();
+            favLocation.setId(lastGivenId + 1L);
+            lastGivenId = favLocation.getId();
             favLocation.setName(city);
             favLocation.setUser(user);
             favLocation.setIndex(0);

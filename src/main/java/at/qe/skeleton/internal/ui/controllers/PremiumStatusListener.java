@@ -12,13 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 @Component
-public class PremiumStatusListener implements PropertyChangeListener {
+public class PremiumStatusListener implements PropertyChangeListener, Serializable {
 
     @Autowired
     private PremiumHistoryService premiumHistoryService;
@@ -72,7 +74,8 @@ public class PremiumStatusListener implements PropertyChangeListener {
     public List<Integer> getTimePremiumInterval(List<PremiumHistory> allDates) {
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
-            return null;
+            return Collections.emptyList();
+
         } else if (allDates.toArray().length % 2 == 0) {
             for (int i = 0; i < allDates.toArray().length - 1; i = i + 2) {
                 intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i + 1).getChangeDate()));
@@ -98,7 +101,7 @@ public class PremiumStatusListener implements PropertyChangeListener {
      */
     public Integer getTotalPremiumTimeByName(Userx user) {
         List<Integer> premiumTupelList = getTimePremiumInterval(getPremiumIntervalByName(user));
-        if (premiumTupelList == null) {
+        if (premiumTupelList.isEmpty()) {
             return 0;
         }
         return premiumTupelList.stream().mapToInt(Integer::intValue).sum();
@@ -152,6 +155,9 @@ public class PremiumStatusListener implements PropertyChangeListener {
             invoiceList.add(dummyEndPoint);
         }
         List<Integer> totalTimeTillNow = getTimePremiumInterval(invoiceList);
+        if (totalTimeTillNow.isEmpty()) {
+            return 0;
+        }
         return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum();
     }
 

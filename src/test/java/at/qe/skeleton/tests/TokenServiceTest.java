@@ -42,7 +42,7 @@ class TokenServiceTest {
         String tokenValue = "someToken";
         Token token = new Token(tokenValue, new Userx());
 
-        when(tokenRepository.findByToken(tokenValue)).thenReturn(token);
+        when(tokenRepository.findByTokenValue(tokenValue)).thenReturn(token);
 
         Userx resultUser = tokenService.getUserByConfirmationToken(tokenValue);
 
@@ -53,7 +53,7 @@ class TokenServiceTest {
     void getUserByInvalidConfirmationToken() {
         String invalidTokenValue = "invalidToken";
 
-        when(tokenRepository.findByToken(invalidTokenValue)).thenReturn(null);
+        when(tokenRepository.findByTokenValue(invalidTokenValue)).thenReturn(null);
 
         Userx resultUser = tokenService.getUserByConfirmationToken(invalidTokenValue);
 
@@ -74,7 +74,7 @@ class TokenServiceTest {
         String tokenValue = "someToken";
         Token expectedToken = new Token(tokenValue, new Userx());
 
-        when(tokenRepository.findByToken(tokenValue)).thenReturn(expectedToken);
+        when(tokenRepository.findByTokenValue(tokenValue)).thenReturn(expectedToken);
 
         Token resultToken = tokenService.findByTokenString(tokenValue);
 
@@ -85,7 +85,7 @@ class TokenServiceTest {
     void findByInvalidTokenString() {
         String invalidTokenValue = "invalidToken";
 
-        when(tokenRepository.findByToken(invalidTokenValue)).thenReturn(null);
+        when(tokenRepository.findByTokenValue(invalidTokenValue)).thenReturn(null);
 
         Token resultToken = tokenService.findByTokenString(invalidTokenValue);
 

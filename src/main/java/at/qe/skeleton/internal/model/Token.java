@@ -22,15 +22,15 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String token;
+    private String tokenValue;
 
     @ManyToOne(targetEntity = Userx.class, fetch = FetchType.EAGER)
     Userx user;
 
     private Date expiryDate; //not used yet, we assume that the user performs the verification within 24 hours
 
-    public Token(String token, Userx user) {
-        this.token = token;
+    public Token(String tokenValue, Userx user) {
+        this.tokenValue = tokenValue;
         this.user = user;
         this.expiryDate = calculateExpiryDate();
     }
@@ -53,12 +53,12 @@ public class Token {
         this.id = id;
     }
 
-    public String getToken() {
-        return token;
+    public String getTokenValue() {
+        return tokenValue;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setTokenValue(String token) {
+        this.tokenValue = token;
     }
 
     public Userx getUser() {

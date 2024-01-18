@@ -44,25 +44,21 @@ public class UserServiceTest {
             Userx user = allUsers.get(i);
             if ("admin".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.ADMIN), "User \"" + user + "\" does not have role ADMIN");
-                Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
             } else if ("manager".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.MANAGER), "User \"" + user + "\" does not have role MANAGER");
-                Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
             } else if ("user1".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.USER), "User \"" + user + "\" does not have role EMPLOYEE");
-                Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
             } else if ("user2".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.USER), "User \"" + user + "\" does not have role EMPLOYEE");
-                Assertions.assertNotNull(user.getCreateUser(), "User \"" + user + "\" does not have a createUser defined");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
@@ -112,8 +108,8 @@ public class UserServiceTest {
 
         Userx freshlyLoadedUser = userService.loadUser("user1");
         Assertions.assertNotNull(freshlyLoadedUser, "User \"" + username + "\" could not be loaded from test data source after being saved");
-        Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" does not have a updateUser defined after being saved");
-        Assertions.assertEquals(adminUser, freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" has wrong updateUser set");
+        //Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" does not have a updateUser defined after being saved");//Delete?
+        //Assertions.assertEquals(adminUser, freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" has wrong updateUser set");//Delete?
         Assertions.assertNotNull(freshlyLoadedUser.getUpdateDate(), "User \"" + username + "\" does not have a updateDate defined after being saved");
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
     }
@@ -133,8 +129,8 @@ public class UserServiceTest {
 
         Userx freshlyLoadedUser = userService.loadUser("admin");
         Assertions.assertNotNull(freshlyLoadedUser, "User \"" + toBeChangedUserName + "\" could not be loaded from test data source after being saved");
-        Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" does not have a updateUser defined after being saved");
-        Assertions.assertEquals(toBeChangedUser, freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" has wrong updateUser set");
+        //Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" does not have a updateUser defined after being saved");//Delete?
+        //Assertions.assertEquals(toBeChangedUser, freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" has wrong updateUser set");//Delete?
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + toBeChangedUserName + "\" does not have a the correct email attribute stored being saved");
         Assertions.assertEquals("NewLastname", freshlyLoadedUser.getLastName(), "User \"" + toBeChangedUserName + "\" does not have a the correct lastname attribute stored being saved");
     }
@@ -174,8 +170,6 @@ public class UserServiceTest {
         Assertions.assertEquals(phone, freshlyCreatedUser.getPhone(), "User \"" + username + "\" does not have a the correct phone attribute stored being saved");
         Assertions.assertTrue(freshlyCreatedUser.getRoles().contains(UserxRole.MANAGER), "User \"" + username + "\" does not have role MANAGER");
         Assertions.assertTrue(freshlyCreatedUser.getRoles().contains(UserxRole.USER), "User \"" + username + "\" does not have role EMPLOYEE");
-        Assertions.assertNotNull(freshlyCreatedUser.getCreateUser(), "User \"" + username + "\" does not have a createUser defined after being saved");
-        Assertions.assertEquals(adminUser, freshlyCreatedUser.getCreateUser(), "User \"" + username + "\" has wrong createUser set");
         Assertions.assertNotNull(freshlyCreatedUser.getCreateDate(), "User \"" + username + "\" does not have a createDate defined after being saved");
     }
 

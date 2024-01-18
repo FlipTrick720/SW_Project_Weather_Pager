@@ -7,7 +7,9 @@ import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.*;
+
+import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,8 @@ public class UserDetailController implements Serializable {
 
     @Autowired
     private TokenService tokenService;
+
+    private List<UserxRole> selectedRoles;
 
     /**
      * Attribute to cache the currently displayed user
@@ -104,8 +108,6 @@ public class UserDetailController implements Serializable {
         return userService.loadUser(username);
     }
 
-
-
     /**
      * Action to delete the currently displayed user.
      */
@@ -117,7 +119,6 @@ public class UserDetailController implements Serializable {
      * Action to register the user by the inout data of the Html file.
      */
     public String doRegisterUser(){
-        newUser.setCreateUser(newUser);
         newUser.setEnabled(false); //set to false until confirmed via email
         user = this.userService.saveUser(newUser);
 
@@ -139,5 +140,32 @@ public class UserDetailController implements Serializable {
         }
     }
 
+    public List<UserxRole> getSelectedRoles() {
+        return new ArrayList<>(user.getRoles());
+    }
+
+    public void setSelectedRoles(List<UserxRole> selectedRoles) {
+        this.selectedRoles = selectedRoles;
+    }
+
+    public List<UserxRole> getAllRoles() {
+        return Arrays.asList(UserxRole.USER, UserxRole.MANAGER, UserxRole.ADMIN);
+    }
+
+    public void setRolesForUser() {
+        user.setRoles(new HashSet<>(selectedRoles));
+    }
+
+    public void saveUserPlusSaveRoles() {
+        setRolesForUser();
+        doSaveUser();
+    }
+
+    public void resetPasswordEmail() {
+        String token = tokenService.generateTokenString();
+        tokenService.createVerificationToken(user, token);
+        emailService.setEmailStrategy(new PasswordChangeMailStrategy());
+        emailService.sendMail(user.getEmail(), token);
+    }
 }
 

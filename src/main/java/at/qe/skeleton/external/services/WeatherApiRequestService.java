@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 @Scope("application")
 @Component
 @Validated // makes sure the parameter validation annotations are checked during runtime
-public class WeatherApiRequestService {
+public class WeatherApiRequestService implements Serializable {
 
     private static final String CURRENT_AND_FORECAST_URI = "/data/3.0/onecall";
     private static final String DAILY_AGGREGATION_URI = "/data/3.0/onecall/day_summary";

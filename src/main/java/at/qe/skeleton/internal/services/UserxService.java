@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.internal.model.Userx;
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 import at.qe.skeleton.internal.model.UserxRole;
@@ -25,7 +26,7 @@ import at.qe.skeleton.internal.repositories.UserxRepository;
  */
 @Component
 @Scope("application")
-public class UserxService{
+public class UserxService implements Serializable {
 
     @Autowired
     private UserxRepository userRepository;
@@ -80,12 +81,6 @@ public class UserxService{
     //Currently using this saveUser for the registration of a new User. Nobody logged in so no authority.
     // @PreAuthorize("hasAuthority('ADMIN')")
     public Userx saveUser(Userx user) {
-        if (user.isNew()) {
-            user.setCreateUser(getAuthenticatedUser());
-        } else {
-            user.setUpdateUser(getAuthenticatedUser());
-        }
-
         boolean oldPremiumStatus = userRepository.findById(user.getUsername()).map(Userx::isPremium).orElse(false);
         user = userRepository.save(user);
         boolean newPremiumStatus = user.isPremium();
@@ -97,7 +92,7 @@ public class UserxService{
     }
 
     public Userx getUserByConfirmationToken(String token) {
-        Token tokenEntity =  tokenRepository.findByToken(token);
+        Token tokenEntity =  tokenRepository.findByTokenValue(token);
         if(tokenEntity != null){
             return tokenEntity.getUser();
         } else {
