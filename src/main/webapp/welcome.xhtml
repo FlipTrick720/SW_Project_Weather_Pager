@@ -9,6 +9,11 @@
 
 	<ui:define name="content">
 		<h:form>
+			<!-- Displaying error message if we have some api errors -->
+			<p:messages id="messages" showDetail="true">
+				<p:autoUpdate/>
+			</p:messages>
+
 			<!-- start of top section: searchbar and else -->
 			<p:panelGrid columns="1" styleClass="borderless">
 				<p:panel style="text-align: center;">
@@ -109,7 +114,7 @@
 			</p:panelGrid>
 			<!-- end of middle section -->
 
-			<!-- start of bottom section: 8-day-forecast -->
+			<!-- start of bottom section: Details + forecast -->
 			<p:panelGrid id="bottom" columns="1" styleClass="borderless">
 
 				<p:panel rendered="#{weatherBean.buttonPressed}">
@@ -137,6 +142,22 @@
 								<p:column headerText="Pop">
 									<h:outputText value="#{hour.probabilityOfPrecipitation()*100} %"/>
 								</p:column>
+								<!-- Premium column -->
+								<p:column headerText="Humidity" rendered="#{sessionInfoBean.loggedIn and sessionInfoBean.premium}">
+									<h:outputText value="#{hour.humidity()}%"/>
+								</p:column>
+								<!-- Premium column -->
+								<p:column headerText="Pressure" rendered="#{sessionInfoBean.loggedIn and sessionInfoBean.premium}">
+									<h:outputText value="#{hour.pressure()}hPA"/>
+								</p:column>
+								<!-- Premium column -->
+								<p:column headerText="Clouds" rendered="#{sessionInfoBean.loggedIn and sessionInfoBean.premium}">
+									<h:outputText value="#{hour.clouds()}%"/>
+								</p:column>
+								<!-- Premium column -->
+								<p:column headerText="Visibility" rendered="#{sessionInfoBean.loggedIn and sessionInfoBean.premium}">
+									<h:outputText value="#{hour.visibility()}m"/>
+								</p:column>
 							</p:dataTable>
 							<f:facet name="actions">
 								<p:tooltip for="infoText" value="Get a premium plan to see details for the next 48 hours" />
@@ -148,7 +169,7 @@
 				</p:panel>
 
 				<p:panel rendered="#{weatherBean.buttonPressed}">
-					<p:panel header="#{foreCastBean.title}">
+					<p:panel header="Today and #{foreCastBean.title}">
 						<h:form>
 							<p:dataTable var="day" value="#{foreCastBean.dailyWeather}" rowKey="#{day.timestamp()}">
 								<p:column style="width:5rem">
@@ -171,9 +192,12 @@
 								<p:column>
 									<h:outputText value="#{day.weather().description()}"/>
 								</p:column>
+
 								<!-- Begin of the details section when the user clicks the ">" -->
 								<p:rowExpansion>
-									<p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
+									<!-- if user is premium this grid has 4 columns, otherwise 3 -->
+									<!-- should be handled consistently, however for now it's fine and working -->
+									<p:panelGrid columns="#{sessionInfoBean.loggedIn and sessionInfoBean.premium ? 4 : 3}" layout="grid" styleClass="showcase-text-align-center">
 										<p:panel>
 											<h:outputText value="#{day.summary()}."/>
 											<br/>
@@ -190,13 +214,22 @@
 										<p:panel>
 											<h:outputText value="&#x1F343; #{day.windSpeed()} m/s (#{day.windDirection()}°)"/>
 											<br/>
+											<h:outputText value="&#x1F32A; #{day.windGust()} m/s (Gusts)"/>
+											<br/>
 											<h:outputText value="&#x1F327; #{day.rain() ne null ? day.rain() : 0} mm/h (#{day.probabilityOfPrecipitation()*100}%)"/>
 											<br/>
 											<h:outputText value="&#x2744; #{day.snow() ne null ? day.snow() : 0} mm/h"/>
-											<br/>
+										</p:panel>
+
+										<!-- Premium only content -->
+										<p:panel rendered="#{sessionInfoBean.loggedIn and sessionInfoBean.premium}">
 											<h:outputText value="Humidity: #{day.humidity()}%"/>
 											<br/>
-											<h:outputText value="UVI: #{day.uvi()}"/>
+											<h:outputText value="Pressure: #{day.pressure()} hPa"/>
+											<br/>
+											<h:outputText value="Dew Point: #{day.dewPoint()} °C"/>
+											<br/>
+											<h:outputText value="Clouds: #{day.clouds()}%"/>
 										</p:panel>
 
 									</p:panelGrid>
