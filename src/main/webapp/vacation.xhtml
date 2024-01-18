@@ -10,9 +10,6 @@
 
     <ui:define name="content">
         <h:form id="mainForm">
-            <p:commandButton value="Show Average Weather"
-                             action="#{dateBean.fetchAndDisplayAverageWeatherData}"
-                             update="averageWeatherPanel" />
 
             <!-- Panel to Display Average Weather Data -->
             <p:outputPanel id="averageWeatherPanel" rendered="#{not empty dateBean.averageWeatherData}">
