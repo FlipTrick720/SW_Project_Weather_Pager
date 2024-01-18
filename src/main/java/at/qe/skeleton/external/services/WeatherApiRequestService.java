@@ -3,6 +3,8 @@ package at.qe.skeleton.external.services;
 import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +85,10 @@ public class WeatherApiRequestService implements Serializable {
                 .retrieve()
                 .toEntity(DailyAggregationDTO.class);
         if (responseEntity.getStatusCode().isError()) {
+            //add message to inform user about the specific api error
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while retrieving the weather. Status code: "
+                    + responseEntity.getStatusCode(), null));
+
             throw new WeatherApiException("Error while retrieving the weather. Status code: "
                     + responseEntity.getStatusCode());
         }

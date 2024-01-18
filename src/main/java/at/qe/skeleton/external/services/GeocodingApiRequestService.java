@@ -2,6 +2,8 @@ package at.qe.skeleton.external.services;
 
 import at.qe.skeleton.external.exceptions.GeocodingApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
@@ -60,6 +62,9 @@ public class GeocodingApiRequestService implements Serializable {
 
     public void handleApiResponse(ResponseEntity<List<GeocodingDTO>> responseEntity) {
         if (responseEntity.getStatusCode().isError()) {
+            //add message to inform user about the specific api error
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while retrieving the weather. Status code: "
+                    + responseEntity.getStatusCode(), null));
             throw new GeocodingApiException("Error while retrieving geocoding data. Status code: "
                     + responseEntity.getStatusCode());
         }
