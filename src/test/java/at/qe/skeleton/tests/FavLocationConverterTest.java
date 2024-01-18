@@ -1,98 +1,89 @@
 package at.qe.skeleton.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import at.qe.skeleton.internal.model.FavLocation;
 import at.qe.skeleton.internal.services.FavLocationConverter;
 import at.qe.skeleton.internal.services.FavLocationService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
+import jakarta.faces.convert.FacesConverter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 @SpringBootTest
 public class FavLocationConverterTest {
 
-    @InjectMocks
-    private FavLocationConverter favLocationConverter;
-
-    @Mock
+    @Autowired
     private FavLocationService favLocationService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @Autowired
+    private FavLocationConverter favLocationConverter;
+
+    @Test
+    @DirtiesContext
+    public void testGetAsObjectValidInput() {
+        //create and save Test objects
+        String value = "1";
+        FavLocation expectedFavLocation = new FavLocation();
+        expectedFavLocation.setId(1L);
+        expectedFavLocation.setName("TestLocation");
+        favLocationService.saveLocation(expectedFavLocation);
+
+        //mock facesContext and uiComponent
+        FacesContext context = mock(FacesContext.class);
+        UIComponent component = mock(UIComponent.class);
+
+        //test
+        FavLocation result = favLocationConverter.getAsObject(context, component, value);
+
+        //verify
+        assertEquals(expectedFavLocation, result);
     }
 
     @Test
-    public void testGetAsObjectValidValue() {
-        // Mock data
-        long favLocationId = 1L;
-        FavLocation mockFavLocation = new FavLocation();
-        mockFavLocation.setId(favLocationId);
+    public void testGetAsObjectNullInput() {
+        String value = null;
 
-        // Mock behavior of FavLocationService
-        Mockito.when(favLocationService.loadLocation(favLocationId)).thenReturn(mockFavLocation);
+        FacesContext context = mock(FacesContext.class);
+        UIComponent component = mock(UIComponent.class);
 
-        // Test the getAsObject method
-        FacesContext context = Mockito.mock(FacesContext.class);
-        UIComponent component = Mockito.mock(UIComponent.class);
-        Object result = favLocationConverter.getAsObject(context, component, String.valueOf(favLocationId));
+        FavLocation result = favLocationConverter.getAsObject(context, component, value);
 
-        // Verify that the expected FavLocation object is returned
-        assertNotNull(result);
-        assertTrue(result instanceof FavLocation);
-        assertEquals(favLocationId, ((FavLocation) result).getId());
-
-        // Verify that FavLocationService.loadLocation is called with the correct ID
-        Mockito.verify(favLocationService, Mockito.times(1)).loadLocation(favLocationId);
-    }
-
-    @Test
-    public void testGetAsObjectInvalidValue() {
-        // Test the getAsObject method with an invalid value
-        FacesContext context = Mockito.mock(FacesContext.class);
-        UIComponent component = Mockito.mock(UIComponent.class);
-        Object result = favLocationConverter.getAsObject(context, component, "");
-
-        // Verify that null is returned for an empty value
         assertNull(result);
-
-        // Verify that FavLocationService.loadLocation is not called
-        Mockito.verify(favLocationService, Mockito.never()).loadLocation(Mockito.anyLong());
     }
 
     @Test
-    public void testGetAsString() {
-        // Mock data
-        long favLocationId = 1L;
-        FavLocation mockFavLocation = new FavLocation();
-        mockFavLocation.setId(favLocationId);
+    public void testGetAsStringValidInput() {
+        FavLocation expectedFavLocation = new FavLocation();
+        expectedFavLocation.setId(1L);
+        expectedFavLocation.setName("TestLocation");
+        favLocationService.saveLocation(expectedFavLocation);
 
-        // Test the getAsString method
-        FacesContext context = Mockito.mock(FacesContext.class);
-        UIComponent component = Mockito.mock(UIComponent.class);
-        String result = favLocationConverter.getAsString(context, component, mockFavLocation);
+        FacesContext context = mock(FacesContext.class);
+        UIComponent component = mock(UIComponent.class);
 
-        // Verify that the expected String representation is returned
-        assertNotNull(result);
-        assertEquals(String.valueOf(favLocationId), result);
+        String result = favLocationConverter.getAsString(context, component, expectedFavLocation);
+
+        assertEquals("1", result);
     }
 
     @Test
-    public void testGetAsStringNullValue() {
-        // Test the getAsString method with a null value
-        FacesContext context = Mockito.mock(FacesContext.class);
-        UIComponent component = Mockito.mock(UIComponent.class);
-        String result = favLocationConverter.getAsString(context, component, null);
+    public void testGetAsStringNullInput() {
+        FavLocation favLocation = null;
 
-        // Verify that null is returned for a null value
+        FacesContext context = mock(FacesContext.class);
+        UIComponent component = mock(UIComponent.class);
+
+        String result = favLocationConverter.getAsString(context, component, favLocation);
+
         assertNull(result);
     }
 }
-
