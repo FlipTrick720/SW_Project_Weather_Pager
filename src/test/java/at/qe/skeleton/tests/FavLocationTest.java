@@ -30,7 +30,6 @@ public class FavLocationTest {
     FavLocationService favLocationService;
     @Autowired
     UserxService userxService;
-
     @Autowired
     AutocompleteBean autocompleteBean;
     @Autowired
@@ -235,4 +234,5 @@ public class FavLocationTest {
         assertThrows(EntityNotFoundException.class, () -> favLocationService.stringToFavLocation(city, testUser));
         assertTrue(favLocationService.getUserLocations(testUser).isEmpty());
     }
+
 }

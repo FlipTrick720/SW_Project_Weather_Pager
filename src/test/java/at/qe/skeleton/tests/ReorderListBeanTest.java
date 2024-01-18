@@ -8,19 +8,21 @@ import at.qe.skeleton.internal.services.FavLocationService;
 import at.qe.skeleton.internal.services.UserxService;
 import at.qe.skeleton.internal.ui.beans.ReorderListBean;
 import at.qe.skeleton.internal.ui.beans.SessionInfoBean;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -79,6 +81,24 @@ public class ReorderListBeanTest {
         List<FavLocation> filteredLocations2 = reorderListBean.getFilteredFavLocations();
         assertEquals(1, filteredLocations2.size());
         assertEquals("Location1", filteredLocations2.get(0).getName());
+    }
+
+
+    @Test
+    public void testOnSelectWithFavLocation() {
+        ContextMocker.mockFacesContext();
+        // Mock the event object
+        SelectEvent<FavLocation> mockEvent = mock(SelectEvent.class);
+        FavLocation mockLocation = new FavLocation();
+        when(mockEvent.getObject()).thenReturn(mockLocation);
+
+        // Call the onSelect method
+        ReorderListBean yourInstance = new ReorderListBean(); // Replace with the actual class name
+        yourInstance.onSelect(mockEvent);
+
+        // Verify that the FacesMessage is created and added to the context
+        FacesContext context = FacesContext.getCurrentInstance();
+        verify(context, times(1)).addMessage(eq(null), any(FacesMessage.class));
     }
 
 }

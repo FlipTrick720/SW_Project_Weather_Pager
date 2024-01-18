@@ -82,9 +82,6 @@ public class ReorderListBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Selection", "Selected object is not of type FavLocation"));
         }
     }
-
-
-
     /**
      * Handles the reordering of the favorite locations list.
      * No test for this function because we weren't able to simulate the FacesContext.
@@ -94,7 +91,6 @@ public class ReorderListBean implements Serializable {
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
         favLocationService.updateIndexLocations(filteredFavLocations);
     }
-
     /**
      * Deletes the currently selected Location from the List.
      * The ID of the location to be deleted is obtained from the request parameter 'idFavLocation' (defined in the /secured/welcome.xhtml).
@@ -110,7 +106,6 @@ public class ReorderListBean implements Serializable {
             }
         }
     }
-
     /**
      * This function edits the FavLocation List according to the currently entered filteredValue
      * @return the List of favorite Locations associated with the current user
