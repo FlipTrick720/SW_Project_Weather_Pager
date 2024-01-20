@@ -46,9 +46,19 @@ public class WeatherService {
             return null;
         }
 
-        double avgLat = 0, avgLon = 0, avgPrecipitationTotal = 0, avgPressureAfternoon = 0, avgHumidityAfternoon = 0;
-        double avgTempMin = 0, avgTempMax = 0, avgTempAfternoon = 0, avgTempNight = 0, avgTempEvening = 0, avgTempMorning = 0;
-        double avgWindSpeed = 0, avgWindDirection = 0;
+        double avgLat = 0;
+        double avgLon = 0;
+        double avgPrecipitationTotal = 0;
+        double avgPressureAfternoon = 0;
+        double avgHumidityAfternoon = 0;
+        double avgTempMin = 0;
+        double avgTempMax = 0;
+        double avgTempAfternoon = 0;
+        double avgTempNight = 0;
+        double avgTempEvening = 0;
+        double avgTempMorning = 0;
+        double avgWindSpeed = 0;
+        double avgWindDirection = 0;
 
         for (DailyAggregationDTO weather : weatherDataList) {
             avgLat += weather.latitude();
