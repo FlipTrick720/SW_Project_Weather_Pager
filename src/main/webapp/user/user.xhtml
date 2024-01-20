@@ -66,11 +66,13 @@
             </p:dialog>
 
             <p:dialog header="Edit Password" id="passwordEditDialog" widgetVar="passwordEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="PasswordData" rendered="#{not empty userDetailController.user}" >
                 <h:panelGrid columns="3">
                     <p:outputLabel for="password" value="Password:" />
-                    <p:inputText id="password" type="password" value="#{userDetailController.newUser.password}" required="true"
+                    <p:inputText id="password" type="password" value="#{userDetailController.user.password}" required="true"
                                  validatorMessage="Please enter a Password of at least length 8!"
-                                 requiredMessage="Please enter a Password!">
+                                 requiredMessage="Please enter a Password!"
+                                 placeholder="enter a new password">
                         <f:validateLength minimum="8" />
                         <p:ajax event="keyup"  update="validationMessage" />
                     </p:inputText>
@@ -81,7 +83,8 @@
                     <p:outputLabel for="confirmPassword" value="Confirm Password:" />
                     <p:inputText id="confirmPassword" type="password" value="#{userDetailController.confirmPassword}" required="true"
                                  validatorMessage="The Passwords do not match!"
-                                 requiredMessage="Please enter a Password!">
+                                 requiredMessage="Please enter a Password!"
+                                placeholder="confirm password">
                         <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}" update="passwordMessage" />
                     </p:inputText>
                     <p:message  id="passwordMessage" for="confirmPassword" />
@@ -90,6 +93,7 @@
                         <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" oncomplete="PF('passwordEditDialog').hide();"  update=":oneUserForm:userInformation"/>
                         <p:commandButton value="Abort" onclick="PF('passwordEditDialog').hide()"/>
                     </h:panelGrid>
+                </p:outputPanel>
             </p:dialog>
 
             <p:dialog header="Delete Account?" id="deleteAccountDialog" widgetVar="deleteAccountDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">

@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.*;
 
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -197,13 +195,11 @@ public class UserDetailController implements Serializable {
      * Methode to check validate the Passwords.
      */
     public void checkPasswords() {
-        if(!WebSecurityConfig.passwordEncoder().matches(confirmPassword, newUser.getPassword())){
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage("register_form:confirmPassword", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match"));
-            context.addMessage("oneUserForm:confirmPassword", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match"));
+        if(newUser != null) {
+            PasswordValidator.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
+        } else if (user != null) {
+            PasswordValidator.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
+        }
     }
-    }
-
-
 }
 
