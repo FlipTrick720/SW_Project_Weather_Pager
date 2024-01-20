@@ -4,12 +4,14 @@ import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class WeatherService {
+public class WeatherService implements Serializable {
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
