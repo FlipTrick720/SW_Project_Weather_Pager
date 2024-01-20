@@ -10,14 +10,11 @@ import org.primefaces.model.charts.bar.BarChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import at.qe.skeleton.internal.services.DateRangeService;
+
 /**
  * Managed bean for creating charts based on daily weather data.
  */
@@ -26,7 +23,7 @@ import at.qe.skeleton.internal.services.DateRangeService;
 public class DailyWeatherChartBean implements Serializable {
 
     @Autowired
-    private WeatherService weatherService;
+    public WeatherService weatherService;
 
     /**
      * Creates a bar chart model for daily temperature at different times of the day.
