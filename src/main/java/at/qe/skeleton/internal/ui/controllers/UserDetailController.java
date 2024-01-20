@@ -1,5 +1,6 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.configs.WebSecurityConfig;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.TokenService;
@@ -10,6 +11,8 @@ import java.io.Serializable;
 import java.util.*;
 
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -43,6 +46,25 @@ public class UserDetailController implements Serializable {
      * Attribute to cache the newly registered user
      */
     private Userx newUser;
+
+    /**
+     * Attribute to catch the confirmPassword input.
+     */
+    private String confirmPassword;
+
+    /**
+     * returns the ConfirmPassword-
+     * @return
+     */
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
 
     /**
      * Returns the newUser which is created from the user class
@@ -133,6 +155,9 @@ public class UserDetailController implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Toggles the change of the Premium Status.
+     */
     public void togglePremium(){
         if(user != null){
             user.setPremium(!user.isPremium());
@@ -167,5 +192,18 @@ public class UserDetailController implements Serializable {
         emailService.setEmailStrategy(new PasswordChangeMailStrategy());
         emailService.sendMail(user.getEmail(), token);
     }
+
+    /**
+     * Methode to check validate the Passwords.
+     */
+    public void checkPasswords() {
+        if(!WebSecurityConfig.passwordEncoder().matches(confirmPassword, newUser.getPassword())){
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage("register_form:confirmPassword", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match"));
+            context.addMessage("oneUserForm:confirmPassword", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Passwords do not match"));
+    }
+    }
+
+
 }
 
