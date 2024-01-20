@@ -10,5 +10,5 @@ import java.io.Serializable;
 public interface TokenRepository extends AbstractRepository<Token, Long>, Serializable {
 
     Token findByTokenValue(String token);
-    Token findByUser_Username(String username);
+    Token findByUserUsername(String username);
 }

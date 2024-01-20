@@ -5,13 +5,14 @@ import at.qe.skeleton.internal.model.Userx;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Repository for managing {@link PaymentHistory} entities.
  *
  */
-public interface PaymentHistoryRepository extends AbstractRepository <PaymentHistory, Long> {
+public interface PaymentHistoryRepository extends AbstractRepository <PaymentHistory, Long>, Serializable {
 
     public PaymentHistory findByUser (Userx user);
 
