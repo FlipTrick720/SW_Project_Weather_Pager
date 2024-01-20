@@ -12,11 +12,11 @@
 			<!-- start of top section: searchbar and else -->
 			<p:panelGrid columns="1" styleClass="borderless">
 				<p:panel style="text-align: center;">
-					<h:panelGroup id="disabled_button2" rendered="#{!sessionInfoBean.loggedIn}">
-							<p:tooltip for="disabled_button2" value="Please create or login to use this feature"/>
+					<h:panelGroup id="disabled_button2" rendered="#{!sessionInfoBean.loggedInAndPremium}">
+							<p:tooltip for="disabled_button2" value="You have to have a Premium Account to use this feature"/>
 							<p:commandButton value="Vacation Date"  styleClass="ui-state-disabled" disabled="true"/>
 					</h:panelGroup><!-- Dialog for Date Selection -->
-					<p:commandButton value="Vacation Date"  rendered="#{sessionInfoBean.loggedIn}"  onclick="PF('dateDialog').show();" type="button" style="margin-right: 10px"/>
+					<p:commandButton value="Vacation Date"  rendered="#{sessionInfoBean.loggedInAndPremium}"  onclick="PF('dateDialog').show();" type="button" style="margin-right: 10px"/>
 					<p:growl id="growl" life="3000" />
 					<p:dialog header="Select Dates" widgetVar="dateDialog" modal="true" showEffect="fade" hideEffect="fade">
 						<strong style="display: block; margin-bottom: 10px;">You can choose a maximum of 2 weeks</strong>
