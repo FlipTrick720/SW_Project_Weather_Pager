@@ -18,11 +18,12 @@
                     <h:outputText value="Average Temperature in the afternoon: #{dateBean.averageWeatherData.temperature().afternoon()} °C" /><br/>
                     <h:outputText value="Average Temperature in the evening: #{dateBean.averageWeatherData.temperature().evening()} °C" /><br/>
                     <h:outputText value="Average Temperature at night: #{dateBean.averageWeatherData.temperature().night()} °C" /><br/>
-                    <h:outputText value="Average Humidity: #{dateBean.averageWeatherData.humidity()} %" /><br/>
-                    <h:outputText value="Average Pressure: #{dateBean.averageWeatherData.pressure()} hPa" /><br/>
-                    <h:outputText value="Average Cloud Cover: #{dateBean.averageWeatherData.cloudCover()} %" /><br/>
-                    <h:outputText value="Average Precipitation: #{dateBean.averageWeatherData.precipitation()}" /><br/>
-                    <h:outputText value="Average Wind Speed: #{dateBean.averageWeatherData.wind().max()} km/h" /><br/>
+                    <h:outputText value="Average Humidity: #{dateBean.averageWeatherData.humidity().afternoon()} %" /><br/>
+                    <h:outputText value="Average Pressure: #{dateBean.averageWeatherData.pressure().afternoon()} hPa" /><br/>
+                    <h:outputText value="Average Cloud Cover: #{dateBean.averageWeatherData.cloudCover().afternoon()} %" /><br/>
+                    <h:outputText value="Average Precipitation: #{dateBean.averageWeatherData.precipitation().total()}" /><br/>
+                    <h:outputText value="Average Wind Speed: #{dateBean.averageWeatherData.wind().max().speed()} km/h" /><br/>
+                    <h:outputText value="Average Wind Degree #{dateBean.averageWeatherData.wind().max().direction()} °" /><br/>
                     <!-- Display other average weather data here -->
                 </p:panel>
 
