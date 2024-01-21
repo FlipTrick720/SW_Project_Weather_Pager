@@ -17,19 +17,22 @@
 			<!-- start of top section: searchbar and else -->
 			<p:panelGrid columns="1" styleClass="borderless">
 				<p:panel style="text-align: center;">
-					<h:panelGroup id="disabled_button2" rendered="#{!sessionInfoBean.loggedIn}">
-							<p:tooltip for="disabled_button2" value="Please create or login to use this feature"/>
+					<h:panelGroup id="disabled_button2" rendered="#{!sessionInfoBean.loggedInAndPremium}">
+							<p:tooltip for="disabled_button2" value="You have to have a Premium Account to use this feature"/>
 							<p:commandButton value="Vacation Date"  styleClass="ui-state-disabled" disabled="true"/>
 					</h:panelGroup><!-- Dialog for Date Selection -->
-					<p:commandButton value="Vacation Date"  rendered="#{sessionInfoBean.loggedIn}"  onclick="PF('dateDialog').show();" type="button" style="margin-right: 10px"/>
+					<p:commandButton value="Vacation Date"  rendered="#{sessionInfoBean.loggedInAndPremium}"  onclick="PF('dateDialog').show();" type="button" style="margin-right: 10px"/>
+					<p:growl id="growl" life="3000" />
 					<p:dialog header="Select Dates" widgetVar="dateDialog" modal="true" showEffect="fade" hideEffect="fade">
-						<strong style="display: block; margin-bottom: 10px;">You can choose a maximum of 2 weeks.</strong>
+						<strong style="display: block; margin-bottom: 10px;">You can choose a maximum of 2 weeks</strong>
 						<!-- Start Date Picker -->
 						<p:calendar id="startDate" value="#{dateBean.startDate}" pattern="yyyy-MM-dd" showOn="button" style="margin-right: 10px"/>
 						<!-- End Date Picker -->
 						<p:calendar id="endDate" value="#{dateBean.endDate}" pattern="yyy-MM-dd" showOn="button" style="margin-right: 10px"/>
 						<!-- Submit button for dates -->
-						<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}" oncomplete="if (args&amp;&amp;!args.validationFailed) PF('dateDialog').hide();"/>
+						<p:commandButton value="Submit Dates" action="#{dateBean.submitDates}"
+										 oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dateDialog').hide();"
+										 update="growl"/>
 
 					</p:dialog>
 

@@ -17,15 +17,34 @@
                 <p:outputLabel for="username" value="Username:"/>
                 <p:inputText id="username"  value="#{userDetailController.newUser.username}" required="true"/>
 
-                <p:outputLabel for="password" value="Password:"/>
-                <p:inputText id="password" type="password" value="#{userDetailController.newUser.password}" required="true"/>
-
                 <p:outputLabel for="email" value="Email:"/>
                 <p:inputText id="email"  value="#{userDetailController.newUser.email}" required="true"/>
 
-                <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}"/>
-
             </h:panelGrid>
+
+            <h:panelGrid columns="3">
+                <p:outputLabel for="password" value="Password:" />
+                <p:inputText id="password" type="password" value="#{userDetailController.newUser.password}" required="true"
+                             validatorMessage="Please enter a Password of at least length 8!"
+                             requiredMessage="Please enter a Password!">
+                    <f:validateLength minimum="8" />
+                    <p:ajax event="keyup"  update="validationMessage" />
+                </p:inputText>
+                <p:message  id="validationMessage" for="password" />
+            </h:panelGrid>
+
+            <h:panelGrid columns="3">
+                <p:outputLabel for="confirmPassword" value="Confirm Password:" />
+                <p:inputText id="confirmPassword" type="password" value="#{userDetailController.confirmPassword}" required="true"
+                             validatorMessage="The Passwords do not match!"
+                             requiredMessage="Please enter a Password!">
+                    <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}" update="passwordMessage" />
+                </p:inputText>
+                <p:message  id="passwordMessage" for="confirmPassword" />
+            </h:panelGrid>
+
+            <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}"/>
+
         </h:form>
     </ui:define>
 </ui:composition>

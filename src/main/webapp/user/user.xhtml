@@ -66,11 +66,29 @@
             </p:dialog>
 
             <p:dialog header="Edit Password" id="passwordEditDialog" widgetVar="passwordEditDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="passwordData" rendered="#{not empty userDetailController.user}">
-                    <h:panelGrid columns="2">
-                        <p:outputLabel for="password" value="New Password: " />
-                        <p:password id="password" value="#{userDetailController.user.password}" required="true"/>
-                    </h:panelGrid>
+                <p:outputPanel id="PasswordData" rendered="#{not empty userDetailController.user}" >
+                <h:panelGrid columns="3">
+                    <p:outputLabel for="password" value="Password:" />
+                    <p:inputText id="password" type="password" value="#{userDetailController.user.password}" required="true"
+                                 validatorMessage="Please enter a Password of at least length 8!"
+                                 requiredMessage="Please enter a Password!"
+                                 placeholder="Enter a new Password">
+                        <f:validateLength minimum="8" />
+                        <p:ajax event="keyup"  update="validationMessage" />
+                    </p:inputText>
+                    <p:message  id="validationMessage" for="password" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="3">
+                    <p:outputLabel for="confirmPassword" value="Confirm Password:" />
+                    <p:inputText id="confirmPassword" type="password" value="#{userDetailController.confirmPassword}" required="true"
+                                 validatorMessage="The Passwords do not match!"
+                                 requiredMessage="Please enter a Password!"
+                                placeholder="confirm password">
+                        <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}" update="passwordMessage" />
+                    </p:inputText>
+                    <p:message  id="passwordMessage" for="confirmPassword" />
+                </h:panelGrid>
                     <h:panelGrid columns="3">
                         <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}" oncomplete="PF('passwordEditDialog').hide();"  update=":oneUserForm:userInformation"/>
                         <p:commandButton value="Abort" onclick="PF('passwordEditDialog').hide()"/>
@@ -94,7 +112,8 @@
                     <p:inputText id="number" value="#{creditCardController.newCreditCard.number}"
                         placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.number : '****-****-****-****'}"
                         required= "true"
-                        validatorMessage="Please enter a valid CreditCard number">
+                        validatorMessage="Form : xxxx-xxxx-xxxx-xxxx"
+                        requiredMessage="Please enter a valid CreditCard number!">
                         <f:validateRegex pattern="\d{4}-\d{4}-\d{4}-\d{4}" />
                         <p:ajax event="keyup" update="numberMessage" />
                     </p:inputText>
@@ -102,7 +121,8 @@
                     <p:outputLabel for="cvc" value="CVC: " />
                     <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true"
                         placeholder="***"
-                        validatorMessage="Please enter a valid CVC number">
+                        validatorMessage="Form : xxx"
+                         requiredMessage="Please enter a valid CVC number!">
                         <f:validateRegex pattern="\d{3}" />
                         <p:ajax event="keyup" update="cvcMessage" />
                     </p:inputText>
@@ -111,7 +131,8 @@
                     <p:inputText id="name" value="#{creditCardController.newCreditCard.name}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.name : 'Max Mustermann'}"
                                  required="true"
-                                 validatorMessage="Please enter a CardholderName">
+                                 validatorMessage="Form: x"
+                                 requiredMessage="Please enter a Cardholders Name!">
                     <p:ajax event="keyup" update="nameMessage" />
                     </p:inputText>
                     <p:message id="nameMessage" for="name" />
@@ -120,7 +141,8 @@
                     <p:inputText id="expirationDate" value="#{creditCardController.newCreditCard.expirationDate}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.expirationDate : 'MM/YYYY'}"
                                  required="true"
-                                 validatorMessage="Please enter a valid ExpirationDate!">
+                                 validatorMessage="Form : xx/xxxx"
+                                 requiredMessage="Please enter a valid ExpirationDate!">
                         <f:validateRegex pattern="(0[1-9]|1[0-2])\/\d{4}" />
                         <p:ajax event="keyup" update="dateMessage" />
                     </p:inputText>

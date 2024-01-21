@@ -8,6 +8,9 @@ import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
 import at.qe.skeleton.internal.services.UserUpdater;
+import at.qe.skeleton.internal.services.email.EmailService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
@@ -33,6 +36,9 @@ public class PremiumStatusListener implements PropertyChangeListener, Serializab
 
     @Autowired
     private UserUpdater userUpdater;
+
+    @Autowired
+    private EmailService emailService;
 
 
     /**
@@ -198,9 +204,18 @@ public class PremiumStatusListener implements PropertyChangeListener, Serializab
                 paymentHistoryService.createPaymentHistory(user, nextMonth);
             }
         }else {
+
                 paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
                 user.setPremium(false);
                 userUpdater.updateUser(user);
+                if (user == null || user.getEmail() == null){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-Mail not found"));
+                return;
+                }
+                String subject = "Payment Failure";
+                String Content = " We have to inform you that you monthly payment did not work. Therefore we" +
+                        "cancelled your Premium Subscription. Please contact our Accountant Team for further Information";
+                emailService.sendSimpleMail(user.getEmail(), subject, Content);
         }
     }
 }

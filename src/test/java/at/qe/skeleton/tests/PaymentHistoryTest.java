@@ -4,11 +4,16 @@ import at.qe.skeleton.internal.model.*;
 import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.UserxService;
+import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -19,6 +24,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -36,6 +44,17 @@ public class PaymentHistoryTest {
     @Autowired
     public CreditCardService creditCardService;
 
+    @Mock
+    public EmailService emailService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        // Mock FacesContext for testing
+        // Utility class needed as the method setCurrentInstance is protected
+        FacesContext facesContext = ContextMocker.mockFacesContext();
+    }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
@@ -105,6 +124,7 @@ public class PaymentHistoryTest {
         user.setPassword("passwd");
         user.setRoles(Set.of(UserxRole.USER));
         user.setPremium(true);
+        user.setEmail("xy@zh.com");
         userxService.saveUser(user);
 
         CreditCard testCreditCard = new CreditCard();
@@ -117,6 +137,8 @@ public class PaymentHistoryTest {
         user.setCreditCard(testCreditCard);
         userxService.saveUser(user);
 
+        doNothing().when(emailService).sendSimpleMail(anyString(), anyString(), anyString());
+
         premiumStatusListener.cashUpTillEndCurrentMonth(user);
 
         List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
@@ -128,7 +150,11 @@ public class PaymentHistoryTest {
 
         long totaldifferenz = duration.toSeconds() - paymentList.get(0).getChargedDays();
         Assertions.assertTrue(totaldifferenz <= 1, "totaldifferenz should be less than 1 second");
+
+
+
     }
+
 
     /*@Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
