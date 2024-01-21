@@ -72,7 +72,7 @@
                     <p:inputText id="password" type="password" value="#{userDetailController.user.password}" required="true"
                                  validatorMessage="Please enter a Password of at least length 8!"
                                  requiredMessage="Please enter a Password!"
-                                 placeholder="enter a new password">
+                                 placeholder="Enter a new Password">
                         <f:validateLength minimum="8" />
                         <p:ajax event="keyup"  update="validationMessage" />
                     </p:inputText>
@@ -112,7 +112,8 @@
                     <p:inputText id="number" value="#{creditCardController.newCreditCard.number}"
                         placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.number : '****-****-****-****'}"
                         required= "true"
-                        validatorMessage="Please enter a valid CreditCard number">
+                        validatorMessage="Form : xxxx-xxxx-xxxx-xxxx"
+                        requiredMessage="Please enter a valid CreditCard number!">
                         <f:validateRegex pattern="\d{4}-\d{4}-\d{4}-\d{4}" />
                         <p:ajax event="keyup" update="numberMessage" />
                     </p:inputText>
@@ -120,7 +121,8 @@
                     <p:outputLabel for="cvc" value="CVC: " />
                     <p:inputText id="cvc" value="#{creditCardController.newCreditCard.cvc}" required="true"
                         placeholder="***"
-                        validatorMessage="Please enter a valid CVC number">
+                        validatorMessage="Form : xxx"
+                         requiredMessage="Please enter a valid CVC number!">
                         <f:validateRegex pattern="\d{3}" />
                         <p:ajax event="keyup" update="cvcMessage" />
                     </p:inputText>
@@ -129,7 +131,8 @@
                     <p:inputText id="name" value="#{creditCardController.newCreditCard.name}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.name : 'Max Mustermann'}"
                                  required="true"
-                                 validatorMessage="Please enter a CardholderName">
+                                 validatorMessage="Form: x"
+                                 requiredMessage="Please enter a Cardholders Name!">
                     <p:ajax event="keyup" update="nameMessage" />
                     </p:inputText>
                     <p:message id="nameMessage" for="name" />
@@ -138,7 +141,8 @@
                     <p:inputText id="expirationDate" value="#{creditCardController.newCreditCard.expirationDate}"
                                  placeholder="#{userDetailController.user.creditCard != null ? userDetailController.user.creditCard.expirationDate : 'MM/YYYY'}"
                                  required="true"
-                                 validatorMessage="Please enter a valid ExpirationDate!">
+                                 validatorMessage="Form : xx/xxxx"
+                                 requiredMessage="Please enter a valid ExpirationDate!">
                         <f:validateRegex pattern="(0[1-9]|1[0-2])\/\d{4}" />
                         <p:ajax event="keyup" update="dateMessage" />
                     </p:inputText>
