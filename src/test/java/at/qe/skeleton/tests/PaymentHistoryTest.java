@@ -4,6 +4,7 @@ import at.qe.skeleton.internal.model.*;
 import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.UserxService;
+import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,9 @@ public class PaymentHistoryTest {
 
     @Autowired
     public CreditCardService creditCardService;
+
+    @Autowired
+    public EmailService emailService;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -105,6 +109,7 @@ public class PaymentHistoryTest {
         user.setPassword("passwd");
         user.setRoles(Set.of(UserxRole.USER));
         user.setPremium(true);
+        user.setEmail("xy@zh.com");
         userxService.saveUser(user);
 
         CreditCard testCreditCard = new CreditCard();
@@ -128,7 +133,9 @@ public class PaymentHistoryTest {
 
         long totaldifferenz = duration.toSeconds() - paymentList.get(0).getChargedDays();
         Assertions.assertTrue(totaldifferenz <= 1, "totaldifferenz should be less than 1 second");
+
     }
+
 
     /*@Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
