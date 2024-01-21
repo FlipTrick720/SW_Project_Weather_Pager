@@ -7,6 +7,9 @@ import java.time.LocalDate;
 @Component
 public class DateRangeService {
 
+    public DateRangeService() {
+    }
+
     public static boolean isDateRangeValid(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             return false;
