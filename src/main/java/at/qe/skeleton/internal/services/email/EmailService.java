@@ -31,6 +31,22 @@ public class EmailService implements Serializable {
         javaMailSender.send(message);
     }
 
+    /**
+     * Methode to send a simple email to a given user.
+     * @param to
+     * @param Subject
+     * @param content
+     */
+    public void sendSimpleMail(String to, String Subject, String content){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply.weatherapp.uibk@gmail.com");
+        message.setTo(to);
+        message.setSubject(Subject);
+        message.setText(content);
+
+        javaMailSender.send(message);
+    }
+
     public void setEmailStrategy(EmailStrategy emailStrategy) {
         this.emailStrategy = emailStrategy;
     }
