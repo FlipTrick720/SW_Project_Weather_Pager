@@ -138,11 +138,6 @@ public class UserxService implements Serializable {
         user.setRoles(roles);
     }
 
-    private Userx getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findFirstByUsername(auth.getName());
-    }
-
     /**
      * for test purposes
      */
