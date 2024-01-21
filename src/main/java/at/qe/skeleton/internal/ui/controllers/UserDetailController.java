@@ -1,5 +1,6 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.configs.WebSecurityConfig;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.TokenService;
@@ -43,6 +44,25 @@ public class UserDetailController implements Serializable {
      * Attribute to cache the newly registered user
      */
     private Userx newUser;
+
+    /**
+     * Attribute to catch the confirmPassword input.
+     */
+    private String confirmPassword;
+
+    /**
+     * returns the ConfirmPassword-
+     * @return
+     */
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
 
     /**
      * Returns the newUser which is created from the user class
@@ -133,6 +153,9 @@ public class UserDetailController implements Serializable {
         return "/login.xhtml?faces-redirect=true";
     }
 
+    /**
+     * Toggles the change of the Premium Status.
+     */
     public void togglePremium(){
         if(user != null){
             user.setPremium(!user.isPremium());
@@ -166,6 +189,17 @@ public class UserDetailController implements Serializable {
         tokenService.createVerificationToken(user, token);
         emailService.setEmailStrategy(new PasswordChangeMailStrategy());
         emailService.sendMail(user.getEmail(), token);
+    }
+
+    /**
+     * Methode to check validate the Passwords.
+     */
+    public void checkPasswords() {
+        if(newUser != null) {
+            PasswordValidator.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
+        } else if (user != null) {
+            PasswordValidator.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
+        }
     }
 }
 
