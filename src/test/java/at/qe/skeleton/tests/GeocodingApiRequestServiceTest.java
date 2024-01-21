@@ -1,18 +1,17 @@
 package at.qe.skeleton.tests;
 
 import at.qe.skeleton.external.exceptions.GeocodingApiException;
-import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -20,6 +19,11 @@ class GeocodingApiRequestServiceTest {
 
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
+
+    @BeforeAll
+    public static void setUp() {
+        FacesContext context = ContextMocker.mockFacesContext();
+    }
 
     @Test
     void buildApiUrl_CorrectParameters_ReturnsApiUrl() {
