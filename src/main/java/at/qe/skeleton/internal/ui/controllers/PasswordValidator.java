@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PasswordValidator {
+
+    private PasswordValidator(){
+
+    }
     public static void validatePasswords(String confirmPassword, String password, String errorMessageClientId) {
         if (!WebSecurityConfig.passwordEncoder().matches(confirmPassword,password)) {
             FacesContext context = FacesContext.getCurrentInstance();

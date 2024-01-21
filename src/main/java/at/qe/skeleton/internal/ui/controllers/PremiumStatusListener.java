@@ -208,14 +208,14 @@ public class PremiumStatusListener implements PropertyChangeListener, Serializab
                 paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
                 user.setPremium(false);
                 userUpdater.updateUser(user);
-                if (user == null || user.getEmail() == null){
+                if (user.getEmail() == null){
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-Mail not found"));
                 return;
                 }
                 String subject = "Payment Failure";
-                String Content = " We have to inform you that you monthly payment did not work. Therefore we" +
+                String content = " We have to inform you that you monthly payment did not work. Therefore we" +
                         "cancelled your Premium Subscription. Please contact our Accountant Team for further Information";
-                emailService.sendSimpleMail(user.getEmail(), subject, Content);
+                emailService.sendSimpleMail(user.getEmail(), subject, content);
         }
     }
 }
