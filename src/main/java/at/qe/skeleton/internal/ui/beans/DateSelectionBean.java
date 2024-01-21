@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import jakarta.annotation.ManagedBean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.time.Month;
@@ -15,7 +16,8 @@ import java.util.List;
  */
 
 
-@ManagedBean
+@Component
+@Scope("session")
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;

@@ -51,8 +51,6 @@ public class PaymentHistoryTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Mock FacesContext for testing
-        // Utility class needed as the method setCurrentInstance is protected
         FacesContext facesContext = ContextMocker.mockFacesContext();
     }
     @Test
