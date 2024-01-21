@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import jakarta.annotation.ManagedBean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
