@@ -6,10 +6,14 @@ import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.UserxService;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -37,9 +41,17 @@ public class PaymentHistoryTest {
     @Autowired
     public CreditCardService creditCardService;
 
-    @Autowired
+    @Mock
     public EmailService emailService;
 
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        // Mock FacesContext for testing
+        // Utility class needed as the method setCurrentInstance is protected
+        FacesContext facesContext = ContextMocker.mockFacesContext();
+    }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
