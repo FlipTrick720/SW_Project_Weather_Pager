@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+
 @SpringBootTest
 @WebAppConfiguration
 public class PaymentHistoryTest {
@@ -134,6 +137,8 @@ public class PaymentHistoryTest {
         user.setCreditCard(testCreditCard);
         userxService.saveUser(user);
 
+        doNothing().when(emailService).sendSimpleMail(anyString(), anyString(), anyString());
+
         premiumStatusListener.cashUpTillEndCurrentMonth(user);
 
         List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
@@ -145,6 +150,8 @@ public class PaymentHistoryTest {
 
         long totaldifferenz = duration.toSeconds() - paymentList.get(0).getChargedDays();
         Assertions.assertTrue(totaldifferenz <= 1, "totaldifferenz should be less than 1 second");
+
+
 
     }
 
