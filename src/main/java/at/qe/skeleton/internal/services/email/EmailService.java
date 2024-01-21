@@ -5,8 +5,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 @Service
-public class EmailService{
+public class EmailService implements Serializable {
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -25,6 +27,22 @@ public class EmailService{
         } else {
             throw new IllegalStateException("Email strategy is not set.");
         }
+
+        javaMailSender.send(message);
+    }
+
+    /**
+     * Methode to send a simple email to a given user.
+     * @param to
+     * @param Subject
+     * @param content
+     */
+    public void sendSimpleMail(String to, String Subject, String content){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply.weatherapp.uibk@gmail.com");
+        message.setTo(to);
+        message.setSubject(Subject);
+        message.setText(content);
 
         javaMailSender.send(message);
     }

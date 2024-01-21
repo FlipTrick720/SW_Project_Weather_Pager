@@ -2,6 +2,8 @@ package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,14 @@ public class WeatherBean {
      * Searches for weather based on the selected location.
      */
     public void searchWeather() {
+        //alert the user if no weather is selected and never has been in this session
+        if(autocompleteBean.getSelectedGeocodingDTO() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(jakarta.faces.application.FacesMessage.SEVERITY_ERROR, "Error", "Please select a location from the dropdown!"));
+            return;
+        }
+
         buttonPressed = true;
+
         latitude = autocompleteBean.getSelectedGeocodingDTO().lat();
         longitude = autocompleteBean.getSelectedGeocodingDTO().lon();
         location = autocompleteBean.getDisplayName(autocompleteBean.getSelectedGeocodingDTO());

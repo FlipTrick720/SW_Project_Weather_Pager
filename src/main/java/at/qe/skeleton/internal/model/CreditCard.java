@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.io.Serializable;
+
 
 /**
  * Represents a credit card entity associated with a user in the system.
@@ -17,7 +19,7 @@ import jakarta.persistence.OneToOne;
  *           is the owning side of the relationship (mappedBy attribute points to the "creditCard" field in Userx).
  */
 @Entity
-public class CreditCard {
+public class CreditCard implements Serializable {
 
     @Id
     private String number;

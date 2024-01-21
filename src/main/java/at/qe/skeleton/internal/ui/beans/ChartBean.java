@@ -14,9 +14,6 @@ import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -149,13 +146,4 @@ public class ChartBean implements Serializable {
         mixedModel.setExtender("chartExtender");
         return mixedModel;
     }
-
-    //todo: move into a service class
-    public String getTimeFormattedFromTimestamp(Instant timestamp) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
-        return timestamp.atZone(ZoneId.systemDefault()).toLocalTime().format(formatter); // todo check what happens when remove local time
-    }
-
-
-
 }

@@ -6,6 +6,8 @@ import at.qe.skeleton.internal.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -13,7 +15,7 @@ import java.util.UUID;
  */
 @Component
 @Scope("application")
-public class TokenService {
+public class TokenService implements Serializable {
 
     @Autowired
     private TokenRepository tokenRepository;
@@ -30,7 +32,7 @@ public class TokenService {
     }
 
     public Userx getUserByConfirmationToken(String token) {
-        Token tokenEntity =  tokenRepository.findByToken(token);
+        Token tokenEntity =  tokenRepository.findByTokenValue(token);
         if(tokenEntity != null){
             return tokenEntity.getUser();
         } else {
@@ -43,7 +45,7 @@ public class TokenService {
     }
 
     public Token findByTokenString(String token){
-        return tokenRepository.findByToken(token);
+        return tokenRepository.findByTokenValue(token);
     }
 
     public String generateTokenString() {

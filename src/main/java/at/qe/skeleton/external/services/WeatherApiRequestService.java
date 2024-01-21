@@ -3,6 +3,8 @@ package at.qe.skeleton.external.services;
 import at.qe.skeleton.external.exceptions.WeatherApiException;
 import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -24,7 +27,7 @@ import java.time.LocalDate;
 @Scope("application")
 @Component
 @Validated // makes sure the parameter validation annotations are checked during runtime
-public class WeatherApiRequestService {
+public class WeatherApiRequestService implements Serializable {
 
     private static final String CURRENT_AND_FORECAST_URI = "/data/3.0/onecall";
     private static final String DAILY_AGGREGATION_URI = "/data/3.0/onecall/day_summary";
@@ -82,6 +85,10 @@ public class WeatherApiRequestService {
                 .retrieve()
                 .toEntity(DailyAggregationDTO.class);
         if (responseEntity.getStatusCode().isError()) {
+            //add message to inform user about the specific api error
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error while retrieving the weather. Status code: "
+                    + responseEntity.getStatusCode(), null));
+
             throw new WeatherApiException("Error while retrieving the weather. Status code: "
                     + responseEntity.getStatusCode());
         }

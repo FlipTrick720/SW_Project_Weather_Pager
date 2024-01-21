@@ -8,6 +8,8 @@ import at.qe.skeleton.internal.repositories.PaymentHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +22,7 @@ import java.util.List;
 
 @Component
 @Scope("application")
-public class PaymentHistoryService {
+public class PaymentHistoryService implements Serializable {
 
     @Autowired
     private PaymentHistoryRepository paymentHistoryRepository;

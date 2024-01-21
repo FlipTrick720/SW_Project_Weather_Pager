@@ -1,6 +1,5 @@
 package at.qe.skeleton.internal.services;
 
-import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -16,16 +15,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("application")
-@FacesConverter("favLocationConverter") // Name by which this converter can be referenced in JSF components
-public class FavLocationConverter implements Converter {
+@FacesConverter("favLocationConverter")
+public class FavLocationConverter implements Converter<FavLocation> {
 
     @Autowired
-    private FavLocationService favLocationService; // Inject your FavLocationService here
-    @Autowired
-    private GeocodingApiRequestService geocodingApiRequestService;
+    private FavLocationService favLocationService;
 
     @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+    public FavLocation getAsObject(FacesContext context, UIComponent component, String value) {
         if (value != null && !value.isEmpty()) {
             // Convert the String representation to FavLocation object using the service
             // Assuming favLocationService can retrieve a FavLocation by its ID (long)
@@ -35,15 +32,13 @@ public class FavLocationConverter implements Converter {
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value instanceof FavLocation) {
-            // Convert FavLocation object to its String representation (for displaying purposes)
-            // Assuming FavLocation's ID is of type long and you want to display the ID
-            return String.valueOf(((FavLocation) value).getId());
+    public String getAsString(FacesContext facesContext, UIComponent uiComponent, FavLocation favLocation) {
+        if (favLocation != null && favLocation.getId() != null) {
+            // Convert the String representation to FavLocation object using the service
+            // Assuming favLocationService can retrieve a FavLocation by its ID (long)
+            return String.valueOf(favLocation.getId());
         }
         return null;
     }
-
-
 
 }

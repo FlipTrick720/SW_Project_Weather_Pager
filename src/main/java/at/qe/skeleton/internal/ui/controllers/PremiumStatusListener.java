@@ -8,17 +8,22 @@ import at.qe.skeleton.internal.services.CreditCardService;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
 import at.qe.skeleton.internal.services.PremiumHistoryService;
 import at.qe.skeleton.internal.services.UserUpdater;
+import at.qe.skeleton.internal.services.email.EmailService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 @Component
-public class PremiumStatusListener implements PropertyChangeListener {
+public class PremiumStatusListener implements PropertyChangeListener, Serializable {
 
     @Autowired
     private PremiumHistoryService premiumHistoryService;
@@ -31,6 +36,9 @@ public class PremiumStatusListener implements PropertyChangeListener {
 
     @Autowired
     private UserUpdater userUpdater;
+
+    @Autowired
+    private EmailService emailService;
 
 
     /**
@@ -72,7 +80,8 @@ public class PremiumStatusListener implements PropertyChangeListener {
     public List<Integer> getTimePremiumInterval(List<PremiumHistory> allDates) {
         List<Duration> intervalls = new ArrayList<>();
         if (allDates.toArray().length < 2) {
-            return null;
+            return Collections.emptyList();
+
         } else if (allDates.toArray().length % 2 == 0) {
             for (int i = 0; i < allDates.toArray().length - 1; i = i + 2) {
                 intervalls.add(Duration.between(allDates.get(i).getChangeDate(), allDates.get(i + 1).getChangeDate()));
@@ -98,7 +107,7 @@ public class PremiumStatusListener implements PropertyChangeListener {
      */
     public Integer getTotalPremiumTimeByName(Userx user) {
         List<Integer> premiumTupelList = getTimePremiumInterval(getPremiumIntervalByName(user));
-        if (premiumTupelList == null) {
+        if (premiumTupelList.isEmpty()) {
             return 0;
         }
         return premiumTupelList.stream().mapToInt(Integer::intValue).sum();
@@ -152,6 +161,9 @@ public class PremiumStatusListener implements PropertyChangeListener {
             invoiceList.add(dummyEndPoint);
         }
         List<Integer> totalTimeTillNow = getTimePremiumInterval(invoiceList);
+        if (totalTimeTillNow.isEmpty()) {
+            return 0;
+        }
         return totalTimeTillNow.stream().mapToInt(Integer::intValue).sum();
     }
 
@@ -192,9 +204,18 @@ public class PremiumStatusListener implements PropertyChangeListener {
                 paymentHistoryService.createPaymentHistory(user, nextMonth);
             }
         }else {
+
                 paymentHistoryService.updatePaymentStatus(user, PaymentStatus.FAILED, chargedDays);
                 user.setPremium(false);
                 userUpdater.updateUser(user);
+                if (user == null || user.getEmail() == null){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-Mail not found"));
+                return;
+                }
+                String subject = "Payment Failure";
+                String Content = " We have to inform you that you monthly payment did not work. Therefore we" +
+                        "cancelled your Premium Subscription. Please contact our Accountant Team for further Information";
+                emailService.sendSimpleMail(user.getEmail(), subject, Content);
         }
     }
 }

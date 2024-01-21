@@ -2,6 +2,8 @@ package at.qe.skeleton.internal.model;
 
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,7 +12,7 @@ import java.util.Objects;
  * of a User.
  */
 @Entity
-public class PremiumHistory {
+public class PremiumHistory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,10 +1,13 @@
 package at.qe.skeleton.internal.ui.beans;
 
-import at.qe.skeleton.external.model.currentandforecast.CurrentAndForecastAnswerDTO;
 import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.model.geocoding.GeocodingDTO;
 import at.qe.skeleton.external.services.GeocodingApiRequestService;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import at.qe.skeleton.internal.services.DateRangeService;
+import at.qe.skeleton.internal.services.WeatherService;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static at.qe.skeleton.internal.services.DateRangeService.calculateMidpointDate;
 
 /**
  * Managed bean for handling date-related operations within a user session.
@@ -27,10 +32,9 @@ public class DateBean {
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
-
     @Autowired
+    public
     SessionInfoBean sessionInfoBean;
-
     @Autowired
     private GeocodingApiRequestService geocodingApiRequestService;
     @Autowired
@@ -41,23 +45,50 @@ public class DateBean {
     @Autowired
     private WeatherBean weatherBean;
     private Boolean buttonPressed = false;
-
+    private DailyAggregationDTO averageWeatherData;
+    @Autowired
+    private DateRangeService dateRangeService;
+    @Autowired
+    private WeatherService weatherService;
     /**
-     * Checks if the selected date range is valid.
-     * The start date must be before the end date, and the range should not exceed 14 days.
+     * Fetches and displays the average weather data.
+     * This method is intended for UI interaction, and the result can be used for display purposes.
      *
-     * @return true if the date range is valid, false otherwise.
+     * @return A navigation outcome as a String, can be null. It indicates the result of the operation for UI purposes.
      */
-    private boolean isDateRangeValid() {
-        System.out.println("submit button pressed yes");
-        if (startDate == null || endDate == null) {
-            return false;
+
+    public DailyAggregationDTO fetchAverageWeatherData() {
+        LocalDate midpointDate = DateRangeService.calculateMidpointDate(startDate, endDate);
+        if (midpointDate == null) {
+            LOGGER.error("Midpoint date calculation error.");
+            return null;
         }
-        if (startDate.isAfter(endDate)) {
-            return false;
+
+        List<DailyAggregationDTO> pastWeatherData = new ArrayList<>();
+        GeocodingDTO geocodingData1 = autocompleteBean.getSelectedGeocodingDTO();
+        double latitude = geocodingData1.lat();
+        double longitude = geocodingData1.lon();
+
+        for (int i = 0; i < 5; i++) {
+            LocalDate dateToCheck = midpointDate.minusYears(i);
+
+            try {
+                DailyAggregationDTO yearlyWeather = this.weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, dateToCheck);
+                pastWeatherData.add(yearlyWeather);
+            } catch (Exception e) {
+                LOGGER.error("Error retrieving weather data for date: " + dateToCheck, e);
+            }
         }
-        return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) <= 14;
+
+        averageWeatherData = WeatherService.calculateAverageWeather(pastWeatherData);
+        return averageWeatherData;
     }
+
+    public String fetchAndDisplayAverageWeatherData() {
+        fetchAverageWeatherData();
+        return null; // You can return a navigation outcome if needed
+    }
+
 
     /**
      * Handles the submission of selected dates.
@@ -67,9 +98,10 @@ public class DateBean {
      */
     public String submitDates() {
         buttonPressed = true;
-        if (!isDateRangeValid()) {
-            LOGGER.error("Invalid date range.");
-            return "error"; // Return an appropriate outcome for invalid date range
+        if (!dateRangeService.isDateRangeValid(startDate, endDate)) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid date range.\nThe range should not exceed 14 days.", "Invalid date range. Start date must be before end date, and the range should not exceed 14 days."));
+            return "error";
         }
 
         GeocodingDTO geocodingData = autocompleteBean.getSelectedGeocodingDTO();
@@ -81,27 +113,54 @@ public class DateBean {
         double latitude = geocodingData.lat();
         double longitude = geocodingData.lon();
 
-        weatherDataList.clear();
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            try {
-                DailyAggregationDTO dailyWeather = this.weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
-                weatherDataList.add(dailyWeather);
-            } catch (Exception e) {
-                LOGGER.error("Error retrieving weather data for date: " + date, e);
-            }
-        }
+        weatherDataList = weatherService.retrieveWeatherDataForRange(startDate, endDate, latitude, longitude);
 
-        for(DailyAggregationDTO d : weatherDataList) {
+        for (DailyAggregationDTO d : weatherDataList) {
             System.out.println(d.date());
         }
+
+        // Calculate average weather data
+        averageWeatherData = weatherService.calculateAverageWeatherData(calculateMidpointDate(startDate, endDate), latitude, longitude);
 
         System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
     }
 
-/**
+
+    public SessionInfoBean getSessionInfoBean() {
+        return sessionInfoBean;
+    }
+
+    public void setSessionInfoBean(SessionInfoBean sessionInfoBean) {
+        this.sessionInfoBean = sessionInfoBean;
+    }
+
+    public DailyAggregationDTO getAverageWeatherData() {
+        return averageWeatherData;
+    }
+
+    public void setAverageWeatherData(DailyAggregationDTO averageWeatherData) {
+        this.averageWeatherData = averageWeatherData;
+    }
+
+    /**
 *Getters and setters for all the variables in this class.
 */
+    public DateRangeService getDateRangeService() {
+        return dateRangeService;
+    }
+
+    public void setDateRangeService(DateRangeService dateRangeService) {
+        this.dateRangeService = dateRangeService;
+    }
+
+    public WeatherService getWeatherService() {
+        return weatherService;
+    }
+
+    public void setWeatherService(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
     public Boolean getButtonPressed() {
         return buttonPressed;
     }
@@ -128,30 +187,6 @@ public class DateBean {
     }
 
 
-    public WeatherApiRequestService getWeatherApiRequestService() {
-        return weatherApiRequestService;
-    }
-
-    public void setWeatherApiRequestService(WeatherApiRequestService weatherApiRequestService) {
-        this.weatherApiRequestService = weatherApiRequestService;
-    }
-
-    public GeocodingApiRequestService getGeocodingApiRequestService() {
-        return geocodingApiRequestService;
-    }
-
-    public void setGeocodingApiRequestService(GeocodingApiRequestService geocodingApiRequestService) {
-        this.geocodingApiRequestService = geocodingApiRequestService;
-    }
-
-    public AutocompleteBean getAutocompleteBean() {
-        return autocompleteBean;
-    }
-
-    public void setAutocompleteBean(AutocompleteBean autocompleteBean) {
-        this.autocompleteBean = autocompleteBean;
-    }
-
     public List<DailyAggregationDTO> getWeatherDataList() {
         return weatherDataList;
     }
@@ -160,15 +195,4 @@ public class DateBean {
         this.weatherDataList = weatherDataList;
     }
 
-    public WeatherBean getWeatherBean() {
-        return weatherBean;
-    }
-
-    public void setWeatherBean(WeatherBean weatherBean) {
-        this.weatherBean = weatherBean;
-    }
-
-//    public String getTitle() {
-//        return sessionInfoBean.isLoggedIn() && sessionInfoBean.isPremium() ? "8-Day-Forecast" : "3-Day-Forecast";
-//    }
 }
