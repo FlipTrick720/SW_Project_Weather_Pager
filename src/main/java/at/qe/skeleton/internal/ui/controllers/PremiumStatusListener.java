@@ -213,8 +213,8 @@ public class PremiumStatusListener implements PropertyChangeListener, Serializab
                 return;
                 }
                 String subject = "Payment Failure";
-                String Content = " We have to inform you that you monthly payment did not work. Therefore we" +
-                        "cancelled your Premium Subscription. Please contact our Accountant Team for further Information";
+                String Content = "We have to inform you that you monthly payment did not work. Therefore we" +
+                        "cancelled your Premium Subscription. Please contact alex.hemmen@student.uibk.ac.at for further Information.";
                 emailService.sendSimpleMail(user.getEmail(), subject, Content);
         }
     }
