@@ -7,6 +7,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name ="content">
+        <!-- filter input -->
+        <h:form id="filterForm">
+            <p:inputText id="filterInput" value="#{dataTableSortBean.filterValue}" placeholder="Enter keyword">
+                <p:ajax update="userListForm" />
+            </p:inputText>
+        </h:form>
+
         <h:form id="userListForm">
             <h:outputText value="Selected Year: #{dateSelectionBean.selectedYear}" />
             <br/>

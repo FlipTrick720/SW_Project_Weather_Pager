@@ -8,8 +8,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
+        <!-- filter input -->
+        <h:form id="filterForm">
+            <p:inputText id="filterInput" value="#{dataTableSortBean.filterValue}" placeholder="Enter keyword">
+                <p:ajax update="oneUserForm" />
+            </p:inputText>
+        </h:form>
+
         <h:form id="oneUserForm">
             <p:dataTable id="userInformation" var="user" value="#{dataTableSortBean.userList}" allowUnsorting="true" sortMode="single">
+
+
                 <p:column headerText="Username" sortBy="#{user.username}">
                     <h:outputText value="#{user.username}"/>
                 </p:column>

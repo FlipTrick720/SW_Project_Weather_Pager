@@ -113,7 +113,7 @@ public class ReorderListBean implements Serializable {
     public List<FavLocation> getFilteredFavLocations() {
         if (filterValue == null || filterValue.isEmpty()) {
             filteredFavLocations = favLocations;
-            return favLocations; // Assuming favLocations is the list of all favorite locations
+            return favLocations;
         } else {
             filteredFavLocations = favLocations.stream()
                     .filter(location -> location.getName().toLowerCase().contains(filterValue.toLowerCase()))
