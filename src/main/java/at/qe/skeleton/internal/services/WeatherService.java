@@ -10,12 +10,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for retrieving and processing weather data.
+ * This class communicates with a weather API to fetch daily aggregated weather data
+ * and provides functionality to calculate average weather data over specified periods.
+ */
+
 @Component
 public class WeatherService implements Serializable {
 
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
-
+    /**
+     * Retrieves weather data for a specified date range and geographical coordinates.
+     *
+     * @param startDate  the start date of the range for which weather data is required
+     * @param endDate    the end date of the range for which weather data is required
+     * @param latitude   the latitude of the location
+     * @param longitude  the longitude of the location
+     * @return a list of {@link DailyAggregationDTO} representing daily aggregated weather data
+     */
     public List<DailyAggregationDTO> retrieveWeatherDataForRange(LocalDate startDate, LocalDate endDate, double latitude, double longitude) {
         List<DailyAggregationDTO> weatherDataList = new ArrayList<>();
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
@@ -23,11 +37,20 @@ public class WeatherService implements Serializable {
                 DailyAggregationDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
                 weatherDataList.add(dailyWeather);
             } catch (Exception e) {
-                // Loggen Sie den Fehler oder handhaben Sie ihn entsprechend
+
             }
         }
         return weatherDataList;
     }
+
+    /**
+     * Calculates the average weather data for the past five years from a given midpoint date.
+     *
+     * @param midpointDate the date from which the past five years are considered
+     * @param latitude     the latitude of the location
+     * @param longitude    the longitude of the location
+     * @return a {@link DailyAggregationDTO} representing the average weather data
+     */
 
     public DailyAggregationDTO calculateAverageWeatherData(LocalDate midpointDate, double latitude, double longitude) {
         List<DailyAggregationDTO> pastWeatherData = new ArrayList<>();
@@ -37,11 +60,18 @@ public class WeatherService implements Serializable {
                 DailyAggregationDTO yearlyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, dateToCheck);
                 pastWeatherData.add(yearlyWeather);
             } catch (Exception e) {
-                // Loggen Sie den Fehler oder handhaben Sie ihn entsprechend
+
             }
         }
         return calculateAverageWeather(pastWeatherData);
     }
+    /**
+     * Calculates the average weather based on a list of daily weather data.
+     *
+     * @param weatherDataList a list of {@link DailyAggregationDTO} representing daily weather data
+     * @return a {@link DailyAggregationDTO} representing the average of the provided weather data,
+     *         or null if the input list is null or empty
+     */
 
     public static DailyAggregationDTO calculateAverageWeather(List<DailyAggregationDTO> weatherDataList) {
         if (weatherDataList == null || weatherDataList.isEmpty()) {
