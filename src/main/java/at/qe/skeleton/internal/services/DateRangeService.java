@@ -15,8 +15,8 @@ public class DateRangeService {
      * Checks if the provided date range is valid. A valid date range is where the start date is not after the end date
      * and the range is not longer than 14 days.
      *
-     * @param startDate the start date of the range
-     * @param endDate   the end date of the range
+     *  startDate the start date of the range
+     *  endDate   the end date of the range
      * @return true if the date range is valid, false otherwise
      */
 
@@ -36,8 +36,8 @@ public class DateRangeService {
      * Calculates the midpoint date of a given date range. If the start or end date is null,
      * or if the start date is after the end date, this method returns null.
      *
-     * @param startDate the start date of the range
-     * @param endDate   the end date of the range
+     *  startDate the start date of the range
+     *  endDate   the end date of the range
      * @return the midpoint date of the range, or null if inputs are invalid
      */
 
