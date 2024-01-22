@@ -84,12 +84,6 @@ public class DateBean {
         return averageWeatherData;
     }
 
-    public String fetchAndDisplayAverageWeatherData() {
-        fetchAverageWeatherData();
-        return null; // You can return a navigation outcome if needed
-    }
-
-
     /**
      * Handles the submission of selected dates.
      * Validates the date range and retrieves weather data for the specified period and location.
@@ -127,6 +121,11 @@ public class DateBean {
     }
 
 
+
+
+    /**
+*Getters and setters for all the variables in this class.
+*/
     public SessionInfoBean getSessionInfoBean() {
         return sessionInfoBean;
     }
@@ -143,24 +142,6 @@ public class DateBean {
         this.averageWeatherData = averageWeatherData;
     }
 
-    /**
-*Getters and setters for all the variables in this class.
-*/
-    public DateRangeService getDateRangeService() {
-        return dateRangeService;
-    }
-
-    public void setDateRangeService(DateRangeService dateRangeService) {
-        this.dateRangeService = dateRangeService;
-    }
-
-    public WeatherService getWeatherService() {
-        return weatherService;
-    }
-
-    public void setWeatherService(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
     public Boolean getButtonPressed() {
         return buttonPressed;
     }
