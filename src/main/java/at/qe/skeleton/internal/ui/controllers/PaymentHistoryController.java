@@ -3,6 +3,7 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.PaymentHistory;
 import at.qe.skeleton.internal.services.PaymentHistoryService;
+import at.qe.skeleton.internal.ui.beans.DateSelectionBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

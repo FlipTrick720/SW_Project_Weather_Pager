@@ -1,6 +1,8 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import jakarta.annotation.ManagedBean;
+import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
 import java.time.Month;
@@ -16,6 +18,7 @@ import java.util.List;
 
 
 @ManagedBean
+@Scope("request")
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;
@@ -31,7 +34,8 @@ public class DateSelectionBean implements Serializable {
      * and months for date selection. The default values are set to the current
      * year and month.
      */
-    public DateSelectionBean() {
+    @PostConstruct
+    public void init() {
         years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = currentYear+1; i >= currentYear - 11; i--) {

@@ -13,16 +13,16 @@
             <h:outputText value="Selected Month: #{dateSelectionBean.selectedMonth}" />
             <p:separator />
 
-            <p:dataTable id="usersTable" var="paymentHistory" value="#{paymentHistoryController.getPaymentHistoryYearMonth(dateSelectionBean.selectedYear, dateSelectionBean.selectedMonthInt)}">
-                <p:column headerText="Username">
+            <p:dataTable id="usersTable" var="paymentHistory" value="#{dataTableSortBean.paymentHistoryList}" allowUnsorting="true" sortMode="single">
+                <p:column sortBy="#{paymentHistory.user.username}" headerText="Username">
                     <h:outputText value="#{paymentHistory.user.username}"/>
                 </p:column>
-                <p:column headerText="Payment Status">
+                <p:column sortBy="#{paymentHistory.paymentStatus}" headerText="Payment Status">
                     <h:outputText value="#{paymentHistory.paymentStatus}"/>
                 </p:column>
                 <p:column headerText="Days Till end Month">
                 </p:column>
-                <p:column headerText="Charged Days" >
+                <p:column sortBy="#{paymentHistory.chargedDays}" headerText="Charged Days" >
                     <h:outputText value="#{paymentHistory.chargedDays}" rendered="#{paymentHistory.chargedDays ne 0}"/>
                 </p:column>
                 <p:column style="width:100px;text-align: center">
