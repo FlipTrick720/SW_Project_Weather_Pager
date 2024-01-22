@@ -170,6 +170,10 @@ public class UserDetailController implements Serializable {
         return new ArrayList<>(user.getRoles());
     }
 
+    /**
+     * to preselect the checkpoxes
+     * @param selectedRoles
+     */
     public void setSelectedRoles(List<UserxRole> selectedRoles) {
         this.selectedRoles = selectedRoles;
     }
@@ -185,6 +189,8 @@ public class UserDetailController implements Serializable {
     public void saveUserPlusSaveRoles() {
         setRolesForUser();
         doSaveUser();
+        //TODO das Repo über UserxService (iwi erkenne ob rollen geänder wurden oder nich) aufrufen und reinspeichern + ausgabe machen
+
     }
 
     public void resetPasswordEmail() {
