@@ -126,6 +126,7 @@ public class DateBean {
     /**
 *Getters and setters for all the variables in this class.
 */
+
     public SessionInfoBean getSessionInfoBean() {
         return sessionInfoBean;
     }
