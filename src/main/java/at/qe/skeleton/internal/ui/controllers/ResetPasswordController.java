@@ -1,6 +1,7 @@
 package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
+import at.qe.skeleton.internal.services.PasswordValidationService;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.UserxService;
 import at.qe.skeleton.internal.services.email.EmailService;
@@ -23,7 +24,29 @@ public class ResetPasswordController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private PasswordValidationService passwordValidationService;
+
     private String email;
+
+    /**
+     * Attribute to catch the confirmPassword input.
+     */
+    private String confirmPassword;
+
+    /**
+     * returns the ConfirmPassword-
+     * @return
+     */
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     /**
      * Initiates the password change process by sending a reset email to the user.
@@ -52,5 +75,9 @@ public class ResetPasswordController {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void checkPasswords(){
+        passwordValidationService.validatePasswords(confirmPassword,userxService.getUserByEmail(this.email).getPassword(), "passwordChangeForm:confirmPassword");
     }
 }

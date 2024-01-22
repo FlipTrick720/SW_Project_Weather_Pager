@@ -37,7 +37,8 @@
                 <p:outputLabel for="confirmPassword" value="Confirm Password:" />
                 <p:inputText id="confirmPassword" type="password" value="#{userDetailController.confirmPassword}" required="true"
                              validatorMessage="The Passwords do not match!"
-                             requiredMessage="Please enter a Password!">
+                             requiredMessage="Please enter a Password!"
+                             onfocus="if (this.value != '') { this.value = null; }">
                     <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}" update="passwordMessage" />
                 </p:inputText>
                 <p:message  id="passwordMessage" for="confirmPassword" />

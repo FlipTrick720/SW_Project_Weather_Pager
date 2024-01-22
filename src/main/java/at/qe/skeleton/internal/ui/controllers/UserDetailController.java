@@ -2,6 +2,7 @@ package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.PasswordValidationService;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
@@ -32,6 +33,9 @@ public class UserDetailController implements Serializable {
 
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private PasswordValidationService passwordValidationService;
+
 
     private List<UserxRole> selectedRoles;
 
@@ -195,10 +199,12 @@ public class UserDetailController implements Serializable {
      */
     public void checkPasswords() {
         if(newUser != null) {
-            PasswordValidator.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
+            passwordValidationService.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
         } else if (user != null) {
-            PasswordValidator.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
+            passwordValidationService.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
         }
+        confirmPassword = null;
     }
+
 }
 
