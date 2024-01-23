@@ -2,6 +2,8 @@ package at.qe.skeleton.internal.services;
 
 import at.qe.skeleton.external.model.currentandforecast.DailyAggregationDTO;
 import at.qe.skeleton.external.services.WeatherApiRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +20,7 @@ import java.util.List;
 
 @Component
 public class WeatherService implements Serializable {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(WeatherService.class);
     @Autowired
     private WeatherApiRequestService weatherApiRequestService;
     /**
@@ -37,7 +39,7 @@ public class WeatherService implements Serializable {
                 DailyAggregationDTO dailyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, date);
                 weatherDataList.add(dailyWeather);
             } catch (Exception e) {
-
+                LOGGER.error("Error while retrieving weather data for date: " + date);
             }
         }
         return weatherDataList;
@@ -60,7 +62,7 @@ public class WeatherService implements Serializable {
                 DailyAggregationDTO yearlyWeather = weatherApiRequestService.retrieveDailyAggregationWeather(latitude, longitude, dateToCheck);
                 pastWeatherData.add(yearlyWeather);
             } catch (Exception e) {
-
+                LOGGER.error("Error while retrieving weather data for date: " + dateToCheck);
             }
         }
         return calculateAverageWeather(pastWeatherData);
