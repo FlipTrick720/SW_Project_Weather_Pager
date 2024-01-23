@@ -92,7 +92,7 @@ public class DateBean {
      */
     public String submitDates() {
         buttonPressed = true;
-        if (!dateRangeService.isDateRangeValid(startDate, endDate)) {
+        if (!DateRangeService.isDateRangeValid(startDate, endDate)) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid date range.\nThe range should not exceed 14 days.", "Invalid date range. Start date must be before end date, and the range should not exceed 14 days."));
             return "error";
