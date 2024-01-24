@@ -68,40 +68,43 @@
                     <h:panelGrid columns="3">
                         <p:commandButton value="Save" action="#{userDetailController.saveUserPlusSaveRoles()}"
                                          oncomplete="PF('userEditDialog').hide();"
-                                         update=":oneUserForm:userInformation"/>
+                                         update=":oneUserForm:userInformationRolLog"/>
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
 
             <p:dialog header="Edit Password" id="passwordEditDialog" widgetVar="passwordEditDialog" modal="true"
-                      showEffect="fade" hideEffect="fade" resizable="false" >
+                      showEffect="fade" hideEffect="fade" resizable="false">
 
                 <p:outputPanel id="passwordData" rendered="#{not empty userDetailController.user}">
                     <h:panelGrid columns="3">
-                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{userDetailController.user.password}" required="true"
+                        <p:outputLabel for="password" value="Password:"/>
+                        <p:inputText id="password" type="password" value="#{userDetailController.user.password}"
+                                     required="true"
                                      validatorMessage="Please enter a Password of at least length 8!"
                                      requiredMessage="Please enter a Password!"
                                      placeholder="Please enter a Password"
                                      onfocus="if (this.value != '') { this.value = null; }">
-                            <f:validateLength minimum="8" />
-                            <p:ajax event="keyup"  update="validationMessage" />
+                            <f:validateLength minimum="8"/>
+                            <p:ajax event="keyup" update="validationMessage"/>
                         </p:inputText>
 
-                        <p:message  id="validationMessage" for="password" />
+                        <p:message id="validationMessage" for="password"/>
                     </h:panelGrid>
 
                     <h:panelGrid columns="3">
-                        <p:outputLabel for="confirmPassword" value="Confirm Password:" />
-                        <p:inputText id="confirmPassword" type="password" value="#{userDetailController.confirmPassword}" required="true"
+                        <p:outputLabel for="confirmPassword" value="Confirm Password:"/>
+                        <p:inputText id="confirmPassword" type="password"
+                                     value="#{userDetailController.confirmPassword}" required="true"
                                      validatorMessage="The Passwords do not match!"
                                      requiredMessage="Please enter a Password!"
                                      placeholder="confirm password"
                                      onfocus="if (this.value != '') { this.value = null; }">
-                            <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}" update="passwordMessage" />
+                            <p:ajax event="keyup" listener="#{userDetailController.checkPasswords}"
+                                    update="passwordMessage"/>
                         </p:inputText>
-                        <p:message  id="passwordMessage" for="confirmPassword" />
+                        <p:message id="passwordMessage" for="confirmPassword"/>
                     </h:panelGrid>
                     <h:panelGrid columns="3">
                         <p:commandButton value="Save" action="#{userDetailController.doSaveUser()}"
@@ -132,8 +135,28 @@
             <p:button value="Register a new User" outcome="/register_page.xhtml"
                       rendered="#{sessionInfoBean.loggedIn}"/>
 
+            <div style="margin-bottom: 10px; text-align: center;">
+                <h3 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">Rolles Changed</h3>
+            </div>
+            <p:dataTable id="userInformationRolLog" var="user" value="#{userListController.userInRoleChaneLog}"
+                         styleClass="myDataTable">
+                <p:column headerText="User">
+                    <h:outputText value="#{user.username}"/>
+                </p:column>
+                <p:column headerText="New Rolls">
+                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).newRoles}"/>
+                </p:column>
+                <p:column headerText="Old Rolls">
+                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).oldRoles}"/>
+                </p:column>
+                <p:column headerText="Time of change">
+                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).chanegeTime}">
+                        <f:convertDateTime type="localDate" pattern="yyyy-MM-dd MM:ss" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
         </h:form>
     </ui:define>
 </ui:composition>
-
 
