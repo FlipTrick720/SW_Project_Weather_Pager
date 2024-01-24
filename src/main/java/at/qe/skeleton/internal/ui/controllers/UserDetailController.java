@@ -1,5 +1,6 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.internal.model.RolChangeLog;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
 import at.qe.skeleton.internal.services.PasswordValidationService;
@@ -8,6 +9,7 @@ import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
@@ -35,9 +37,8 @@ public class UserDetailController implements Serializable {
     private TokenService tokenService;
     @Autowired
     private PasswordValidationService passwordValidationService;
-
-
-    private List<UserxRole> selectedRoles;
+    private List<UserxRole> newRoles;
+    private List<UserxRole> oldRoles;
 
     /**
      * Attribute to cache the currently displayed user
@@ -166,31 +167,44 @@ public class UserDetailController implements Serializable {
         }
     }
 
+    /**
+     * to preselect the checkpoxes
+     * @return
+     */
     public List<UserxRole> getSelectedRoles() {
-        return new ArrayList<>(user.getRoles());
+        oldRoles = new ArrayList<>(user.getRoles());
+        return oldRoles;
+    }
+
+    public void setSelectedRoles(List<UserxRole> selectedRoles) {
+        this.newRoles = selectedRoles;
     }
 
     /**
-     * to preselect the checkpoxes
-     * @param selectedRoles
+     * just to display all role types
+     * @return
      */
-    public void setSelectedRoles(List<UserxRole> selectedRoles) {
-        this.selectedRoles = selectedRoles;
-    }
-
     public List<UserxRole> getAllRoles() {
         return Arrays.asList(UserxRole.USER, UserxRole.MANAGER, UserxRole.ADMIN);
     }
 
-    public void setRolesForUser() {
-        user.setRoles(new HashSet<>(selectedRoles));
-    }
-
+    /**
+     * sets the new Roles to user and saves it.
+     * if the roles changed it creates an rolChangeLog
+     */
     public void saveUserPlusSaveRoles() {
-        setRolesForUser();
+        user.setRoles(new HashSet<>(newRoles));
         doSaveUser();
-        //TODO das Repo über UserxService (iwi erkenne ob rollen geänder wurden oder nich) aufrufen und reinspeichern + ausgabe machen
 
+        if (newRoles.equals(oldRoles)) { //Rols didn't change
+            return;
+        }
+        RolChangeLog rolChangeLog = new RolChangeLog();
+        rolChangeLog.setUser(user);
+        rolChangeLog.setNewRoles(newRoles);
+        rolChangeLog.setOldRoles(oldRoles);
+        rolChangeLog.setChanegeTime(LocalDateTime.now());
+        userService.saveRolChangeLog(rolChangeLog);
     }
 
     public void resetPasswordEmail() {
@@ -213,4 +227,3 @@ public class UserDetailController implements Serializable {
     }
 
 }
-
