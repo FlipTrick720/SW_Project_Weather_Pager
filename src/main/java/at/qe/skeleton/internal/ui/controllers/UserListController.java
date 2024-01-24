@@ -40,7 +40,12 @@ public class UserListController implements Serializable {
      */
     public Collection<Userx> getPremiumUsers() { return userService.getPremiumUsers();}
 
-    public List<Userx> getUserInRoleChaneLog() {
-        return userService.getUserInRoleChaneLog();
+    public List<Long> getIdInRoleChaneLog() {
+        return userService.getIdInRoleChaneLog();
     }
+
+    public RolChangeLog getByIdInRoleChaneLog(Long id) {
+        return userService.getByIdInRoleChaneLog(id);
+    }
+
 }

@@ -165,7 +165,12 @@ public class UserxService implements Serializable {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Userx> getUserInRoleChaneLog(){
-        return rolChangeLogRepository.findAllUsers();
+    public List<Long> getIdInRoleChaneLog(){
+        return rolChangeLogRepository.findAllId();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public RolChangeLog getByIdInRoleChaneLog(Long id){
+        return rolChangeLogRepository.findAllById(id);
     }
 }

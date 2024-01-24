@@ -138,19 +138,19 @@
             <div style="margin-bottom: 10px; text-align: center;">
                 <h3 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">Rolles Changed</h3>
             </div>
-            <p:dataTable id="userInformationRolLog" var="user" value="#{userListController.userInRoleChaneLog}"
+            <p:dataTable id="userInformationRolLog" var="id" value="#{userListController.idInRoleChaneLog}"
                          styleClass="myDataTable">
                 <p:column headerText="User">
-                    <h:outputText value="#{user.username}"/>
+                    <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).user.username}"/>
                 </p:column>
                 <p:column headerText="New Rolls">
-                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).newRoles}"/>
+                    <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).newRoles}"/>
                 </p:column>
                 <p:column headerText="Old Rolls">
-                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).oldRoles}"/>
+                    <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).oldRoles}"/>
                 </p:column>
                 <p:column headerText="Time of change">
-                    <h:outputText value="#{rolChangeLogRepository.findAllByUser(user).chanegeTime}">
+                    <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).chanegeTime}">
                         <f:convertDateTime type="localDate" pattern="yyyy-MM-dd MM:ss" />
                     </h:outputText>
                 </p:column>
