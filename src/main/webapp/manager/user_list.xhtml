@@ -9,7 +9,7 @@
     <ui:define name ="content">
         <!-- filter input -->
         <h:form id="filterForm">
-            <p:inputText id="filterInput" value="#{dataTableSortBean.filterValue}" placeholder="Enter keyword">
+            <p:inputText id="filterInput" value="#{filterListBean.filterUser}" placeholder="Enter keyword">
                 <p:ajax update="userListForm" />
             </p:inputText>
         </h:form>

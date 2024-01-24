@@ -24,6 +24,8 @@ public class ReorderListBean implements Serializable {
     private FavLocationService favLocationService;
     @Autowired
     private SessionInfoBean sessionInfoBean;
+    @Autowired
+    private FilterListBean filterListBean;
     /**
      * FavLocations = the original List of FavoriteLocations (shown if filter value = "")
      */
@@ -31,31 +33,15 @@ public class ReorderListBean implements Serializable {
     /**
      * filteredFavLocations = the actual shown List (according to the filter value)
      */
-    private List<FavLocation> filteredFavLocations; // Declare the property
-    private String filterValue;
+    private List<FavLocation> filteredFavLocations;
+
 
     /**
-     * currentlyToDeleteId value is only for test purpose
+     * setFilteredFavLocations(...) function is only for test purpose. Should not be used in real Appliaction
+     * @param filteredFavLocations
      */
-
-    public String getFilterValue() {
-        return filterValue;
-    }
-
-    public void setFilterValue(String filterValue) {
-        this.filterValue = filterValue;
-    }
-
     public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
         this.filteredFavLocations = filteredFavLocations;
-    }
-
-    /**
-     * This function is only to simulate for testing and should not be used in the real Application
-     * @param favLocations
-     */
-    public void setFavLocations(List<FavLocation> favLocations) {
-        this.favLocations = favLocations;
     }
 
     /**
@@ -111,14 +97,7 @@ public class ReorderListBean implements Serializable {
      * @return the List of favorite Locations associated with the current user
      */
     public List<FavLocation> getFilteredFavLocations() {
-        if (filterValue == null || filterValue.isEmpty()) {
-            filteredFavLocations = favLocations;
-            return favLocations;
-        } else {
-            filteredFavLocations = favLocations.stream()
-                    .filter(location -> location.getName().toLowerCase().contains(filterValue.toLowerCase()))
-                    .collect(Collectors.toList());
-            return filteredFavLocations;
-        }
+        filteredFavLocations = filterListBean.getFilteredFavLocations(favLocations);
+        return filterListBean.getFilteredFavLocations(favLocations);
     }
 }

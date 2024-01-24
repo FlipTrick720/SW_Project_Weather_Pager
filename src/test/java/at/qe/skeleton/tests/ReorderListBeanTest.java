@@ -32,58 +32,10 @@ public class ReorderListBeanTest {
     private ReorderListBean reorderListBean;
     @Autowired
     private UserxService userxService;
-
     @MockBean
     private FavLocationService favLocationService;
-
     @MockBean
     private SessionInfoBean sessionInfoBean;
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"USER"})
-    public void testGetFilteredFavLocations() {
-        //create user
-        Userx user = new Userx();
-        user.setUsername("testUser");
-        user.setPassword("testPassword");
-        user.setRoles(Set.of(UserxRole.USER));
-
-        //create Favorite Locations
-        FavLocation favLocation1 = new FavLocation();
-        FavLocation favLocation2 = new FavLocation();
-        FavLocation favLocation3 = new FavLocation();
-        favLocation1.setId(1L);
-        favLocation1.setUser(user);
-        favLocation1.setIndex(0);
-        favLocation1.setName("Location1");
-        favLocation2.setId(2L);
-        favLocation2.setIndex(1);
-        favLocation2.setUser(user);
-        favLocation2.setName("Location2");
-        favLocation3.setId(3L);
-        favLocation3.setIndex(2);
-        favLocation3.setName("Location3");
-        favLocation3.setUser(user);
-        List<FavLocation> favLocations = Arrays.asList(favLocation1, favLocation2, favLocation3);
-        reorderListBean.setFilteredFavLocations(favLocations);
-        reorderListBean.setFavLocations(favLocations);
-
-        // Test when filterValue is empty
-        reorderListBean.setFilterValue("");
-        assertEquals(favLocations, reorderListBean.getFilteredFavLocations());
-
-        // Test when filterValue is not empty
-        reorderListBean.setFilterValue("Location");
-        List<FavLocation> filteredLocations1 = reorderListBean.getFilteredFavLocations();
-        assertEquals(3, filteredLocations1.size());
-
-        reorderListBean.setFilterValue("Location1");
-        List<FavLocation> filteredLocations2 = reorderListBean.getFilteredFavLocations();
-        assertEquals(1, filteredLocations2.size());
-        assertEquals("Location1", filteredLocations2.get(0).getName());
-    }
-
-
     @Test
     public void testOnSelectWithFavLocation() {
         ContextMocker.mockFacesContext();

@@ -10,7 +10,7 @@
     <ui:define name="content">
         <!-- filter input -->
         <h:form id="filterForm">
-            <p:inputText id="filterInput" value="#{dataTableSortBean.filterValue}" placeholder="Enter keyword">
+            <p:inputText id="filterInput" value="#{filterListBean.filterUser}" placeholder="Enter keyword">
                 <p:ajax update="oneUserForm" />
             </p:inputText>
         </h:form>
@@ -50,7 +50,7 @@
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column> -->
-                <p:column headerText="Send resetMail" style="width:150px;text-align: center">
+                <p:column headerText="Send Resetmail" style="width:150px;text-align: center">
                     <p:commandButton update=":oneUserForm:resetPasswordDialog"
                                      oncomplete="PF('resetPasswordDialog').show()"
                                      icon="pi pi-envelope" title="Reset Password">
