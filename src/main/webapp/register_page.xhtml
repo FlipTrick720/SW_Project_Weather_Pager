@@ -44,7 +44,9 @@
                 <p:message  id="passwordMessage" for="confirmPassword" />
             </h:panelGrid>
 
-            <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}"/>
+            <p:commandButton value="Register" action="#{userDetailController.doRegisterUser()}"
+                             styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"/>
+            <p:commandLink value="   Already Registered?"  onclick="window.location.href='login.xhtml'"/>
 
         </h:form>
     </ui:define>
