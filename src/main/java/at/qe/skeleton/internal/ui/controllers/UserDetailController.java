@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.util.*;
 
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -205,6 +207,23 @@ public class UserDetailController implements Serializable {
         }
         confirmPassword = null;
     }
+
+    /**
+     * Methode to check if Username is still available
+     */
+    public void checkUsernameAvailability() {
+        String username = newUser.getUsername();
+
+        Userx existingUser = userService.loadUser(username);
+
+        FacesMessage message;
+
+        if (existingUser != null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Username is already taken!");
+            FacesContext.getCurrentInstance().addMessage("register_form:username", message);
+        }
+    }
+
 
 }
 
