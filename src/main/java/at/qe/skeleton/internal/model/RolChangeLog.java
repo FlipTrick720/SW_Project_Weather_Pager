@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class RollChangeLog {
+public class RolChangeLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class RollChangeLog {
         return user;
     }
 
-    public RollChangeLog setUser(Userx user) {
+    public RolChangeLog setUser(Userx user) {
         this.user = user;
         return this;
     }
@@ -37,7 +37,7 @@ public class RollChangeLog {
         return oldRoles;
     }
 
-    public RollChangeLog setOldRoles(List<UserxRole> oldRoles) {
+    public RolChangeLog setOldRoles(List<UserxRole> oldRoles) {
         this.oldRoles = oldRoles;
         return this;
     }
@@ -46,7 +46,7 @@ public class RollChangeLog {
         return newRoles;
     }
 
-    public RollChangeLog setNewRoles(List<UserxRole> newRoles) {
+    public RolChangeLog setNewRoles(List<UserxRole> newRoles) {
         this.newRoles = newRoles;
         return this;
     }
@@ -55,7 +55,7 @@ public class RollChangeLog {
         return chanegeTime;
     }
 
-    public RollChangeLog setChanegeTime(LocalDateTime chanegeTime) {
+    public RolChangeLog setChanegeTime(LocalDateTime chanegeTime) {
         this.chanegeTime = chanegeTime;
         return this;
     }
