@@ -10,9 +10,7 @@ import java.util.List;
 
 @Repository
 public interface RolChangeLogRepository extends AbstractRepository <RolChangeLog, Long>, Serializable {
-
-    public RolChangeLog findAllByUser (Userx userx);
-
-    @Query("SELECT DISTINCT rcl.user FROM RolChangeLog rcl")
-    public List<Userx> findAllUsers();
+    public RolChangeLog findAllById (Long id);
+    @Query("SELECT DISTINCT rcl.id FROM RolChangeLog rcl")
+    public List<Long> findAllId();
 }
