@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @ManagedBean
-@Scope("request")
+@Scope("session")
 public class DateSelectionBean implements Serializable {
 
     private List<Integer> years;

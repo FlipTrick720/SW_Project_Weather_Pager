@@ -23,7 +23,7 @@ import static java.lang.Integer.getInteger;
 
 
 @Component
-@Scope("request")
+@Scope("session")
 public class DataTableSortBean {
     private List<PaymentHistory> paymentHistoryList;
     private Collection<Userx> userList;
@@ -55,7 +55,6 @@ public class DataTableSortBean {
     }
 
     public List<PaymentHistory> getPaymentHistoryList() {
-        System.out.println(filterValue);
         if (filterValue == null || filterValue.isEmpty()) {
             return paymentHistoryList;
         } else {
@@ -84,5 +83,9 @@ public class DataTableSortBean {
 
     public void setFilterValue(String filterValue) {
         this.filterValue = filterValue;
+    }
+
+    public List<SortMeta> getSortBy() {
+        return sortBy;
     }
 }

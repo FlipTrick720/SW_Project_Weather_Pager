@@ -21,26 +21,27 @@
             <p:separator />
 
             <p:dataTable id="usersTable" var="paymentHistory" value="#{dataTableSortBean.paymentHistoryList}" allowUnsorting="true" sortMode="single">
-                <p:column sortBy="#{paymentHistory.user.username}" headerText="Username">
+                <p:column headerText="Username" sortBy="#{paymentHistory.user.username}">
                     <h:outputText value="#{paymentHistory.user.username}"/>
                 </p:column>
-                <p:column sortBy="#{paymentHistory.paymentStatus}" headerText="Payment Status">
+                <p:column headerText="Payment Status" sortBy="#{paymentHistory.paymentStatus}}">
                     <h:outputText value="#{paymentHistory.paymentStatus}"/>
                 </p:column>
                 <p:column headerText="Days Till end Month">
                 </p:column>
-                <p:column sortBy="#{paymentHistory.chargedDays}" headerText="Charged Days" >
+                <p:column headerText="Charged Days" sortBy="#{paymentHistory.chargedDays}">
                     <h:outputText value="#{paymentHistory.chargedDays}" rendered="#{paymentHistory.chargedDays ne 0}"/>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
+                <p:column headerText="Cash up" style="width:100px;text-align: center">
                     <p:commandButton action="#{premiumStatusListener.cashUpTillEndCurrentMonth(paymentHistory.user)}" update=":userListForm:usersTable" icon="pi pi-euro" title="Cash-up"
                                      rendered="#{dateSelectionBean.isSelectedDateCurrent() and paymentHistory.paymentStatus eq 'OPEN'}">
                         <p:confirm header="Confirmation" message="Are you sure to cash up the user?" icon="ui-icon-alert" />
                     </p:commandButton>
+                </p:column>
+                <p:column headerText="User Details" style="width:100px;text-align: center">
                     <p:commandButton update=":userListForm:userEditDialog" oncomplete="PF('userEditDialog').show()" icon="pi pi-info-circle" title="Details">
                         <f:setPropertyActionListener value="#{paymentHistory.user}" target="#{userDetailController.user}" />
                     </p:commandButton>
-
                 </p:column>
             </p:dataTable>
 
