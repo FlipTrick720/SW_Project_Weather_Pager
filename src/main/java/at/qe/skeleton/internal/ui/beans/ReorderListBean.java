@@ -1,7 +1,11 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.internal.model.FavLocation;
+import at.qe.skeleton.internal.model.PaymentHistory;
+import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.FavLocationService;
+import at.qe.skeleton.internal.services.PaymentHistoryService;
+import at.qe.skeleton.internal.services.UserxService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -11,11 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Bean for managing and interacting with the favorite location list on the homepage.
+ * Bean for managing the change of the order of a List.
  */
 @Named
 @Scope("request")
@@ -26,6 +31,14 @@ public class ReorderListBean implements Serializable {
     private SessionInfoBean sessionInfoBean;
     @Autowired
     private FilterListBean filterListBean;
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
+    @Autowired
+    private UserxService userService;
+    @Autowired
+    private DateSelectionBean dateSelectionBean;
+    private List<PaymentHistory> paymentHistoryList;
+    private Collection<Userx> userList;
     /**
      * FavLocations = the original List of FavoriteLocations (shown if filter value = "")
      */
@@ -44,11 +57,10 @@ public class ReorderListBean implements Serializable {
         this.filteredFavLocations = filteredFavLocations;
     }
 
-    /**
-     * Initializes the favorite locations list for the current user.
-     */
     @PostConstruct
     public void init() {
+        paymentHistoryList = paymentHistoryService.getAllByYearAndMonth(dateSelectionBean.getSelectedYear(), dateSelectionBean.getSelectedMonthInt());
+        userList = userService.getAllUsers();
         favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
     }
 
@@ -99,5 +111,12 @@ public class ReorderListBean implements Serializable {
     public List<FavLocation> getFilteredFavLocations() {
         filteredFavLocations = filterListBean.getFilteredFavLocations(favLocations);
         return filterListBean.getFilteredFavLocations(favLocations);
+    }
+    public List<PaymentHistory> getPaymentHistoryList() {
+        return filterListBean.getPaymentHistoryList(paymentHistoryList);
+    }
+
+    public Collection<Userx> getUserList() {
+        return filterListBean.getUserList(userList);
     }
 }

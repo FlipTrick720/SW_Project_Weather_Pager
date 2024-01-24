@@ -16,7 +16,7 @@
         </h:form>
 
         <h:form id="oneUserForm">
-            <p:dataTable id="userInformation" var="user" value="#{dataTableSortBean.userList}" allowUnsorting="true" sortMode="single">
+            <p:dataTable id="userInformation" var="user" value="#{reorderListBean.userList}" allowUnsorting="true" sortMode="single">
 
 
                 <p:column headerText="Username" sortBy="#{user.username}">

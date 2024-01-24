@@ -21,7 +21,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class FilterListBeanTest {
 
     @Autowired
@@ -30,23 +29,43 @@ public class FilterListBeanTest {
     @Test
     @WithMockUser(username = "admin", authorities = {"USER"})
     public void testGetFilteredFavLocations() {
-        FavLocation location1 = new FavLocation();
-        FavLocation location2 = new FavLocation();
-        location1.setId(1L);
-        location1.setName("Location1");
-        location2.setId(2L);
-        location2.setName("Location2");
+        //create user
+        Userx user = new Userx();
+        user.setUsername("testUser");
+        user.setPassword("testPassword");
 
-        List<FavLocation> favLocations = Arrays.asList(location1, location2);
+        //create Favorite Locations
+        FavLocation favLocation1 = new FavLocation();
+        FavLocation favLocation2 = new FavLocation();
+        FavLocation favLocation3 = new FavLocation();
+        favLocation1.setId(1L);
+        favLocation1.setUser(user);
+        favLocation1.setIndex(0);
+        favLocation1.setName("Location1");
+        favLocation2.setId(2L);
+        favLocation2.setIndex(1);
+        favLocation2.setUser(user);
+        favLocation2.setName("Location2");
+        favLocation3.setId(3L);
+        favLocation3.setIndex(2);
+        favLocation3.setName("Location3");
+        favLocation3.setUser(user);
+        List<FavLocation> favLocations = Arrays.asList(favLocation1, favLocation2, favLocation3);
 
-        // Test without filtering
-        List<FavLocation> result = filterListBean.getFilteredFavLocations(favLocations);
-        assertEquals(favLocations, result);
+        // Test when filterValue is empty
+        filterListBean.setFilterLocation("");
+        assertEquals(favLocations, filterListBean.getFilteredFavLocations(favLocations));
 
-        // Test with filtering
+        // Test when filterValue is not empty
+        filterListBean.setFilterLocation("Location");
+        List<FavLocation> filteredLocations1 = filterListBean.getFilteredFavLocations(favLocations);
+        assertEquals(3, filteredLocations1.size());
+
         filterListBean.setFilterLocation("Location1");
-        result = filterListBean.getFilteredFavLocations(favLocations);
-        assertEquals(Arrays.asList(location1), result);
+        List<FavLocation> filteredLocations2 = filterListBean.getFilteredFavLocations(favLocations);
+        assertEquals(1, filteredLocations2.size());
+        assertEquals("Location1", filteredLocations2.get(0).getName());
+
     }
 
     @Test
