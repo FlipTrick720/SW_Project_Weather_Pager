@@ -136,17 +136,17 @@
                       rendered="#{sessionInfoBean.loggedIn}"/>
 
             <div style="margin-bottom: 10px; text-align: center;">
-                <h3 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">Rolles Changed</h3>
+                <h3 style="background-color: #f2f2f2; padding: 10px; border-radius: 5px;">Roles Changed</h3>
             </div>
             <p:dataTable id="userInformationRolLog" var="id" value="#{userListController.idInRoleChaneLog}"
                          styleClass="myDataTable">
                 <p:column headerText="User">
                     <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).user.username}"/>
                 </p:column>
-                <p:column headerText="New Rolls">
+                <p:column headerText="New Roles">
                     <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).newRoles}"/>
                 </p:column>
-                <p:column headerText="Old Rolls">
+                <p:column headerText="Old Roles">
                     <h:outputText value="#{userListController.getByIdInRoleChaneLog(id).oldRoles}"/>
                 </p:column>
                 <p:column headerText="Time of change">
