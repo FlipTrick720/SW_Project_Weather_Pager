@@ -1,7 +1,7 @@
 # Beschreibung des Komponentendiagramm
 
 
-Die folgende Beschreibung bezieht sich auf  [das Komponentendiagramm](komponentendiagramm.png) der Wetter-WebApp  welche im Rahmen des PS Softwarearchitektur erstellt wurde. Mehr Infos und die Dokumentation findest du im [README](/readme.md).
+Die folgende Beschreibung bezieht sich auf  [das Komponentendiagramm](komponentendiagramm.png) der Wetter-WebApp  welche im Rahmen des PS Softwarearchitektur erstellt wurde. Mehr Infos und die Dokumentation findest du im [README](/README.md).
 
 ## Level 1: Systemübersicht
 Diese Übersicht der Komponenten dient einer groben Aufteilung des Systems und orientiert sich stark an der verwendeten 3-Schichten-Architektur. Zudem wird auf externe Schnittstellen hingewiesen.
