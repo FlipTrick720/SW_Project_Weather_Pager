@@ -57,7 +57,7 @@ public class UserServiceTest {
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");
                 Assertions.assertNull(user.getUpdateDate(), "User \"" + user + "\" has a updateDate defined");
-            } else if ("testUser1".equals(user.getUsername())) {
+            } else if ("testUser".equals(user.getUsername())) {
                 Assertions.assertTrue(user.getRoles().contains(UserxRole.USER), "User \"" + user + "\" does not have role EMPLOYEE");
                 Assertions.assertNotNull(user.getCreateDate(), "User \"" + user + "\" does not have a createDate defined");
                 Assertions.assertNull(user.getUpdateUser(), "User \"" + user + "\" has a updateUser defined");

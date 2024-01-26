@@ -57,7 +57,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumInDb() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -73,7 +73,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumPerMonthOnlyOne(int testCount) {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -93,7 +93,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumStatusUpdate() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -117,7 +117,7 @@ public class PaymentHistoryTest {
     public void testCashUpFunction() {
         Random random = new Random();
 
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -158,7 +158,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testUserCascadeDeletion() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");

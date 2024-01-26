@@ -41,7 +41,7 @@ public class FavLocationTest {
     public void testDeleteLocation(){
         //create user
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -71,7 +71,7 @@ public class FavLocationTest {
     public void testCascadeDelete(){
         //create user
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -98,7 +98,7 @@ public class FavLocationTest {
     public void testUpdateIndexLocation(){
         //create user
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -136,7 +136,7 @@ public class FavLocationTest {
     public void testLoadLocation(){
         //create User
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -159,7 +159,7 @@ public class FavLocationTest {
     public void testGetUserLocation(){
         //create User
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -192,7 +192,7 @@ public class FavLocationTest {
     public void testStringToFavLocation_Success() throws EntityNotFoundException {
         //create User
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
@@ -218,7 +218,7 @@ public class FavLocationTest {
     public void testStringToFavLocation_Failure() throws EntityNotFoundException {
         //create User
         Userx testUser = new Userx();
-        testUser.setUsername("testUser");
+        testUser.setUsername("testUserFav");
         testUser.setPassword("testPassword");
         testUser.setRoles(Set.of(UserxRole.USER));
         userxService.saveUser(testUser);
