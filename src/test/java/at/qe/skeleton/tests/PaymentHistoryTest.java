@@ -65,7 +65,7 @@ public class PaymentHistoryTest {
         user.setPremium(true);
         userxService.saveUser(user);
 
-        Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+        Assertions.assertEquals(1, paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user).toArray().length);
     }
 
     @ParameterizedTest
@@ -102,7 +102,8 @@ public class PaymentHistoryTest {
 
         paymentHistoryService.updatePaymentStatus(user, PaymentStatus.PAYED, 12);
 
-        List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
+        List<PaymentHistory> paymentList = paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user);
+
         Assertions.assertEquals(user.getUsername(), paymentList.get(0).getUser().getUsername());
         Assertions.assertEquals(PaymentStatus.PAYED, paymentList.get(0).getPaymentStatus());
         Assertions.assertEquals(12, paymentList.get(0).getChargedDays());
