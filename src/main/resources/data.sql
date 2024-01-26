@@ -82,24 +82,47 @@ INSERT INTO PREMIUM_HISTORY (CHANGE_DATE, NEW_PREMIUM_STATUS, USER_ID) VALUES ('
 
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user1', 'PAYED', 10,'2023-05-14 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user1', 'PAYED', 10, '2023-06-04 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user2', 'PAYED', 10,'2023-07-04 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user2', 'PAYED', 10,'2023-08-07 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user2', 'PAYED', 10,'2023-09-10 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user2', 'PAYED', 10,'2023-12-19 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user3', 'FAILED', 10,'2023-03-04 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user3', 'PAYED', 10,'2023-10-04 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user4', 'PAYED', 10,'2023-08-07 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user4', 'PAYED', 10,'2023-09-10 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user4', 'PAYED', 10,'2023-04-14 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user5', 'FAILED', 10 ,'2023-05-19 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user5', 'PAYED', 10,'2023-06-04 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user6', 'PAYED', 10,'2023-07-04 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user6', 'PAYED', 10,'2023-09-04 00:00:00');
+
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'PAYED', 10,'2023-02-01 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'FAILED', 10,'2023-01-01 00:00:00');
 INSERT INTO Payment_History (user_id, Payment_Status, CHARGED_DAYS, CHANGE_DATE) VALUES ('user7', 'PAYED', 10,'2023-11-01 00:00:00');
 
-INSERT INTO Fav_Location (id, name, user_id, latitude,longitude, index) VALUES (-1, 'Innsbruck', 'admin', 47.2654296, 11.3927685, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-1, 'Innsbruck', 'admin', 47.2654296, 11.3927685, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-2, 'Seattle', 'admin', 47.6038321, -122.330062, 0);
 
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-3, 'Linz', 'user1', 48.3059078, 14.286198, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-4, 'Amsterdam', 'user1', 52.3727598, 4.8936041, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-5, 'Munich', 'user1', 48.1371079, 11.5753822, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-6, 'Stuttgart', 'user1', 48.7784485, 9.1800132, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-7, 'Luxembourg', 'user1', 49.6112768, 6.129799, 0);
 
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-8, 'Innsbruck', 'user3', 47.2654296, 11.3927685, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-9, 'Vienna', 'user3', 48.2083537, 16.3725042, 0);
 
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-10, 'Constance', 'user4', 47.659216, 9.1750718, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-11, 'Oslo', 'user4', 59.9133301, 10.7389701, 0);
+
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-12, 'Stockholm', 'user6', 59.3251172, 18.0710935, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-13, 'Salzburg', 'user6', 47.7981346, 13.0464806, 0);
+
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-14, 'Sydney', 'user7', -33.8698439, 151.2082848, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-15, 'Cape Town', 'user7', -33.928992, 18.417396, 0);
+INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-16, 'London', 'user7', 51.5073219, -0.1276474, 0);
