@@ -108,8 +108,6 @@ public class UserServiceTest {
 
         Userx freshlyLoadedUser = userService.loadUser("user1");
         Assertions.assertNotNull(freshlyLoadedUser, "User \"" + username + "\" could not be loaded from test data source after being saved");
-        //Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" does not have a updateUser defined after being saved");//Delete?
-        //Assertions.assertEquals(adminUser, freshlyLoadedUser.getUpdateUser(), "User \"" + username + "\" has wrong updateUser set");//Delete?
         Assertions.assertNotNull(freshlyLoadedUser.getUpdateDate(), "User \"" + username + "\" does not have a updateDate defined after being saved");
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
     }
@@ -129,8 +127,6 @@ public class UserServiceTest {
 
         Userx freshlyLoadedUser = userService.loadUser("admin");
         Assertions.assertNotNull(freshlyLoadedUser, "User \"" + toBeChangedUserName + "\" could not be loaded from test data source after being saved");
-        //Assertions.assertNotNull(freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" does not have a updateUser defined after being saved");//Delete?
-        //Assertions.assertEquals(toBeChangedUser, freshlyLoadedUser.getUpdateUser(), "User \"" + toBeChangedUserName + "\" has wrong updateUser set");//Delete?
         Assertions.assertEquals("changed-email@whatever.wherever", freshlyLoadedUser.getEmail(), "User \"" + toBeChangedUserName + "\" does not have a the correct email attribute stored being saved");
         Assertions.assertEquals("NewLastname", freshlyLoadedUser.getLastName(), "User \"" + toBeChangedUserName + "\" does not have a the correct lastname attribute stored being saved");
     }
@@ -163,7 +159,6 @@ public class UserServiceTest {
         Userx freshlyCreatedUser = userService.loadUser(username);
         Assertions.assertNotNull(freshlyCreatedUser, "New user could not be loaded from test data source after being saved");
         Assertions.assertEquals(username, freshlyCreatedUser.getUsername(), "New user could not be loaded from test data source after being saved");
-        //Assertions.assertEquals(WebSecurityConfig.passwordEncoder().encode(password), freshlyCreatedUser.getPassword(), "User \"" + username + "\" does not have a the correct password attribute stored being saved");
         Assertions.assertEquals(fName, freshlyCreatedUser.getFirstName(), "User \"" + username + "\" does not have a the correct firstName attribute stored being saved");
         Assertions.assertEquals(lName, freshlyCreatedUser.getLastName(), "User \"" + username + "\" does not have a the correct lastName attribute stored being saved");
         Assertions.assertEquals(email, freshlyCreatedUser.getEmail(), "User \"" + username + "\" does not have a the correct email attribute stored being saved");
@@ -177,7 +172,6 @@ public class UserServiceTest {
     @WithMockUser(username = "admin", authorities = {"ADMIN"})
     @DirtiesContext
     public void testExceptionForEmptyUsername() {
-        //Assertions.assertThrows(org.springframework.orm.jpa.JpaSystemException.class, () -> {
         Assertions.assertThrows(RuntimeException.class, () -> {
             Userx adminUser = userService.loadUser("admin");
             Assertions.assertNotNull(adminUser, "Admin user could not be loaded from test data source");
@@ -231,7 +225,6 @@ public class UserServiceTest {
     @WithMockUser(username = "user1", authorities = {"USER"})
     @DirtiesContext
     public void testUnauthorizedSaveUser() {
-        //Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
         Assertions.assertThrows(RuntimeException.class, () -> {
             String username = "user1";
             userService.setUnauthenticatedUser();
