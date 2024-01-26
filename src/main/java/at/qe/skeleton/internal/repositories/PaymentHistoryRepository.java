@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,4 +39,5 @@ public interface PaymentHistoryRepository extends AbstractRepository <PaymentHis
             @Param("paymentMonth") int paymentMonth
     );
 
+    public List<PaymentHistory> findAllByChangeDateBeforeAndUser(LocalDateTime changeDate, Userx userx);
 }

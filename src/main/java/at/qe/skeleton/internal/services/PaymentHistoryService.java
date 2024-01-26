@@ -73,8 +73,18 @@ public class PaymentHistoryService implements Serializable {
      * @param month
      * @return
      */
-    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Integer month){
+    public List<PaymentHistory> getAllByYearAndMonth(Integer year, Integer month) {
         return paymentHistoryRepository.findByChangeDate(year, month);
+    }
+
+    /**
+     * for test purposes
+     * @param changeDate
+     * @param userx
+     * @return
+     */
+    public List<PaymentHistory> findAllByChangeDateBeforeAndUser(LocalDateTime changeDate, Userx userx) {
+        return paymentHistoryRepository.findAllByChangeDateBeforeAndUser(changeDate, userx);
     }
 
 }

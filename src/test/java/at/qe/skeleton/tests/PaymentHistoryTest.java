@@ -86,7 +86,7 @@ public class PaymentHistoryTest {
             user.setPremium(false);
             userxService.saveUser(user);
         }
-        Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+        Assertions.assertEquals(1, paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user).toArray().length);
     }
 
     @Test
@@ -139,7 +139,8 @@ public class PaymentHistoryTest {
 
         premiumStatusListener.cashUpTillEndCurrentMonth(user);
 
-        List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
+        List<PaymentHistory> paymentList = paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user);
+
 
         // Calculating the last second of the month, must be changed if billing is in other dimensions
         LocalDateTime now = LocalDateTime.now();
@@ -147,10 +148,8 @@ public class PaymentHistoryTest {
         Duration duration = Duration.between(now, lastDayOfMonth);
 
         long totaldifferenz = duration.toSeconds() - paymentList.get(0).getChargedDays();
+        System.out.println(totaldifferenz);
         Assertions.assertTrue(totaldifferenz <= 1, "totaldifferenz should be less than 1 second");
-
-
-
     }
 
 
