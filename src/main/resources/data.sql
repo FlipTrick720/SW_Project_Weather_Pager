@@ -176,3 +176,13 @@ INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES 
 INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-15, 'Cape Town', 'user7', -33.928992, 18.417396, 0);
 INSERT INTO Fav_Location (id, name, user_id, latitude, longitude, index) VALUES (-16, 'London', 'user7', 51.5073219, -0.1276474, 0);
 
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('2131-5446-4514-3647', 11.0, '254', '12/2026', 'testPremium');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('2343-5947-4564-6545', 615.0, '654', '12/2030', 'testPremiumBad');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('4364-6241-4584-1237', 148.0, '289', '12/2028', 'manager');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('3335-2558-3965-2145', 5678.0, '925', '10/2026', 'user1');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('2214-9854-3345-5825', 387.0, '258', '08/2028', 'user2');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('4338-2523-2478-1257', 883.0, '231', '02/2027', 'user3');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('7895-2486-2257-3947', 7893.0, '394', '07/2025', 'user4');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('4535-1526-4534-3654', 373.0, '159', '18/2025', 'user5');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('1278-5426-4454-6217', 1631.0, '597', '09/2027', 'user6');
+INSERT INTO Credit_Card (number, balance, cvc, expiration_date, name) VALUES ('9364-5456-4987-4517', 37.0, '688', '11/2028', 'user7');
