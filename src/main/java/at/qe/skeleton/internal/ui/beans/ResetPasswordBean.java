@@ -42,10 +42,10 @@ public class ResetPasswordBean implements Serializable {
         Map<String, String> requestParameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         token = requestParameterMap.get("token");
 
-        Userx user_associated_with_token = tokenservice.getUserByConfirmationToken(token);
+        Userx userAssociatedWithToken = tokenservice.getUserByConfirmationToken(token);
 
         // Check if token is valid and the user associated with the token is the current user
-        if(user_associated_with_token == null){
+        if(userAssociatedWithToken == null){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Invalid token"));
             setValidToken(false);
         } else {

@@ -11,11 +11,11 @@ import java.util.List;
 @Component
 @Scope("view")
 public class PaymentHistoryController {
+
     @Autowired
     private PaymentHistoryService paymentHistoryService;
 
     public List<PaymentHistory> getPaymentHistoryYearMonth(Integer year, Integer month){
-
             return paymentHistoryService.getAllByYearAndMonth(year, month);
     }
 }

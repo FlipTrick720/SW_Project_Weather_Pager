@@ -57,7 +57,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumInDb() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -65,7 +65,7 @@ public class PaymentHistoryTest {
         user.setPremium(true);
         userxService.saveUser(user);
 
-        Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+        Assertions.assertEquals(1, paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user).toArray().length);
     }
 
     @ParameterizedTest
@@ -73,7 +73,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumPerMonthOnlyOne(int testCount) {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -86,14 +86,14 @@ public class PaymentHistoryTest {
             user.setPremium(false);
             userxService.saveUser(user);
         }
-        Assertions.assertEquals(1, paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue()).toArray().length);
+        Assertions.assertEquals(1, paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user).toArray().length);
     }
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremiumStatusUpdate() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -102,7 +102,8 @@ public class PaymentHistoryTest {
 
         paymentHistoryService.updatePaymentStatus(user, PaymentStatus.PAYED, 12);
 
-        List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
+        List<PaymentHistory> paymentList = paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user);
+
         Assertions.assertEquals(user.getUsername(), paymentList.get(0).getUser().getUsername());
         Assertions.assertEquals(PaymentStatus.PAYED, paymentList.get(0).getPaymentStatus());
         Assertions.assertEquals(12, paymentList.get(0).getChargedDays());
@@ -116,7 +117,7 @@ public class PaymentHistoryTest {
     public void testCashUpFunction() {
         Random random = new Random();
 
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -139,7 +140,8 @@ public class PaymentHistoryTest {
 
         premiumStatusListener.cashUpTillEndCurrentMonth(user);
 
-        List<PaymentHistory> paymentList = paymentHistoryService.getAllByYearAndMonth(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue());
+        List<PaymentHistory> paymentList = paymentHistoryService.findAllByChangeDateBeforeAndUser(LocalDateTime.now(), user);
+
 
         // Calculating the last second of the month, must be changed if billing is in other dimensions
         LocalDateTime now = LocalDateTime.now();
@@ -147,10 +149,8 @@ public class PaymentHistoryTest {
         Duration duration = Duration.between(now, lastDayOfMonth);
 
         long totaldifferenz = duration.toSeconds() - paymentList.get(0).getChargedDays();
+        System.out.println(totaldifferenz);
         Assertions.assertTrue(totaldifferenz <= 1, "totaldifferenz should be less than 1 second");
-
-
-
     }
 
 
@@ -158,7 +158,7 @@ public class PaymentHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testUserCascadeDeletion() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");

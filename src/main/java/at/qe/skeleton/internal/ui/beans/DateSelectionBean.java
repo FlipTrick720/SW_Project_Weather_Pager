@@ -1,6 +1,8 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import org.springframework.context.annotation.Scope;
+import jakarta.annotation.ManagedBean;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.List;
  * Bean to give a dropdown menu of Years and Months and save the input until next input.
  *
  */
+
 
 
 @Component
@@ -33,7 +36,8 @@ public class DateSelectionBean implements Serializable {
      * and months for date selection. The default values are set to the current
      * year and month.
      */
-    public DateSelectionBean() {
+    @PostConstruct
+    public void init() {
         years = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int i = currentYear+1; i >= currentYear - 11; i--) {

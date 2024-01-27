@@ -36,5 +36,4 @@ public class ConfirmationController {
             return "redirect:/verification/failure.xhtml";
         }
     }
-    //todo: introduce error handling
 }

@@ -1,15 +1,20 @@
 package at.qe.skeleton.internal.ui.controllers;
 
+import at.qe.skeleton.internal.model.RolChangeLog;
 import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.services.PasswordValidationService;
 import at.qe.skeleton.internal.services.TokenService;
 import at.qe.skeleton.internal.services.email.ConfirmationMailStrategy;
 import at.qe.skeleton.internal.services.email.EmailService;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import at.qe.skeleton.internal.services.email.PasswordChangeMailStrategy;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -21,7 +26,7 @@ import org.springframework.stereotype.Component;
  * course "Software Architecture" offered by Innsbruck University.
  */
 @Component
-@Scope("view")
+@Scope("request")
 public class UserDetailController implements Serializable {
 
     @Autowired
@@ -32,8 +37,10 @@ public class UserDetailController implements Serializable {
 
     @Autowired
     private TokenService tokenService;
-
-    private List<UserxRole> selectedRoles;
+    @Autowired
+    private PasswordValidationService passwordValidationService;
+    private List<UserxRole> newRoles;
+    private List<UserxRole> oldRoles;
 
     /**
      * Attribute to cache the currently displayed user
@@ -162,25 +169,44 @@ public class UserDetailController implements Serializable {
         }
     }
 
+    /**
+     * to preselect the checkpoxes
+     * @return
+     */
     public List<UserxRole> getSelectedRoles() {
-        return new ArrayList<>(user.getRoles());
+        oldRoles = new ArrayList<>(user.getRoles());
+        return oldRoles;
     }
 
     public void setSelectedRoles(List<UserxRole> selectedRoles) {
-        this.selectedRoles = selectedRoles;
+        this.newRoles = selectedRoles;
     }
 
+    /**
+     * just to display all role types
+     * @return
+     */
     public List<UserxRole> getAllRoles() {
         return Arrays.asList(UserxRole.USER, UserxRole.MANAGER, UserxRole.ADMIN);
     }
 
-    public void setRolesForUser() {
-        user.setRoles(new HashSet<>(selectedRoles));
-    }
-
+    /**
+     * sets the new Roles to user and saves it.
+     * if the roles changed it creates an rolChangeLog
+     */
     public void saveUserPlusSaveRoles() {
-        setRolesForUser();
+        user.setRoles(new HashSet<>(newRoles));
         doSaveUser();
+
+        if (newRoles.equals(oldRoles)) { //Rols didn't change
+            return;
+        }
+        RolChangeLog rolChangeLog = new RolChangeLog();
+        rolChangeLog.setUser(user);
+        rolChangeLog.setNewRoles(newRoles);
+        rolChangeLog.setOldRoles(oldRoles);
+        rolChangeLog.setChanegeTime(LocalDateTime.now());
+        userService.saveRolChangeLog(rolChangeLog);
     }
 
     public void resetPasswordEmail() {
@@ -195,10 +221,28 @@ public class UserDetailController implements Serializable {
      */
     public void checkPasswords() {
         if(newUser != null) {
-            PasswordValidator.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
+            passwordValidationService.validatePasswords(confirmPassword, newUser.getPassword(), "register_form:confirmPassword");
         } else if (user != null) {
-            PasswordValidator.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
+            passwordValidationService.validatePasswords(confirmPassword, user.getPassword(), "oneUserForm:confirmPassword");
+        }
+        confirmPassword = null;
+    }
+
+    /**
+     * Methode to check if Username is still available
+     */
+    public void checkUsernameAvailability() {
+        String username = newUser.getUsername();
+
+        Userx existingUser = userService.loadUser(username);
+
+        FacesMessage message;
+
+        if (existingUser != null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Username is already taken!");
+            FacesContext.getCurrentInstance().addMessage("register_form:username", message);
         }
     }
-}
 
+
+}

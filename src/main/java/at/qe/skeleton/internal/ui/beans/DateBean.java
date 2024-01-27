@@ -84,12 +84,6 @@ public class DateBean {
         return averageWeatherData;
     }
 
-    public String fetchAndDisplayAverageWeatherData() {
-        fetchAverageWeatherData();
-        return null; // You can return a navigation outcome if needed
-    }
-
-
     /**
      * Handles the submission of selected dates.
      * Validates the date range and retrieves weather data for the specified period and location.
@@ -98,7 +92,7 @@ public class DateBean {
      */
     public String submitDates() {
         buttonPressed = true;
-        if (!dateRangeService.isDateRangeValid(startDate, endDate)) {
+        if (!DateRangeService.isDateRangeValid(startDate, endDate)) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid date range.\nThe range should not exceed 14 days.", "Invalid date range. Start date must be before end date, and the range should not exceed 14 days."));
             return "error";
@@ -115,17 +109,18 @@ public class DateBean {
 
         weatherDataList = weatherService.retrieveWeatherDataForRange(startDate, endDate, latitude, longitude);
 
-        for (DailyAggregationDTO d : weatherDataList) {
-            System.out.println(d.date());
-        }
-
         // Calculate average weather data
         averageWeatherData = weatherService.calculateAverageWeatherData(calculateMidpointDate(startDate, endDate), latitude, longitude);
 
-        System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
     }
 
+
+
+
+    /**
+*Getters and setters for all the variables in this class.
+*/
 
     public SessionInfoBean getSessionInfoBean() {
         return sessionInfoBean;
@@ -143,24 +138,6 @@ public class DateBean {
         this.averageWeatherData = averageWeatherData;
     }
 
-    /**
-*Getters and setters for all the variables in this class.
-*/
-    public DateRangeService getDateRangeService() {
-        return dateRangeService;
-    }
-
-    public void setDateRangeService(DateRangeService dateRangeService) {
-        this.dateRangeService = dateRangeService;
-    }
-
-    public WeatherService getWeatherService() {
-        return weatherService;
-    }
-
-    public void setWeatherService(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
     public Boolean getButtonPressed() {
         return buttonPressed;
     }

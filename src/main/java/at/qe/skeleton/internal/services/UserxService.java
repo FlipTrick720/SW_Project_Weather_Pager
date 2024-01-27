@@ -1,11 +1,14 @@
 package at.qe.skeleton.internal.services;
 
+import at.qe.skeleton.internal.model.RolChangeLog;
 import at.qe.skeleton.internal.model.Userx;
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import at.qe.skeleton.internal.model.UserxRole;
+import at.qe.skeleton.internal.repositories.RolChangeLogRepository;
 import at.qe.skeleton.internal.ui.controllers.PremiumStatusListener;
 import at.qe.skeleton.internal.repositories.FavLocationRepository;
 import at.qe.skeleton.internal.model.Token;
@@ -13,7 +16,6 @@ import at.qe.skeleton.internal.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import at.qe.skeleton.internal.repositories.UserxRepository;
@@ -42,6 +44,9 @@ public class UserxService implements Serializable {
 
     @Autowired
     private PremiumStatusListener premiumStatusListener;
+
+    @Autowired
+    private RolChangeLogRepository rolChangeLogRepository;
 
     @Autowired
     private UserUpdater userUpdater;
@@ -154,4 +159,18 @@ public class UserxService implements Serializable {
         return userRepository.findByPremiumTrue();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void saveRolChangeLog(RolChangeLog rollChangeLog){
+        rolChangeLogRepository.save(rollChangeLog);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Long> getIdInRoleChaneLog(){
+        return rolChangeLogRepository.findAllId();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public RolChangeLog getByIdInRoleChaneLog(Long id){
+        return rolChangeLogRepository.findAllById(id);
+    }
 }

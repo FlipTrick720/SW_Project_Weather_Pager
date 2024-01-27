@@ -17,11 +17,15 @@
 			<!-- start of top section: searchbar and else -->
 			<p:panelGrid columns="1" styleClass="borderless">
 				<p:panel style="text-align: center;">
-					<h:panelGroup id="disabled_button2" rendered="#{!sessionInfoBean.loggedInAndPremium}">
-							<p:tooltip for="disabled_button2" value="You have to have a Premium Account to use this feature"/>
-							<p:commandButton value="Vacation Date"  styleClass="ui-state-disabled" disabled="true"/>
-					</h:panelGroup><!-- Dialog for Date Selection -->
-					<p:commandButton value="Vacation Date"  rendered="#{sessionInfoBean.loggedInAndPremium}"  onclick="PF('dateDialog').show();" type="button" style="margin-right: 10px"/>
+					<h:panelGroup id="VacationDate" >
+						<p:tooltip for="VacationDate" rendered="#{!sessionInfoBean.loggedInAndPremium}"
+								   value="#{sessionInfoBean.loggedInAndNotPremium ? 'You need to be a premium Subscriber.
+								   Click here and submit CreditCard details.' : 'Please log in or register to use this feature.'}"/>
+						<p:commandButton value="Vacation Planning"
+										 onclick="#{sessionInfoBean.loggedInAndPremium ? 'PF(\'dateDialog\').show();' :
+                          (sessionInfoBean.loggedInAndNotPremium ? 'window.location.href=\'user/user.xhtml\';' : 'window.location.href=\'login.xhtml\';')}">
+						</p:commandButton>
+					</h:panelGroup>
 					<p:growl id="growl" life="3000" />
 					<p:dialog header="Select Dates" widgetVar="dateDialog" modal="true" showEffect="fade" hideEffect="fade">
 						<strong style="display: block; margin-bottom: 10px;">You can choose a maximum of 2 weeks</strong>
@@ -48,12 +52,21 @@
 
 
 					<p:commandButton value="Search" icon="pi pi-search" style="margin-right: 10px" action="#{weatherBean.searchWeather()}" update="middle bottom"/>
-					<p:commandButton value="Add to Favorite" icon="pi pi-star" rendered="#{sessionInfoBean.loggedIn}" action="#{favLocationController.doSafeLocationByName(autocompleteBean.selectedGeocodingDTO.name(), sessionInfoBean.currentUser)}"/>
+					<h:panelGroup id="Favorite">
+					<p:tooltip for="Favorite" rendered="#{!sessionInfoBean.loggedIn}"
+							   value="Please log in or register to use this feature."/>
+						<p:commandButton value="Add to Favorite"
+										 rendered="#{sessionInfoBean.loggedIn}"
+										 action="#{favLocationController.doSafeLocationByName(autocompleteBean.selectedGeocodingDTO.name(), sessionInfoBean.currentUser)}"
+										 icon="pi pi-star">
+						</p:commandButton>
 
-					<h:panelGroup id="disabled_button" rendered="#{!sessionInfoBean.loggedIn}">
-						<p:tooltip for="disabled_button" value="Create an account or log in to use Favorites!" />
-						<p:commandButton value="Add to Favorite" icon="pi pi-star" styleClass="ui-state-disabled" disabled="true"/>
-					</h:panelGroup>
+						<p:commandButton value="Add to Favorite"
+										 rendered="#{!sessionInfoBean.loggedIn}"
+										 onclick="window.location.href = 'login.xhtml'"
+										 icon="pi pi-sign-in">
+						</p:commandButton>
+				</h:panelGroup>
 				</p:panel>
 			</p:panelGrid>
 			<!-- end of top section -->
