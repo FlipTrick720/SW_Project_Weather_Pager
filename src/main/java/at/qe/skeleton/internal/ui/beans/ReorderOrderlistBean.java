@@ -17,28 +17,20 @@ import org.springframework.context.annotation.Scope;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Bean for managing the change of the order of a List.
+ * Bean for managing the change of the order of a OrderList.
  */
 @Named
 @Scope("request")
-public class ReorderListBean implements Serializable {
+public class ReorderOrderlistBean implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
     @Autowired
     private SessionInfoBean sessionInfoBean;
     @Autowired
     private FilterListBean filterListBean;
-    @Autowired
-    private PaymentHistoryService paymentHistoryService;
-    @Autowired
-    private UserxService userService;
-    @Autowired
-    private DateSelectionBean dateSelectionBean;
-    private List<PaymentHistory> paymentHistoryList;
-    private Collection<Userx> userList;
+
     /**
      * FavLocations = the original List of FavoriteLocations (shown if filter value = "")
      */
@@ -48,19 +40,8 @@ public class ReorderListBean implements Serializable {
      */
     private List<FavLocation> filteredFavLocations;
 
-
-    /**
-     * setFilteredFavLocations(...) function is only for test purpose. Should not be used in real Appliaction
-     * @param filteredFavLocations
-     */
-    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
-        this.filteredFavLocations = filteredFavLocations;
-    }
-
     @PostConstruct
     public void init() {
-        paymentHistoryList = paymentHistoryService.getAllByYearAndMonth(dateSelectionBean.getSelectedYear(), dateSelectionBean.getSelectedMonthInt());
-        userList = userService.getAllUsers();
         favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
     }
 
@@ -80,6 +61,7 @@ public class ReorderListBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Selection", "Selected object is not of type FavLocation"));
         }
     }
+
     /**
      * Handles the reordering of the favorite locations list.
      * No test for this function because we weren't able to simulate the FacesContext.
@@ -112,11 +94,11 @@ public class ReorderListBean implements Serializable {
         filteredFavLocations = filterListBean.getFilteredFavLocations(favLocations);
         return filterListBean.getFilteredFavLocations(favLocations);
     }
-    public List<PaymentHistory> getPaymentHistoryList() {
-        return filterListBean.getPaymentHistoryList(paymentHistoryList);
-    }
-
-    public Collection<Userx> getUserList() {
-        return filterListBean.getUserList(userList);
+    /**
+     * setFilteredFavLocations(...) function is only for test purpose. Should not be used in real Appliaction
+     * @param filteredFavLocations
+     */
+    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
+        this.filteredFavLocations = filteredFavLocations;
     }
 }

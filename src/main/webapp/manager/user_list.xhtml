@@ -20,7 +20,7 @@
             <h:outputText value="Selected Month: #{dateSelectionBean.selectedMonth}" />
             <p:separator />
 
-            <p:dataTable id="usersTable" var="paymentHistory" value="#{reorderListBean.paymentHistoryList}" allowUnsorting="true" sortMode="single">
+            <p:dataTable id="usersTable" var="paymentHistory" value="#{reorderDataListBean.paymentHistoryList}" allowUnsorting="true" sortMode="single">
                 <p:column headerText="Username" sortBy="#{paymentHistory.user.username}">
                     <h:outputText value="#{paymentHistory.user.username}"/>
                 </p:column>
