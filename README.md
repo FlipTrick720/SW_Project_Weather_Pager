@@ -77,6 +77,14 @@ Administratoren verwalten Benutzerkonten, weisen Rollen zu bzw entziehen den Pre
 
 ## Dokumentation
 Für ein vertieftes Verständnis und detaillierte technische Einblicke in unser Java-Projekt, laden wir Sie ein, unsere ausführliche [Dokumentation](Organisation/dokumentation_projekt.pdf) zu lesen.
+
+## Tests User
+|Nutzer		|Password		| Rolle		|
+|----------------	|----------------	|----------------	|
+| admin		| passwd		| USER, ADMIN	|
+| testManager	| managerPasswd	| USER, MANAGER	|
+| testUser		| userPasswd	| USER		|
+
 ## Authors and acknowledgment
 - Amelie Ernst
 - Alex Hemmen
