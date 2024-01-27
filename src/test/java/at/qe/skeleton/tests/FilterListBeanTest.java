@@ -54,6 +54,10 @@ public class FilterListBeanTest {
         favLocation3.setUser(user);
         List<FavLocation> favLocations = Arrays.asList(favLocation1, favLocation2, favLocation3);
 
+        //Test when filterValue is null
+        filterListBean.setFilterLocation(null);
+        assertEquals(favLocations, filterListBean.getFilteredFavLocations(favLocations));
+
         // Test when filterValue is empty
         filterListBean.setFilterLocation("");
         assertEquals(favLocations, filterListBean.getFilteredFavLocations(favLocations));
@@ -79,7 +83,6 @@ public class FilterListBeanTest {
         user2.setUsername("user2");
 
 
-
         PaymentHistory payment1 = new PaymentHistory();
         PaymentHistory payment2 = new PaymentHistory();
         payment1.setUser(user1);
@@ -90,7 +93,13 @@ public class FilterListBeanTest {
         List<PaymentHistory> paymentHistoryList = Arrays.asList(payment1, payment2);
 
         // Test without filtering
+        filterListBean.setFilterUser(null);
         List<PaymentHistory> result = filterListBean.getPaymentHistoryList(paymentHistoryList);
+        assertEquals(paymentHistoryList, result);
+
+        // Test when filterValue is empty
+        filterListBean.setFilterUser("");
+        result = filterListBean.getPaymentHistoryList(paymentHistoryList);
         assertEquals(paymentHistoryList, result);
 
         // Test with filtering
@@ -120,9 +129,15 @@ public class FilterListBeanTest {
         Collection<Userx> result = filterListBean.getUserList(userList);
         assertEquals(userList, result);
 
+        // Test when filterValue is empty
+        filterListBean.setFilterUser("");
+        result = filterListBean.getUserList(userList);
+        assertEquals(userList, result);
+
         // Test with filtering
         filterListBean.setFilterUser("John");
         result = filterListBean.getUserList(userList);
         assertEquals(Arrays.asList(user1), result);
     }
+
 }
