@@ -1,7 +1,11 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.internal.model.FavLocation;
+import at.qe.skeleton.internal.model.PaymentHistory;
+import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.FavLocationService;
+import at.qe.skeleton.internal.services.PaymentHistoryService;
+import at.qe.skeleton.internal.services.UserxService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -11,19 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Bean for managing and interacting with the favorite location list on the homepage.
+ * Bean for managing the change of the order of a OrderList.
  */
 @Named
 @Scope("request")
-public class ReorderListBean implements Serializable {
+public class ReorderOrderlistBean implements Serializable {
     @Autowired
     private FavLocationService favLocationService;
     @Autowired
     private SessionInfoBean sessionInfoBean;
+    @Autowired
+    private FilterListBean filterListBean;
+
     /**
      * FavLocations = the original List of FavoriteLocations (shown if filter value = "")
      */
@@ -31,36 +38,8 @@ public class ReorderListBean implements Serializable {
     /**
      * filteredFavLocations = the actual shown List (according to the filter value)
      */
-    private List<FavLocation> filteredFavLocations; // Declare the property
-    private String filterValue;
+    private List<FavLocation> filteredFavLocations;
 
-    /**
-     * currentlyToDeleteId value is only for test purpose
-     */
-
-    public String getFilterValue() {
-        return filterValue;
-    }
-
-    public void setFilterValue(String filterValue) {
-        this.filterValue = filterValue;
-    }
-
-    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
-        this.filteredFavLocations = filteredFavLocations;
-    }
-
-    /**
-     * This function is only to simulate for testing and should not be used in the real Application
-     * @param favLocations
-     */
-    public void setFavLocations(List<FavLocation> favLocations) {
-        this.favLocations = favLocations;
-    }
-
-    /**
-     * Initializes the favorite locations list for the current user.
-     */
     @PostConstruct
     public void init() {
         favLocations = favLocationService.getUserLocations(sessionInfoBean.getCurrentUser());
@@ -82,6 +61,7 @@ public class ReorderListBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Selection", "Selected object is not of type FavLocation"));
         }
     }
+
     /**
      * Handles the reordering of the favorite locations list.
      * No test for this function because we weren't able to simulate the FacesContext.
@@ -111,14 +91,14 @@ public class ReorderListBean implements Serializable {
      * @return the List of favorite Locations associated with the current user
      */
     public List<FavLocation> getFilteredFavLocations() {
-        if (filterValue == null || filterValue.isEmpty()) {
-            filteredFavLocations = favLocations;
-            return favLocations; // Assuming favLocations is the list of all favorite locations
-        } else {
-            filteredFavLocations = favLocations.stream()
-                    .filter(location -> location.getName().toLowerCase().contains(filterValue.toLowerCase()))
-                    .collect(Collectors.toList());
-            return filteredFavLocations;
-        }
+        filteredFavLocations = filterListBean.getFilteredFavLocations(favLocations);
+        return filterListBean.getFilteredFavLocations(favLocations);
+    }
+    /**
+     * setFilteredFavLocations(...) function is only for test purpose. Should not be used in real Appliaction
+     * @param filteredFavLocations
+     */
+    public void setFilteredFavLocations(List<FavLocation> filteredFavLocations) {
+        this.filteredFavLocations = filteredFavLocations;
     }
 }

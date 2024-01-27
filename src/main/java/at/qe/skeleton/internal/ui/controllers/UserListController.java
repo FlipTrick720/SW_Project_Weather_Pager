@@ -1,10 +1,8 @@
 package at.qe.skeleton.internal.ui.controllers;
 
 import at.qe.skeleton.internal.model.RolChangeLog;
-import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.UserxService;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +22,6 @@ public class UserListController implements Serializable {
     @Autowired
     private UserxService userService;
 
-    /**
-     * Returns a list of all users.
-     *
-     * @return
-     */
-    public Collection<Userx> getUsers() {
-        return userService.getAllUsers();
-    }
-
-    /**
-     * Returns a list of premium users.
-     * @return
-     */
-    public Collection<Userx> getPremiumUsers() { return userService.getPremiumUsers();}
-
     public List<Long> getIdInRoleChaneLog() {
         return userService.getIdInRoleChaneLog();
     }
@@ -46,5 +29,4 @@ public class UserListController implements Serializable {
     public RolChangeLog getByIdInRoleChaneLog(Long id) {
         return userService.getByIdInRoleChaneLog(id);
     }
-
 }

@@ -12,7 +12,7 @@
 
             <!-- filter input -->
             <h:form id="filterForm">
-                <p:inputText id="filterInput" value="#{reorderListBean.filterValue}" placeholder="Filter by name">
+                <p:inputText id="filterInput" value="#{filterListBean.filterLocation}" placeholder="Filter by name">
                     <p:ajax update="FavLocationForm" />
                 </p:inputText>
             </h:form>
@@ -57,9 +57,9 @@
         </p:panel>
         <h:form id="FavLocationForm">
             <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
-            <p:orderList value="#{reorderListBean.filteredFavLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
-                <p:ajax event="select" listener="#{reorderListBean.onSelect}" update="msgs"/>
-                <p:ajax event="reorder" listener="#{reorderListBean.onReorder}" update="msgs"/>
+            <p:orderList value="#{reorderOrderlistBean.filteredFavLocations}" var="favLocation" itemValue="#{favLocation}" converter="#{favLocationConverter}" controlsLocation="left" responsive="true">
+                <p:ajax event="select" listener="#{reorderOrderlistBean.onSelect}" update="msgs"/>
+                <p:ajax event="reorder" listener="#{reorderOrderlistBean.onReorder}" update="msgs"/>
                 <!-- Favoriten Name -->
                 <p:column style="width:40px">
                     <h:outputText value="#{favLocation.name}" />
@@ -117,7 +117,7 @@
 
                 <!-- Option Favoriten von der Home Seite zu entfernen -->
                 <p:column style="width:20px">
-                    <p:commandButton value="Delete" action="#{reorderListBean.deleteLocation()}"
+                    <p:commandButton value="Delete" action="#{reorderOrderlistBean.deleteLocation()}"
                                      update="FavLocationForm">
                         <f:param name="idFavLocation" value="#{favLocation.id}" />
                     </p:commandButton>

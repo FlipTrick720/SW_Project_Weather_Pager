@@ -8,27 +8,36 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templates/main.xhtml">
     <ui:define name="content">
+        <!-- filter input -->
+        <h:form id="filterForm">
+            <p:inputText id="filterInput" value="#{filterListBean.filterUser}" placeholder="Enter keyword">
+                <p:ajax update="oneUserForm" />
+            </p:inputText>
+        </h:form>
+
         <h:form id="oneUserForm">
-            <p:dataTable id="userInformation" var="user" value="#{userListController.users}">
-                <p:column headerText="Username">
+            <p:dataTable id="userInformation" var="user" value="#{reorderDataListBean.userList}" allowUnsorting="true" sortMode="single">
+
+
+                <p:column headerText="Username" sortBy="#{user.username}">
                     <h:outputText value="#{user.username}"/>
                 </p:column>
-                <p:column headerText="First Name">
+                <p:column headerText="First Name" sortBy="#{user.firstName}">
                     <h:outputText value="#{user.firstName}"/>
                 </p:column>
-                <p:column headerText="Last Name">
+                <p:column headerText="Last Name" sortBy="#{user.lastName}">
                     <h:outputText value="#{user.lastName}"/>
                 </p:column>
-                <p:column headerText="Email">
+                <p:column headerText="Email" sortBy="#{user.email}">
                     <h:outputText value="#{user.email}"/>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
+                <p:column headerText="Edit User" style="width:150px;text-align: center">
                     <p:commandButton update=":oneUserForm:userEditDialog" oncomplete="PF('userEditDialog').show()"
-                                     icon="pi pi-cog" title="Edit My information">
+                                     icon="pi pi-cog" title="Edit user information">
                         <f:setPropertyActionListener value="#{user}" target="#{userDetailController.user}"/>
                     </p:commandButton>
                 </p:column>
-                <p:column style="width:100px;text-align: center">
+                <p:column headerText="Edit Password" style="width:150px;text-align: center">
                     <p:commandButton update=":oneUserForm:passwordEditDialog"
                                      oncomplete="PF('passwordEditDialog').show()" icon="pi pi-key"
                                      title="Edit Password">
