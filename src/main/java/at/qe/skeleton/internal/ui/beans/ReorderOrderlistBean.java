@@ -1,11 +1,7 @@
 package at.qe.skeleton.internal.ui.beans;
 
 import at.qe.skeleton.internal.model.FavLocation;
-import at.qe.skeleton.internal.model.PaymentHistory;
-import at.qe.skeleton.internal.model.Userx;
 import at.qe.skeleton.internal.services.FavLocationService;
-import at.qe.skeleton.internal.services.PaymentHistoryService;
-import at.qe.skeleton.internal.services.UserxService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -15,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**

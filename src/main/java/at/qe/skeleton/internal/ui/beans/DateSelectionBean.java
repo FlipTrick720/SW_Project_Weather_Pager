@@ -3,6 +3,7 @@ package at.qe.skeleton.internal.ui.beans;
 import org.springframework.context.annotation.Scope;
 import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.time.Month;
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 
-@ManagedBean
+@Component
 @Scope("session")
 public class DateSelectionBean implements Serializable {
 

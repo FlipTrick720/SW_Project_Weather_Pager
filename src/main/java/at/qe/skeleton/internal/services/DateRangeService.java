@@ -20,9 +20,6 @@ public class DateRangeService {
      * @return true if the date range is valid, false otherwise
      */
 
-    public DateRangeService() {
-    }
-
     public static boolean isDateRangeValid(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             return false;

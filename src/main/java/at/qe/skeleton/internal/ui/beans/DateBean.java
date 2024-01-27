@@ -109,14 +109,9 @@ public class DateBean {
 
         weatherDataList = weatherService.retrieveWeatherDataForRange(startDate, endDate, latitude, longitude);
 
-        for (DailyAggregationDTO d : weatherDataList) {
-            System.out.println(d.date());
-        }
-
         // Calculate average weather data
         averageWeatherData = weatherService.calculateAverageWeatherData(calculateMidpointDate(startDate, endDate), latitude, longitude);
 
-        System.out.println("button pressed" + buttonPressed);
         return "success"; // Return the appropriate outcome for success
     }
 
