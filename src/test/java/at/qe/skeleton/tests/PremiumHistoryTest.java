@@ -43,7 +43,7 @@ public class PremiumHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremStatusAendernDbEintrag() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -64,7 +64,7 @@ public class PremiumHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremStatusAendernChangeDate() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");
@@ -85,7 +85,7 @@ public class PremiumHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testPremStatusAendernNewStaus() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Boolean newStatus = false;
         Userx user = new Userx();
         user.setUsername(testUser);
@@ -107,7 +107,7 @@ public class PremiumHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testUserCascadeDeletion() {
-        String testUser = "testUser3";
+        String testUser = "testUserPrem";
         Boolean newStatus = false;
         Userx user = new Userx();
         user.setUsername(testUser);
@@ -145,7 +145,7 @@ public class PremiumHistoryTest {
     @DirtiesContext
     public void testPremiumIntervallLaenge(int sleep1, int sleep2) {
         try {
-            String testUser = "testUser";
+            String testUser = "testUserPrem";
             Userx user = new Userx();
             user.setUsername(testUser);
             user.setPassword("passwd");
@@ -194,7 +194,7 @@ public class PremiumHistoryTest {
     @DirtiesContext
     public void testTotalPremiumTime(int sleep1, int sleep2) {
         try {
-            String testUser = "testUser";
+            String testUser = "testUserPrem";
             Userx user = new Userx();
             user.setUsername(testUser);
             user.setPassword("passwd");
@@ -235,7 +235,7 @@ public class PremiumHistoryTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     @DirtiesContext
     public void testTotalPremiumTimeOverMonth() {
-        String testUser = "testUser";
+        String testUser = "testUserPrem";
         Userx user = new Userx();
         user.setUsername(testUser);
         user.setPassword("passwd");

@@ -31,7 +31,7 @@ public class CreditCardServiceTest {
     public void testCreateAssignAndDeleteCreditCard() {
         //create and save user
         Userx user = new Userx();
-        user.setUsername("testUser");
+        user.setUsername("testUserCredit");
         user.setPassword("testPassword");
         user.setRoles(Set.of(UserxRole.USER));
 
@@ -50,7 +50,7 @@ public class CreditCardServiceTest {
         userxService.saveUser(user);
 
         // check assignment
-        Userx userWithCreditCard = userxService.loadUser("testUser");
+        Userx userWithCreditCard = userxService.loadUser("testUserCredit");
         Assertions.assertNotNull(userWithCreditCard.getCreditCard(), "Credit card not assigned to user");
 
         userxService.deleteUser(userWithCreditCard);
