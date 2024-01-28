@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  * course "Software Architecture" offered by Innsbruck University.
  */
 @Component
-@Scope("request")
+@Scope("view")
 public class UserDetailController implements Serializable {
 
     @Autowired
