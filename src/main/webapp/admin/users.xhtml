@@ -79,6 +79,8 @@
                                          oncomplete="PF('userEditDialog').hide();"
                                          update=":oneUserForm:userInformation, :oneUserForm:userInformationRolLog"/>
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
+                        <p:commandButton value="Delete User" action="#{userDetailController.doDeleteUser()}"
+                                         oncomplete="PF('userEditDialog').hide();"/>
                     </h:panelGrid>
                 </p:outputPanel>
             </p:dialog>
