@@ -77,7 +77,7 @@
                     <h:panelGrid columns="3">
                         <p:commandButton value="Save" action="#{userDetailController.saveUserPlusSaveRoles()}"
                                          oncomplete="PF('userEditDialog').hide();"
-                                         update=":oneUserForm:userInformation"/>
+                                         update=":oneUserForm:userInformation, :oneUserForm:userInformationRolLog"/>
                         <p:commandButton value="Abort" onclick="PF('userEditDialog').hide()"/>
                     </h:panelGrid>
                 </p:outputPanel>
