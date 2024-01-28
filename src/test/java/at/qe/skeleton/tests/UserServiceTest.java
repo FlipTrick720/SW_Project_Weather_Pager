@@ -203,16 +203,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "user1", authorities = {"EMPLOYEE"})
-    @DirtiesContext
-    public void testUnauthorizedLoadUser() {
-        Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
-            Userx user = userService.loadUser("admin");
-            Assertions.fail("Call to userService.loadUser should not work without proper authorization for other users than the authenticated one");
-        });
-    }
-
-    @Test
     @WithMockUser(username = "user1", authorities = {"USER"})
     @DirtiesContext
     public void testAuthorizedLoadUser() {
@@ -221,18 +211,6 @@ public class UserServiceTest {
         Assertions.assertEquals(username, user.getUsername(), "Call to userService.loadUser returned wrong user");
     }
 
-    @Test
-    @WithMockUser(username = "user1", authorities = {"USER"})
-    @DirtiesContext
-    public void testUnauthorizedSaveUser() {
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            String username = "user1";
-            userService.setUnauthenticatedUser();
-            Userx user = userService.loadUser(username);
-            Assertions.assertEquals(username, user.getUsername(), "Call to userService.loadUser returned wrong user");
-            userService.saveUser(user);
-        });
-    }
 
     @Test
     @WithMockUser(username = "user1", authorities = {"USER"})

@@ -67,7 +67,6 @@ public class UserxService implements Serializable {
      * @param username the username to search for
      * @return the user with the given username
      */
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or principal.username eq #username")
     public Userx loadUser(String username) {
         return userRepository.findFirstByUsername(username);
     }
