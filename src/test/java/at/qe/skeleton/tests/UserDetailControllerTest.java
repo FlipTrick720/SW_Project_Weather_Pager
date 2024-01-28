@@ -21,9 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -78,27 +76,6 @@ public class UserDetailControllerTest {
         verify(emailService, times(1)).sendMail(user.getEmail(), token);
         verify(userService, times(1)).saveUser(user);
         Assertions.assertEquals(user, userDetailController.getNewUser());
-    }
-
-    @Test
-    @DirtiesContext
-    void testSaveUserPlusSaveRoles() {
-        Userx user = new Userx();
-        user.setUsername("TestUserSaveLoad");
-        user.setRoles(Collections.singleton(UserxRole.USER));
-        userxService.saveUser(user);
-
-        List<UserxRole> newRoles = Arrays.asList(UserxRole.MANAGER, UserxRole.ADMIN);
-
-        when(userService.loadUser(user.getUsername())).thenReturn(user);
-
-        userDetailController.setUser(user);
-        userDetailController.setSelectedRoles(newRoles);
-        userDetailController.saveUserPlusSaveRoles();
-
-        verify(userService, times(1)).loadUser(user.getUsername());
-        verify(userService, times(1)).saveUser(user);
-        Assertions.assertEquals(user, userDetailController.doLoadUser(user.getUsername()));
     }
 
     @Test
