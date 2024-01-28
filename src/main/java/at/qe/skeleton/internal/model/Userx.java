@@ -66,6 +66,18 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
     @OneToMany(mappedBy ="user" , cascade = CascadeType.REMOVE)
     private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
 
+    @OneToMany(mappedBy ="user" , cascade = CascadeType.REMOVE)
+    private List<RolChangeLog> rolChangeLogs = new ArrayList<>();
+
+    public List<RolChangeLog> getRolChangeLogs() {
+        return rolChangeLogs;
+    }
+
+    public Userx setRolChangeLogs(List<RolChangeLog> rolChangeLogs) {
+        this.rolChangeLogs = rolChangeLogs;
+        return this;
+    }
+
     public List<PremiumHistory> getPremiumHistoryList() {
         return premiumHistoryList;
     }
