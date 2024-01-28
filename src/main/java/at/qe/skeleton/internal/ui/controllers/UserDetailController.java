@@ -39,8 +39,8 @@ public class UserDetailController implements Serializable {
     private TokenService tokenService;
     @Autowired
     private PasswordValidationService passwordValidationService;
-    private List<UserxRole> newRoles;
-    private List<UserxRole> oldRoles;
+    private Set<UserxRole> newRoles;
+    private Set<UserxRole> oldRoles;
 
     /**
      * Attribute to cache the currently displayed user
@@ -173,12 +173,12 @@ public class UserDetailController implements Serializable {
      * to preselect the checkpoxes
      * @return
      */
-    public List<UserxRole> getSelectedRoles() {
-        oldRoles = new ArrayList<>(user.getRoles());
+    public Set<UserxRole> getSelectedRoles() {
+        oldRoles = new TreeSet<>(user.getRoles());
         return oldRoles;
     }
 
-    public void setSelectedRoles(List<UserxRole> selectedRoles) {
+    public void setSelectedRoles(Set<UserxRole> selectedRoles) {
         this.newRoles = selectedRoles;
     }
 
@@ -203,8 +203,8 @@ public class UserDetailController implements Serializable {
         }
         RolChangeLog rolChangeLog = new RolChangeLog();
         rolChangeLog.setUser(user);
-        rolChangeLog.setNewRoles(newRoles);
-        rolChangeLog.setOldRoles(oldRoles);
+        rolChangeLog.setNewRoles(newRoles.stream().toList());
+        rolChangeLog.setOldRoles(oldRoles.stream().toList());
         rolChangeLog.setChanegeTime(LocalDateTime.now());
         userService.saveRolChangeLog(rolChangeLog);
     }
